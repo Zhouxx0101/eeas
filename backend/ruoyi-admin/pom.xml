@@ -61,6 +61,13 @@
             <artifactId>ruoyi-generator</artifactId>
         </dependency>
 
+        <!-- 业务模块-->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>service</artifactId>
+            <version>3.8.3</version>
+        </dependency>
+
     </dependencies>
 
     <build>
