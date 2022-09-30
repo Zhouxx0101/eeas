@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.eeas.mapper.TrajectoryMapper">
+    
+    <resultMap type="com.ruoyi.eeas.domain.Trajectory" id="TrajectoryResult">
+        <result property="id"    column="id"    />
+        <result property="pid"    column="pid"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="place"    column="place"    />
+        <result property="longitude"    column="longitude"    />
+        <result property="latitude"    column="latitude"    />
+        <result property="riskLevel"    column="risk_level"    />
+        <result property="rawText"    column="raw_text"    />
+        <result property="source"    column="source"    />
+    </resultMap>
+
+    <sql id="selectTrajectoryVo">
+        select id, pid, start_time, end_time, place, longitude, latitude, risk_level, raw_text, source from eeas_trajectory
+    </sql>
+
+    <select id="selectTrajectoryList" parameterType="com.ruoyi.eeas.domain.Trajectory" resultMap="TrajectoryResult">
+        <include refid="selectTrajectoryVo"/>
+        <where>  
+            <if test="pid != null "> and pid = #{pid}</if>
+            <if test="startTime != null "> and start_time = #{startTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="place != null  and place != ''"> and place = #{place}</if>
+            <if test="longitude != null  and longitude != ''"> and longitude = #{longitude}</if>
+            <if test="latitude != null  and latitude != ''"> and latitude = #{latitude}</if>
+            <if test="riskLevel != null "> and risk_level = #{riskLevel}</if>
+            <if test="rawText != null  and rawText != ''"> and raw_text = #{rawText}</if>
+            <if test="source != null "> and source = #{source}</if>
+        </where>
+    </select>
+    
+    <select id="selectTrajectoryById" parameterType="Long" resultMap="TrajectoryResult">
+        <include refid="selectTrajectoryVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTrajectory" parameterType="com.ruoyi.eeas.domain.Trajectory">
+        insert into eeas_trajectory
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="pid != null">pid,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="place != null">place,</if>
+            <if test="longitude != null">longitude,</if>
+            <if test="latitude != null">latitude,</if>
+            <if test="riskLevel != null">risk_level,</if>
+            <if test="rawText != null">raw_text,</if>
+            <if test="source != null">source,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="pid != null">#{pid},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="place != null">#{place},</if>
+            <if test="longitude != null">#{longitude},</if>
+            <if test="latitude != null">#{latitude},</if>
+            <if test="riskLevel != null">#{riskLevel},</if>
+            <if test="rawText != null">#{rawText},</if>
+            <if test="source != null">#{source},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTrajectory" parameterType="com.ruoyi.eeas.domain.Trajectory">
+        update eeas_trajectory
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="pid != null">pid = #{pid},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="place != null">place = #{place},</if>
+            <if test="longitude != null">longitude = #{longitude},</if>
+            <if test="latitude != null">latitude = #{latitude},</if>
+            <if test="riskLevel != null">risk_level = #{riskLevel},</if>
+            <if test="rawText != null">raw_text = #{rawText},</if>
+            <if test="source != null">source = #{source},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTrajectoryById" parameterType="Long">
+        delete from eeas_trajectory where id = #{id}
+    </delete>
+
+    <delete id="deleteTrajectoryByIds" parameterType="String">
+        delete from eeas_trajectory where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

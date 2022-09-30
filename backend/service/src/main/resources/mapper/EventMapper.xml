@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.eeas.mapper.EventMapper">
+    
+    <resultMap type="com.ruoyi.eeas.domain.Event" id="EventResult">
+        <result property="id"    column="id"    />
+        <result property="time"    column="time"    />
+        <result property="place"    column="place"    />
+        <result property="event"    column="event"    />
+        <result property="source"    column="source"    />
+    </resultMap>
+
+    <sql id="selectEventVo">
+        select id, time, place, event, source from eeas_event
+    </sql>
+
+    <select id="selectEventList" parameterType="com.ruoyi.eeas.domain.Event" resultMap="EventResult">
+        <include refid="selectEventVo"/>
+        <where>  
+            <if test="time != null "> and time = #{time}</if>
+            <if test="place != null  and place != ''"> and place = #{place}</if>
+            <if test="event != null "> and event = #{event}</if>
+            <if test="source != null "> and source = #{source}</if>
+        </where>
+    </select>
+    
+    <select id="selectEventById" parameterType="Long" resultMap="EventResult">
+        <include refid="selectEventVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertEvent" parameterType="com.ruoyi.eeas.domain.Event">
+        insert into eeas_event
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="time != null">time,</if>
+            <if test="place != null">place,</if>
+            <if test="event != null">event,</if>
+            <if test="source != null">source,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="time != null">#{time},</if>
+            <if test="place != null">#{place},</if>
+            <if test="event != null">#{event},</if>
+            <if test="source != null">#{source},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEvent" parameterType="com.ruoyi.eeas.domain.Event">
+        update eeas_event
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="time != null">time = #{time},</if>
+            <if test="place != null">place = #{place},</if>
+            <if test="event != null">event = #{event},</if>
+            <if test="source != null">source = #{source},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteEventById" parameterType="Long">
+        delete from eeas_event where id = #{id}
+    </delete>
+
+    <delete id="deleteEventByIds" parameterType="String">
+        delete from eeas_event where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
