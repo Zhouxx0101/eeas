@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.eeas.mapper.PatientMapper">
+    
+    <resultMap type="com.ruoyi.eeas.domain.Patient" id="PatientResult">
+        <result property="id"    column="id"    />
+        <result property="sex"    column="sex"    />
+        <result property="age"    column="age"    />
+        <result property="occupation"    column="occupation"    />
+        <result property="address"    column="address"    />
+        <result property="type"    column="type"    />
+        <result property="source1"    column="source1"    />
+        <result property="source2"    column="source2"    />
+    </resultMap>
+
+    <sql id="selectPatientVo">
+        select id, sex, age, occupation, address, type, source1, source2 from eeas_patient
+    </sql>
+
+    <select id="selectPatientList" parameterType="com.ruoyi.eeas.domain.Patient" resultMap="PatientResult">
+        <include refid="selectPatientVo"/>
+        <where>  
+            <if test="sex != null "> and sex = #{sex}</if>
+            <if test="age != null "> and age = #{age}</if>
+            <if test="occupation != null  and occupation != ''"> and occupation = #{occupation}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="source1 != null "> and source1 = #{source1}</if>
+            <if test="source2 != null "> and source2 = #{source2}</if>
+        </where>
+    </select>
+    
+    <select id="selectPatientById" parameterType="Long" resultMap="PatientResult">
+        <include refid="selectPatientVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPatient" parameterType="com.ruoyi.eeas.domain.Patient">
+        insert into eeas_patient
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="sex != null">sex,</if>
+            <if test="age != null">age,</if>
+            <if test="occupation != null">occupation,</if>
+            <if test="address != null">address,</if>
+            <if test="type != null">type,</if>
+            <if test="source1 != null">source1,</if>
+            <if test="source2 != null">source2,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="sex != null">#{sex},</if>
+            <if test="age != null">#{age},</if>
+            <if test="occupation != null">#{occupation},</if>
+            <if test="address != null">#{address},</if>
+            <if test="type != null">#{type},</if>
+            <if test="source1 != null">#{source1},</if>
+            <if test="source2 != null">#{source2},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePatient" parameterType="com.ruoyi.eeas.domain.Patient">
+        update eeas_patient
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sex != null">sex = #{sex},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="occupation != null">occupation = #{occupation},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="source1 != null">source1 = #{source1},</if>
+            <if test="source2 != null">source2 = #{source2},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePatientById" parameterType="Long">
+        delete from eeas_patient where id = #{id}
+    </delete>
+
+    <delete id="deletePatientByIds" parameterType="String">
+        delete from eeas_patient where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
