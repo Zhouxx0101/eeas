@@ -1,6 +1,8 @@
 package com.ruoyi.eeas.service.impl;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.eeas.mapper.EventMapper;
@@ -9,19 +11,19 @@ import com.ruoyi.eeas.service.IEventService;
 
 /**
  * 事件数据Service业务层处理
- * 
+ *
  * @author zhouxinxing
- * @date 2022-09-29
+ * @date 2022-09-30
  */
 @Service
-public class EventServiceImpl implements IEventService 
+public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements IEventService
 {
     @Autowired
     private EventMapper eventMapper;
 
     /**
      * 查询事件数据
-     * 
+     *
      * @param id 事件数据主键
      * @return 事件数据
      */
@@ -33,7 +35,7 @@ public class EventServiceImpl implements IEventService
 
     /**
      * 查询事件数据列表
-     * 
+     *
      * @param event 事件数据
      * @return 事件数据
      */
@@ -45,19 +47,19 @@ public class EventServiceImpl implements IEventService
 
     /**
      * 新增事件数据
-     * 
+     *
      * @param event 事件数据
      * @return 结果
      */
     @Override
     public int insertEvent(Event event)
     {
-        return eventMapper.insertEvent(event);
+        return eventMapper.insert(event);
     }
 
     /**
      * 修改事件数据
-     * 
+     *
      * @param event 事件数据
      * @return 结果
      */
@@ -69,7 +71,7 @@ public class EventServiceImpl implements IEventService
 
     /**
      * 批量删除事件数据
-     * 
+     *
      * @param ids 需要删除的事件数据主键
      * @return 结果
      */
@@ -81,7 +83,7 @@ public class EventServiceImpl implements IEventService
 
     /**
      * 删除事件数据信息
-     * 
+     *
      * @param id 事件数据主键
      * @return 结果
      */

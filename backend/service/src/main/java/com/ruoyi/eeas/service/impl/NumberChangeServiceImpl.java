@@ -1,6 +1,8 @@
 package com.ruoyi.eeas.service.impl;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.eeas.mapper.NumberChangeMapper;
@@ -14,7 +16,7 @@ import com.ruoyi.eeas.service.INumberChangeService;
  * @date 2022-09-29
  */
 @Service
-public class NumberChangeServiceImpl implements INumberChangeService 
+public class NumberChangeServiceImpl extends ServiceImpl<NumberChangeMapper, NumberChange> implements INumberChangeService
 {
     @Autowired
     private NumberChangeMapper numberChangeMapper;
@@ -52,7 +54,7 @@ public class NumberChangeServiceImpl implements INumberChangeService
     @Override
     public int insertNumberChange(NumberChange numberChange)
     {
-        return numberChangeMapper.insertNumberChange(numberChange);
+        return numberChangeMapper.insert(numberChange);
     }
 
     /**

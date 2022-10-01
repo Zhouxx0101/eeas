@@ -1,6 +1,8 @@
 package com.ruoyi.eeas.service.impl;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.eeas.mapper.NewsMapper;
@@ -9,19 +11,19 @@ import com.ruoyi.eeas.service.INewsService;
 
 /**
  * 新闻数据Service业务层处理
- * 
+ *
  * @author zhouxinxing
- * @date 2022-09-29
+ * @date 2022-09-30
  */
 @Service
-public class NewsServiceImpl implements INewsService 
+public class NewsServiceImpl extends ServiceImpl<NewsMapper, News> implements INewsService
 {
     @Autowired
     private NewsMapper newsMapper;
 
     /**
      * 查询新闻数据
-     * 
+     *
      * @param id 新闻数据主键
      * @return 新闻数据
      */
@@ -33,7 +35,7 @@ public class NewsServiceImpl implements INewsService
 
     /**
      * 查询新闻数据列表
-     * 
+     *
      * @param news 新闻数据
      * @return 新闻数据
      */
@@ -45,19 +47,19 @@ public class NewsServiceImpl implements INewsService
 
     /**
      * 新增新闻数据
-     * 
+     *
      * @param news 新闻数据
      * @return 结果
      */
     @Override
     public int insertNews(News news)
     {
-        return newsMapper.insertNews(news);
+        return newsMapper.insert(news);
     }
 
     /**
      * 修改新闻数据
-     * 
+     *
      * @param news 新闻数据
      * @return 结果
      */
@@ -69,7 +71,7 @@ public class NewsServiceImpl implements INewsService
 
     /**
      * 批量删除新闻数据
-     * 
+     *
      * @param ids 需要删除的新闻数据主键
      * @return 结果
      */
@@ -81,7 +83,7 @@ public class NewsServiceImpl implements INewsService
 
     /**
      * 删除新闻数据信息
-     * 
+     *
      * @param id 新闻数据主键
      * @return 结果
      */

@@ -1,6 +1,8 @@
 package com.ruoyi.eeas.mapper;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ruoyi.eeas.domain.NumberChange;
 
 /**
@@ -9,7 +11,7 @@ import com.ruoyi.eeas.domain.NumberChange;
  * @author zhouxinxing
  * @date 2022-09-29
  */
-public interface NumberChangeMapper 
+public interface NumberChangeMapper extends BaseMapper<NumberChange>
 {
     /**
      * 查询病例变化数据
@@ -17,7 +19,7 @@ public interface NumberChangeMapper
      * @param id 病例变化数据主键
      * @return 病例变化数据
      */
-    public NumberChange selectNumberChangeById(Long id);
+    NumberChange selectNumberChangeById(Long id);
 
     /**
      * 查询病例变化数据列表
@@ -25,7 +27,7 @@ public interface NumberChangeMapper
      * @param numberChange 病例变化数据
      * @return 病例变化数据集合
      */
-    public List<NumberChange> selectNumberChangeList(NumberChange numberChange);
+    List<NumberChange> selectNumberChangeList(NumberChange numberChange);
 
     /**
      * 新增病例变化数据
@@ -33,7 +35,7 @@ public interface NumberChangeMapper
      * @param numberChange 病例变化数据
      * @return 结果
      */
-    public int insertNumberChange(NumberChange numberChange);
+    int insertNumberChange(NumberChange numberChange);
 
     /**
      * 修改病例变化数据
@@ -41,7 +43,7 @@ public interface NumberChangeMapper
      * @param numberChange 病例变化数据
      * @return 结果
      */
-    public int updateNumberChange(NumberChange numberChange);
+    int updateNumberChange(NumberChange numberChange);
 
     /**
      * 删除病例变化数据
@@ -49,7 +51,7 @@ public interface NumberChangeMapper
      * @param id 病例变化数据主键
      * @return 结果
      */
-    public int deleteNumberChangeById(Long id);
+    int deleteNumberChangeById(Long id);
 
     /**
      * 批量删除病例变化数据
@@ -57,5 +59,5 @@ public interface NumberChangeMapper
      * @param ids 需要删除的数据主键集合
      * @return 结果
      */
-    public int deleteNumberChangeByIds(Long[] ids);
+    int deleteNumberChangeByIds(Long[] ids);
 }
