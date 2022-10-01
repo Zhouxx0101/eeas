@@ -1,6 +1,10 @@
 package com.ruoyi.eeas.domain;
 
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -13,11 +17,13 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author zhouxinxing
  * @date 2022-09-29
  */
+@TableName("eeas_number_change")
 public class NumberChange extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
     /** id */
+    @TableId(type = IdType.ASSIGN_ID)
     private Long id;
 
     /** 起始时间 */
@@ -32,19 +38,19 @@ public class NumberChange extends BaseEntity
 
     /** 新增数 */
     @Excel(name = "新增数")
-    private Long increase;
+    private Integer increase;
 
     /** 确诊数 */
     @Excel(name = "确诊数")
-    private Long diagnosis;
+    private Integer diagnosis;
 
     /** 密切接触者人数 */
     @Excel(name = "密切接触者人数")
-    private Long closeContact;
+    private Integer closeContact;
 
     /** 正在接受医学观察人数 */
     @Excel(name = "正在接受医学观察人数")
-    private Long medicalObservation;
+    private Integer medicalObservation;
 
     /** 来源 */
     @Excel(name = "来源")
@@ -77,39 +83,39 @@ public class NumberChange extends BaseEntity
     {
         return endTime;
     }
-    public void setIncrease(Long increase) 
+    public void setIncrease(Integer increase)
     {
         this.increase = increase;
     }
 
-    public Long getIncrease() 
+    public Integer getIncrease()
     {
         return increase;
     }
-    public void setDiagnosis(Long diagnosis) 
+    public void setDiagnosis(Integer diagnosis)
     {
         this.diagnosis = diagnosis;
     }
 
-    public Long getDiagnosis() 
+    public Integer getDiagnosis()
     {
         return diagnosis;
     }
-    public void setCloseContact(Long closeContact) 
+    public void setCloseContact(Integer closeContact)
     {
         this.closeContact = closeContact;
     }
 
-    public Long getCloseContact() 
+    public Integer getCloseContact()
     {
         return closeContact;
     }
-    public void setMedicalObservation(Long medicalObservation) 
+    public void setMedicalObservation(Integer medicalObservation)
     {
         this.medicalObservation = medicalObservation;
     }
 
-    public Long getMedicalObservation() 
+    public Integer getMedicalObservation()
     {
         return medicalObservation;
     }

@@ -1,6 +1,8 @@
 package com.ruoyi.eeas.service;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.eeas.domain.Trajectory;
 
 /**
@@ -9,7 +11,7 @@ import com.ruoyi.eeas.domain.Trajectory;
  * @author zhouxinxing
  * @date 2022-09-29
  */
-public interface ITrajectoryService 
+public interface ITrajectoryService extends IService<Trajectory>
 {
     /**
      * 查询轨迹数据
@@ -17,7 +19,7 @@ public interface ITrajectoryService
      * @param id 轨迹数据主键
      * @return 轨迹数据
      */
-    public Trajectory selectTrajectoryById(Long id);
+    Trajectory selectTrajectoryById(Long id);
 
     /**
      * 查询轨迹数据列表
@@ -25,7 +27,7 @@ public interface ITrajectoryService
      * @param trajectory 轨迹数据
      * @return 轨迹数据集合
      */
-    public List<Trajectory> selectTrajectoryList(Trajectory trajectory);
+    List<Trajectory> selectTrajectoryList(Trajectory trajectory);
 
     /**
      * 新增轨迹数据
@@ -33,7 +35,7 @@ public interface ITrajectoryService
      * @param trajectory 轨迹数据
      * @return 结果
      */
-    public int insertTrajectory(Trajectory trajectory);
+    int insertTrajectory(Trajectory trajectory);
 
     /**
      * 修改轨迹数据
@@ -41,7 +43,7 @@ public interface ITrajectoryService
      * @param trajectory 轨迹数据
      * @return 结果
      */
-    public int updateTrajectory(Trajectory trajectory);
+    int updateTrajectory(Trajectory trajectory);
 
     /**
      * 批量删除轨迹数据
@@ -49,7 +51,7 @@ public interface ITrajectoryService
      * @param ids 需要删除的轨迹数据主键集合
      * @return 结果
      */
-    public int deleteTrajectoryByIds(Long[] ids);
+    int deleteTrajectoryByIds(Long[] ids);
 
     /**
      * 删除轨迹数据信息
@@ -57,5 +59,5 @@ public interface ITrajectoryService
      * @param id 轨迹数据主键
      * @return 结果
      */
-    public int deleteTrajectoryById(Long id);
+    int deleteTrajectoryById(Long id);
 }

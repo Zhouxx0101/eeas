@@ -1,11 +1,15 @@
 package com.ruoyi.eeas.domain;
 
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableId;
 
 /**
  * 事件数据对象 eeas_event
@@ -13,11 +17,13 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author zhouxinxing
  * @date 2022-09-30
  */
+@TableName("eeas_event")
 public class Event extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
     /** 事件id */
+    @TableId(type = IdType.ASSIGN_ID)
     private Long id;
 
     /** 时间 */
@@ -31,7 +37,7 @@ public class Event extends BaseEntity
 
     /** 事件，一一枚举 */
     @Excel(name = "事件，一一枚举")
-    private Long event;
+    private Integer event;
 
     /** 来源 */
     @Excel(name = "来源")
@@ -64,12 +70,12 @@ public class Event extends BaseEntity
     {
         return place;
     }
-    public void setEvent(Long event)
+    public void setEvent(Integer event)
     {
         this.event = event;
     }
 
-    public Long getEvent()
+    public Integer getEvent()
     {
         return event;
     }

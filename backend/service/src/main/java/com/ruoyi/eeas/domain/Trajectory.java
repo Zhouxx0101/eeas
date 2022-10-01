@@ -1,7 +1,13 @@
 package com.ruoyi.eeas.domain;
 
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
@@ -13,11 +19,13 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author zhouxinxing
  * @date 2022-09-29
  */
+@TableName("eeas_trajectory")
 public class Trajectory extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
     /** 轨迹id */
+    @TableId(type = IdType.ASSIGN_ID)
     private Long id;
 
     /** 患者id */
@@ -48,7 +56,7 @@ public class Trajectory extends BaseEntity
 
     /** 风险等级 */
     @Excel(name = "风险等级")
-    private Long riskLevel;
+    private Integer riskLevel;
 
     /** 原始文本 */
     @Excel(name = "原始文本")
@@ -121,12 +129,12 @@ public class Trajectory extends BaseEntity
     {
         return latitude;
     }
-    public void setRiskLevel(Long riskLevel) 
+    public void setRiskLevel(Integer riskLevel)
     {
         this.riskLevel = riskLevel;
     }
 
-    public Long getRiskLevel() 
+    public Integer getRiskLevel()
     {
         return riskLevel;
     }

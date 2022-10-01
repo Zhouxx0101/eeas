@@ -23,9 +23,9 @@ import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 事件数据Controller
- * 
+ *
  * @author zhouxinxing
- * @date 2022-09-29
+ * @date 2022-09-30
  */
 @RestController
 @RequestMapping("/data/event")
@@ -96,7 +96,7 @@ public class EventController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('data:event:remove')")
     @Log(title = "事件数据", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
+    @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
     {
         return toAjax(eventService.deleteEventByIds(ids));

@@ -1,6 +1,16 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+      <el-form-item label="新闻类型" prop="type">
+        <el-select v-model="queryParams.type" placeholder="请选择新闻类型" clearable>
+          <el-option
+            v-for="dict in dict.type.eeas_news"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item label="新闻标题" prop="title">
         <el-input
           v-model="queryParams.title"
@@ -72,7 +82,11 @@
     <el-table v-loading="loading" :data="newsList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="新闻id" align="center" prop="id" />
-      <el-table-column label="新闻类型" align="center" prop="type" />
+      <el-table-column label="新闻类型" align="center" prop="type">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.eeas_news" :value="scope.row.type"/>
+        </template>
+      </el-table-column>
       <el-table-column label="新闻标题" align="center" prop="title" />
       <el-table-column label="新闻链接" align="center" prop="link" />
       <el-table-column label="新闻全文" align="center" prop="content" />
@@ -107,6 +121,16 @@
     <!-- 添加或修改新闻数据对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="新闻类型" prop="type">
+          <el-select v-model="form.type" placeholder="请选择新闻类型">
+            <el-option
+              v-for="dict in dict.type.eeas_news"
+              :key="dict.value"
+              :label="dict.label"
+:value="parseInt(dict.value)"
+            ></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="新闻标题" prop="title">
           <el-input v-model="form.title" placeholder="请输入新闻标题" />
         </el-form-item>
@@ -130,6 +154,7 @@ import { listNews, getNews, delNews, addNews, updateNews } from "@/api/data/news
 
 export default {
   name: "News",
+  dicts: ['eeas_news'],
   data() {
     return {
       // 遮罩层

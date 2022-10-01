@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.eeas.mapper.PatientMapper">
-    
+
     <resultMap type="com.ruoyi.eeas.domain.Patient" id="PatientResult">
         <result property="id"    column="id"    />
         <result property="sex"    column="sex"    />
@@ -21,7 +21,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectPatientList" parameterType="com.ruoyi.eeas.domain.Patient" resultMap="PatientResult">
         <include refid="selectPatientVo"/>
-        <where>  
+        <where>
             <if test="sex != null "> and sex = #{sex}</if>
             <if test="age != null "> and age = #{age}</if>
             <if test="occupation != null  and occupation != ''"> and occupation = #{occupation}</if>
@@ -31,12 +31,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="source2 != null "> and source2 = #{source2}</if>
         </where>
     </select>
-    
+
     <select id="selectPatientById" parameterType="Long" resultMap="PatientResult">
         <include refid="selectPatientVo"/>
         where id = #{id}
     </select>
-        
+
     <insert id="insertPatient" parameterType="com.ruoyi.eeas.domain.Patient">
         insert into eeas_patient
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -48,7 +48,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="type != null">type,</if>
             <if test="source1 != null">source1,</if>
             <if test="source2 != null">source2,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
             <if test="sex != null">#{sex},</if>
@@ -58,7 +58,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="type != null">#{type},</if>
             <if test="source1 != null">#{source1},</if>
             <if test="source2 != null">#{source2},</if>
-         </trim>
+        </trim>
     </insert>
 
     <update id="updatePatient" parameterType="com.ruoyi.eeas.domain.Patient">
@@ -80,7 +80,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deletePatientByIds" parameterType="String">
-        delete from eeas_patient where id in 
+        delete from eeas_patient where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

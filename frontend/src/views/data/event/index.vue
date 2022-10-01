@@ -18,12 +18,14 @@
         />
       </el-form-item>
       <el-form-item label="事件" prop="event">
-        <el-input
-          v-model="queryParams.event"
-          placeholder="请输入事件"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+        <el-select v-model="queryParams.event" placeholder="请选择事件" clearable>
+          <el-option
+            v-for="dict in dict.type.eeas_event"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="来源" prop="source">
         <el-input
@@ -94,7 +96,11 @@
         </template>
       </el-table-column>
       <el-table-column label="场所" align="center" prop="place" />
-      <el-table-column label="事件" align="center" prop="event" />
+      <el-table-column label="事件" align="center" prop="event">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.eeas_event" :value="scope.row.event"/>
+        </template>
+      </el-table-column>
       <el-table-column label="来源" align="center" prop="source" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -139,7 +145,14 @@
           <el-input v-model="form.place" placeholder="请输入场所" />
         </el-form-item>
         <el-form-item label="事件" prop="event">
-          <el-input v-model="form.event" placeholder="请输入事件" />
+          <el-select v-model="form.event" placeholder="请选择事件">
+            <el-option
+              v-for="dict in dict.type.eeas_event"
+              :key="dict.value"
+              :label="dict.label"
+:value="parseInt(dict.value)"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="来源" prop="source">
           <el-input v-model="form.source" placeholder="请输入来源" />
@@ -158,6 +171,7 @@ import { listEvent, getEvent, delEvent, addEvent, updateEvent } from "@/api/data
 
 export default {
   name: "Event",
+  dicts: ['eeas_event'],
   data() {
     return {
       // 遮罩层

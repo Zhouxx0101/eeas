@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.eeas.mapper.NewsMapper">
-    
+
     <resultMap type="com.ruoyi.eeas.domain.News" id="NewsResult">
         <result property="id"    column="id"    />
         <result property="type"    column="type"    />
@@ -18,19 +18,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectNewsList" parameterType="com.ruoyi.eeas.domain.News" resultMap="NewsResult">
         <include refid="selectNewsVo"/>
-        <where>  
+        <where>
             <if test="type != null "> and type = #{type}</if>
             <if test="title != null  and title != ''"> and title = #{title}</if>
             <if test="link != null  and link != ''"> and link = #{link}</if>
             <if test="content != null  and content != ''"> and content = #{content}</if>
         </where>
     </select>
-    
+
     <select id="selectNewsById" parameterType="Long" resultMap="NewsResult">
         <include refid="selectNewsVo"/>
         where id = #{id}
     </select>
-        
+
     <insert id="insertNews" parameterType="com.ruoyi.eeas.domain.News">
         insert into eeas_news
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -39,14 +39,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="title != null">title,</if>
             <if test="link != null">link,</if>
             <if test="content != null">content,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
             <if test="type != null">#{type},</if>
             <if test="title != null">#{title},</if>
             <if test="link != null">#{link},</if>
             <if test="content != null">#{content},</if>
-         </trim>
+        </trim>
     </insert>
 
     <update id="updateNews" parameterType="com.ruoyi.eeas.domain.News">
@@ -65,7 +65,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteNewsByIds" parameterType="String">
-        delete from eeas_news where id in 
+        delete from eeas_news where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

@@ -1,6 +1,16 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+      <el-form-item label="性别" prop="sex">
+        <el-select v-model="queryParams.sex" placeholder="请选择性别" clearable>
+          <el-option
+            v-for="dict in dict.type.sys_user_sex"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item label="年龄" prop="age">
         <el-input
           v-model="queryParams.age"
@@ -24,6 +34,16 @@
           clearable
           @keyup.enter.native="handleQuery"
         />
+      </el-form-item>
+      <el-form-item label="分型" prop="type">
+        <el-select v-model="queryParams.type" placeholder="请选择分型" clearable>
+          <el-option
+            v-for="dict in dict.type.eeas_patient"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="来源1" prop="source1">
         <el-input
@@ -96,11 +116,19 @@
     <el-table v-loading="loading" :data="patientList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="患者id" align="center" prop="id" />
-      <el-table-column label="性别" align="center" prop="sex" />
+      <el-table-column label="性别" align="center" prop="sex">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.sys_user_sex" :value="scope.row.sex"/>
+        </template>
+      </el-table-column>
       <el-table-column label="年龄" align="center" prop="age" />
       <el-table-column label="职业" align="center" prop="occupation" />
       <el-table-column label="家庭住址" align="center" prop="address" />
-      <el-table-column label="分型" align="center" prop="type" />
+      <el-table-column label="分型" align="center" prop="type">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.eeas_patient" :value="scope.row.type"/>
+        </template>
+      </el-table-column>
       <el-table-column label="来源1" align="center" prop="source1" />
       <el-table-column label="来源2" align="center" prop="source2" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -134,6 +162,16 @@
     <!-- 添加或修改患者数据对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="性别" prop="sex">
+          <el-select v-model="form.sex" placeholder="请选择性别">
+            <el-option
+              v-for="dict in dict.type.sys_user_sex"
+              :key="dict.value"
+              :label="dict.label"
+:value="parseInt(dict.value)"
+            ></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="年龄" prop="age">
           <el-input v-model="form.age" placeholder="请输入年龄" />
         </el-form-item>
@@ -142,6 +180,16 @@
         </el-form-item>
         <el-form-item label="家庭住址" prop="address">
           <el-input v-model="form.address" placeholder="请输入家庭住址" />
+        </el-form-item>
+        <el-form-item label="分型" prop="type">
+          <el-select v-model="form.type" placeholder="请选择分型">
+            <el-option
+              v-for="dict in dict.type.eeas_patient"
+              :key="dict.value"
+              :label="dict.label"
+:value="parseInt(dict.value)"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="来源1" prop="source1">
           <el-input v-model="form.source1" placeholder="请输入来源1" />
@@ -163,6 +211,7 @@ import { listPatient, getPatient, delPatient, addPatient, updatePatient } from "
 
 export default {
   name: "Patient",
+  dicts: ['sys_user_sex', 'eeas_patient'],
   data() {
     return {
       // 遮罩层

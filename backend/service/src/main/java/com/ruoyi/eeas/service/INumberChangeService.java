@@ -1,6 +1,8 @@
 package com.ruoyi.eeas.service;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.eeas.domain.NumberChange;
 
 /**
@@ -9,7 +11,7 @@ import com.ruoyi.eeas.domain.NumberChange;
  * @author zhouxinxing
  * @date 2022-09-29
  */
-public interface INumberChangeService 
+public interface INumberChangeService extends IService<NumberChange>
 {
     /**
      * 查询病例变化数据
@@ -17,7 +19,7 @@ public interface INumberChangeService
      * @param id 病例变化数据主键
      * @return 病例变化数据
      */
-    public NumberChange selectNumberChangeById(Long id);
+    NumberChange selectNumberChangeById(Long id);
 
     /**
      * 查询病例变化数据列表
@@ -25,7 +27,7 @@ public interface INumberChangeService
      * @param numberChange 病例变化数据
      * @return 病例变化数据集合
      */
-    public List<NumberChange> selectNumberChangeList(NumberChange numberChange);
+    List<NumberChange> selectNumberChangeList(NumberChange numberChange);
 
     /**
      * 新增病例变化数据
@@ -33,7 +35,7 @@ public interface INumberChangeService
      * @param numberChange 病例变化数据
      * @return 结果
      */
-    public int insertNumberChange(NumberChange numberChange);
+    int insertNumberChange(NumberChange numberChange);
 
     /**
      * 修改病例变化数据
@@ -41,7 +43,7 @@ public interface INumberChangeService
      * @param numberChange 病例变化数据
      * @return 结果
      */
-    public int updateNumberChange(NumberChange numberChange);
+    int updateNumberChange(NumberChange numberChange);
 
     /**
      * 批量删除病例变化数据
@@ -49,7 +51,7 @@ public interface INumberChangeService
      * @param ids 需要删除的病例变化数据主键集合
      * @return 结果
      */
-    public int deleteNumberChangeByIds(Long[] ids);
+    int deleteNumberChangeByIds(Long[] ids);
 
     /**
      * 删除病例变化数据信息
@@ -57,5 +59,5 @@ public interface INumberChangeService
      * @param id 病例变化数据主键
      * @return 结果
      */
-    public int deleteNumberChangeById(Long id);
+    int deleteNumberChangeById(Long id);
 }

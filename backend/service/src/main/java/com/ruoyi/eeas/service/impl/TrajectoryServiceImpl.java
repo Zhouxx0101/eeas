@@ -1,6 +1,8 @@
 package com.ruoyi.eeas.service.impl;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.eeas.mapper.TrajectoryMapper;
@@ -14,7 +16,7 @@ import com.ruoyi.eeas.service.ITrajectoryService;
  * @date 2022-09-29
  */
 @Service
-public class TrajectoryServiceImpl implements ITrajectoryService 
+public class TrajectoryServiceImpl extends ServiceImpl<TrajectoryMapper, Trajectory> implements ITrajectoryService
 {
     @Autowired
     private TrajectoryMapper trajectoryMapper;
@@ -52,7 +54,7 @@ public class TrajectoryServiceImpl implements ITrajectoryService
     @Override
     public int insertTrajectory(Trajectory trajectory)
     {
-        return trajectoryMapper.insertTrajectory(trajectory);
+        return trajectoryMapper.insert(trajectory);
     }
 
     /**

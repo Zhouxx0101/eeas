@@ -23,9 +23,9 @@ import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 患者数据Controller
- * 
+ *
  * @author zhouxinxing
- * @date 2022-09-29
+ * @date 2022-09-30
  */
 @RestController
 @RequestMapping("/data/patient")
@@ -96,7 +96,7 @@ public class PatientController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('data:patient:remove')")
     @Log(title = "患者数据", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
+    @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
     {
         return toAjax(patientService.deletePatientByIds(ids));
