@@ -37,6 +37,10 @@ import DictTag from '@/components/DictTag'
 import VueMeta from 'vue-meta'
 // 字典数据组件
 import DictData from '@/components/DictData'
+// 百度地图
+import BaiduMap from 'vue-baidu-map'
+// 引入echarts
+import echarts from 'echarts'
 
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
@@ -48,6 +52,7 @@ Vue.prototype.selectDictLabel = selectDictLabel
 Vue.prototype.selectDictLabels = selectDictLabels
 Vue.prototype.download = download
 Vue.prototype.handleTree = handleTree
+Vue.prototype.$echarts = echarts
 
 // 全局组件挂载
 Vue.component('DictTag', DictTag)
@@ -61,6 +66,10 @@ Vue.component('ImagePreview', ImagePreview)
 Vue.use(directive)
 Vue.use(plugins)
 Vue.use(VueMeta)
+Vue.use(BaiduMap, {
+  // ak 是在百度地图开发者平台申请的密钥 详见 http://lbsyun.baidu.com/apiconsole/key */
+  ak: 'Cq2xcXoPUN7KQGd1LXuP7I3rGp77n2pl'
+})
 DictData.install()
 
 /**

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.eeas.mapper.NumberChangeMapper">
+    
+    <resultMap type="com.ruoyi.eeas.domain.NumberChange" id="NumberChangeResult">
+        <result property="id"    column="id"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="increase"    column="increase"    />
+        <result property="diagnosis"    column="diagnosis"    />
+        <result property="closeContact"    column="close_contact"    />
+        <result property="medicalObservation"    column="medical_observation"    />
+        <result property="source"    column="source"    />
+    </resultMap>
+
+    <sql id="selectNumberChangeVo">
+        select id, start_time, end_time, increase, diagnosis, close_contact, medical_observation, source from eeas_number_change
+    </sql>
+
+    <select id="selectNumberChangeList" parameterType="com.ruoyi.eeas.domain.NumberChange" resultMap="NumberChangeResult">
+        <include refid="selectNumberChangeVo"/>
+        <where>  
+            <if test="startTime != null "> and start_time = #{startTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="increase != null "> and increase = #{increase}</if>
+            <if test="diagnosis != null "> and diagnosis = #{diagnosis}</if>
+            <if test="closeContact != null "> and close_contact = #{closeContact}</if>
+            <if test="medicalObservation != null "> and medical_observation = #{medicalObservation}</if>
+            <if test="source != null "> and source = #{source}</if>
+        </where>
+    </select>
+    
+    <select id="selectNumberChangeById" parameterType="Long" resultMap="NumberChangeResult">
+        <include refid="selectNumberChangeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertNumberChange" parameterType="com.ruoyi.eeas.domain.NumberChange">
+        insert into eeas_number_change
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="increase != null">increase,</if>
+            <if test="diagnosis != null">diagnosis,</if>
+            <if test="closeContact != null">close_contact,</if>
+            <if test="medicalObservation != null">medical_observation,</if>
+            <if test="source != null">source,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="increase != null">#{increase},</if>
+            <if test="diagnosis != null">#{diagnosis},</if>
+            <if test="closeContact != null">#{closeContact},</if>
+            <if test="medicalObservation != null">#{medicalObservation},</if>
+            <if test="source != null">#{source},</if>
+         </trim>
+    </insert>
+
+    <update id="updateNumberChange" parameterType="com.ruoyi.eeas.domain.NumberChange">
+        update eeas_number_change
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="increase != null">increase = #{increase},</if>
+            <if test="diagnosis != null">diagnosis = #{diagnosis},</if>
+            <if test="closeContact != null">close_contact = #{closeContact},</if>
+            <if test="medicalObservation != null">medical_observation = #{medicalObservation},</if>
+            <if test="source != null">source = #{source},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteNumberChangeById" parameterType="Long">
+        delete from eeas_number_change where id = #{id}
+    </delete>
+
+    <delete id="deleteNumberChangeByIds" parameterType="String">
+        delete from eeas_number_change where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
