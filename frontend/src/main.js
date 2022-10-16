@@ -41,6 +41,7 @@ import DictData from '@/components/DictData'
 import BaiduMap from 'vue-baidu-map'
 // 引入echarts
 import echarts from 'echarts'
+import { VueJsonp } from 'vue-jsonp'
 
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
@@ -70,6 +71,8 @@ Vue.use(BaiduMap, {
   // ak 是在百度地图开发者平台申请的密钥 详见 http://lbsyun.baidu.com/apiconsole/key */
   ak: 'Cq2xcXoPUN7KQGd1LXuP7I3rGp77n2pl'
 })
+Vue.use(VueJsonp)
+
 DictData.install()
 
 /**
