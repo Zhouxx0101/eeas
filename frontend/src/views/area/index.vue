@@ -21,7 +21,9 @@ export default {
       center: { lng: 116.404, lat: 39.915 },
       zoom: 13,
       location: "北京",
-      keyword: "天安门",
+      // keyword: "天安门",
+      // keyword2: "故宫",
+      keywords: ["故宫", "天安门"],
       BMap:"",
       map:""
     };
@@ -44,7 +46,8 @@ export default {
         fillColor: "#f03",
       });
       map.addOverlay(circle);
-      this.showArea(this.location, this.keyword,map);
+      this.showArea(this.location, this.keywords,map);
+      // this.showArea(this.location, this.keyword2,map);
     },
     getClickInfo(e) {
       //   console.log(e.point.lng);
@@ -60,10 +63,18 @@ export default {
       var url =
         "http://api.map.baidu.com/place/v2/search?output=json&scope=2" +
         "&q=" +
-        house +
+        house[0] +
         "&region=" +
         city +
         "&ak=Cq2xcXoPUN7KQGd1LXuP7I3rGp77n2pl";
+      var url2 =
+        "http://api.map.baidu.com/place/v2/search?output=json&scope=2" +
+        "&q=" +
+        house[1] +
+        "&region=" +
+        city +
+        "&ak=Cq2xcXoPUN7KQGd1LXuP7I3rGp77n2pl";
+
 
       this.$jsonp(url, {
         callbackQuery: "callback",
@@ -91,7 +102,53 @@ export default {
                 marker.setAnimation(BMAP_ANIMATION_BOUNCE);
                 map.addOverlay(marker);
               } else {
-                map.clearOverlays();
+                // map.clearOverlays();
+                var geoObj = that.parseGeo(geo);
+                //var bounds = coordinateToPoints(geoObj.bound);
+                //边界点
+                var points = that.coordinateToPoints(map, geoObj.points);
+                var ply = new BMap.Polygon(points, {
+                  strokeWeight: 2,
+                  strokeColor: "#F01B2D",
+                  strokeOpacity: 0.9,
+                  fillColor: "#FFEBCC",
+                }); //建立多边形覆盖物
+                map.addOverlay(ply); //添加覆盖物
+                map.setViewport(ply.getPath()); //调整视野
+              }
+            });
+            
+          }
+        }
+      });
+
+      this.$jsonp(url2, {
+        callbackQuery: "callback",
+        callbackName: "queryHouseCallback2",
+      }).then((data) => {
+        // console.log(data)
+        if (data.message == "ok") {
+          var houses = data.results;
+          if (houses && houses.length > 0) {
+            var house = houses[0];
+            var urlMap =
+              "http://map.baidu.com/?reqflag=pcmap&coord_type=3&from=webmap&qt=ext&ext_ver=new&l=18&uid=" +
+              house.uid;
+            this.$jsonp(urlMap, {
+              callbackQuery: "callback",
+              callbackName: "queryHouseOutlineCallback2",
+            }).then((houseOutline) => {
+                //console.log(houseOutline);
+                var geo = houseOutline.content.geo;
+              if (!geo) {
+                var location = house.location;
+                var point = new BMap.Point(location.lng, location.lat);
+                map.centerAndZoom(point, 19);
+                var marker = new BMap.Marker(point);
+                marker.setAnimation(BMAP_ANIMATION_BOUNCE);
+                map.addOverlay(marker);
+              } else {
+                // map.clearOverlays();
                 var geoObj = that.parseGeo(geo);
                 //var bounds = coordinateToPoints(geoObj.bound);
                 //边界点
