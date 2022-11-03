@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.eeas.mapper.EvolutionMapper">
+    
+    <resultMap type="Evolution" id="EvolutionResult">
+        <result property="id"    column="id"    />
+        <result property="predictTime"    column="predict_time"    />
+        <result property="increase"    column="increase"    />
+        <result property="diagnosis"    column="diagnosis"    />
+        <result property="cure"    column="cure"    />
+        <result property="dead"    column="dead"    />
+        <result property="closeContact"    column="close_contact"    />
+        <result property="medicalObservation"    column="medical_observation"    />
+    </resultMap>
+
+    <sql id="selectEvolutionVo">
+        select id, predict_time, increase, diagnosis, cure, dead, close_contact, medical_observation from eeas_evolution
+    </sql>
+
+    <select id="selectEvolutionList" parameterType="Evolution" resultMap="EvolutionResult">
+        <include refid="selectEvolutionVo"/>
+        <where>  
+            <if test="predictTime != null "> and predict_time = #{predictTime}</if>
+            <if test="increase != null "> and increase = #{increase}</if>
+            <if test="diagnosis != null "> and diagnosis = #{diagnosis}</if>
+            <if test="cure != null "> and cure = #{cure}</if>
+            <if test="dead != null "> and dead = #{dead}</if>
+            <if test="closeContact != null "> and close_contact = #{closeContact}</if>
+            <if test="medicalObservation != null "> and medical_observation = #{medicalObservation}</if>
+        </where>
+    </select>
+    
+    <select id="selectEvolutionById" parameterType="Long" resultMap="EvolutionResult">
+        <include refid="selectEvolutionVo"/>
+        where id = #{id}
+    </select>
+        
+
+</mapper>
