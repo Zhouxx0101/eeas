@@ -1,13 +1,13 @@
 package com.ruoyi.eeas.service.impl;
 
-import java.util.List;
-
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ruoyi.eeas.domain.Event;
+import com.ruoyi.eeas.mapper.EventMapper;
+import com.ruoyi.eeas.service.IEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.eeas.mapper.EventMapper;
-import com.ruoyi.eeas.domain.Event;
-import com.ruoyi.eeas.service.IEventService;
+
+import java.util.List;
 
 /**
  * 事件数据Service业务层处理
@@ -16,8 +16,7 @@ import com.ruoyi.eeas.service.IEventService;
  * @date 2022-09-30
  */
 @Service
-public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements IEventService
-{
+public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements IEventService {
     @Autowired
     private EventMapper eventMapper;
 
@@ -28,8 +27,7 @@ public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements
      * @return 事件数据
      */
     @Override
-    public Event selectEventById(Long id)
-    {
+    public Event selectEventById(Long id) {
         return eventMapper.selectEventById(id);
     }
 
@@ -40,9 +38,17 @@ public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements
      * @return 事件数据
      */
     @Override
-    public List<Event> selectEventList(Event event)
-    {
+    public List<Event> selectEventList(Event event) {
         return eventMapper.selectEventList(event);
+    }
+
+    /**
+     * 查询风险区域列表
+     *
+     * @return 风险区域集合
+     */
+    public List<String> selectAreaList() {
+        return eventMapper.selectAreaList();
     }
 
     /**
@@ -52,8 +58,7 @@ public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements
      * @return 结果
      */
     @Override
-    public int insertEvent(Event event)
-    {
+    public int insertEvent(Event event) {
         return eventMapper.insert(event);
     }
 
@@ -64,8 +69,7 @@ public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements
      * @return 结果
      */
     @Override
-    public int updateEvent(Event event)
-    {
+    public int updateEvent(Event event) {
         return eventMapper.updateEvent(event);
     }
 
@@ -76,8 +80,7 @@ public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements
      * @return 结果
      */
     @Override
-    public int deleteEventByIds(Long[] ids)
-    {
+    public int deleteEventByIds(Long[] ids) {
         return eventMapper.deleteEventByIds(ids);
     }
 
@@ -88,8 +91,7 @@ public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements
      * @return 结果
      */
     @Override
-    public int deleteEventById(Long id)
-    {
+    public int deleteEventById(Long id) {
         return eventMapper.deleteEventById(id);
     }
 }
