@@ -30,6 +30,13 @@ public interface IEventService extends IService<Event>
     List<Event> selectEventList(Event event);
 
     /**
+     * 查询风险区域列表
+     *
+     * @return 风险区域集合
+     */
+    List<String> selectAreaList();
+
+    /**
      * 新增事件数据
      *
      * @param event 事件数据
