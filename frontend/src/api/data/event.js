@@ -1,5 +1,13 @@
 import request from '@/utils/request'
 
+// 查询风险区域列表
+export function listArea() {
+  return request({
+    url: '/data/event/area',
+    method: 'get'
+  })
+}
+
 // 查询事件数据列表
 export function listEvent(query) {
   return request({
