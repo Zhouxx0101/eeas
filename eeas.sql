@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : MMMa
+ Source Server         : 本地
  Source Server Type    : MySQL
- Source Server Version : 80028
+ Source Server Version : 80025
  Source Host           : localhost:3306
  Source Schema         : eeas
 
  Target Server Type    : MySQL
- Target Server Version : 80028
+ Target Server Version : 80025
  File Encoding         : 65001
 
- Date: 03/11/2022 19:44:13
+ Date: 03/10/2022 16:37:55
 */
 
 SET NAMES utf8mb4;
@@ -39,36 +39,6 @@ INSERT INTO `eeas_event` VALUES (1576128700527951874, '2022-10-01 00:00:00', '1'
 INSERT INTO `eeas_event` VALUES (1576128942023393282, '2022-10-01 00:00:00', '2', 2, 1576117076773695489);
 INSERT INTO `eeas_event` VALUES (1576129835603083266, '2022-10-01 00:00:00', '3', 3, 1576117076773695489);
 INSERT INTO `eeas_event` VALUES (1576132565591670785, '2022-09-30 00:00:00', '4-1', 11, 1576119416645873666);
-
--- ----------------------------
--- Table structure for eeas_evolution
--- ----------------------------
-DROP TABLE IF EXISTS `eeas_evolution`;
-CREATE TABLE `eeas_evolution`  (
-  `id` bigint(0) NOT NULL COMMENT 'id',
-  `predict_time` date NULL DEFAULT NULL COMMENT '预测时间',
-  `increase` int(0) NULL DEFAULT NULL COMMENT '新增数',
-  `diagnosis` int(0) NULL DEFAULT NULL COMMENT '确诊数',
-  `cure` int(0) NULL DEFAULT NULL COMMENT '治愈数',
-  `dead` int(0) NULL DEFAULT NULL COMMENT '死亡数',
-  `close_contact` int(0) NULL DEFAULT NULL COMMENT '密切接触者人数',
-  `medical_observation` int(0) NULL DEFAULT NULL COMMENT '医学观察人数',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '疫情演化数据' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of eeas_evolution
--- ----------------------------
-INSERT INTO `eeas_evolution` VALUES (0, '2022-11-09', 245, 156, 805, 971, 666, 203);
-INSERT INTO `eeas_evolution` VALUES (1, '2022-11-10', 222, 283, 662, 955, 106, 175);
-INSERT INTO `eeas_evolution` VALUES (2, '2022-11-11', 206, 282, 797, 549, 374, 355);
-INSERT INTO `eeas_evolution` VALUES (3, '2022-11-12', 161, 114, 599, 904, 142, 373);
-INSERT INTO `eeas_evolution` VALUES (4, '2022-11-13', 552, 807, 583, 131, 663, 266);
-INSERT INTO `eeas_evolution` VALUES (5, '2022-11-14', 130, 680, 665, 503, 212, 932);
-INSERT INTO `eeas_evolution` VALUES (6, '2022-11-15', 754, 521, 316, 869, 683, 849);
-INSERT INTO `eeas_evolution` VALUES (7, '2022-11-16', 559, 450, 984, 523, 131, 558);
-INSERT INTO `eeas_evolution` VALUES (8, '2022-11-17', 572, 256, 75, 454, 350, 653);
-INSERT INTO `eeas_evolution` VALUES (9, '2022-11-18', 622, 657, 751, 123, 744, 954);
 
 -- ----------------------------
 -- Table structure for eeas_news
@@ -200,10 +170,9 @@ CREATE TABLE `gen_table`  (
 -- ----------------------------
 INSERT INTO `gen_table` VALUES (1, 'eeas_event', '事件数据', NULL, NULL, 'Event', 'crud', 'com.ruoyi.eeas', 'data', 'event', '事件数据', 'zhouxinxing', '0', '/', '{\"parentMenuId\":\"2003\"}', 'admin', '2022-09-29 15:12:32', '', '2022-10-01 16:49:29', NULL);
 INSERT INTO `gen_table` VALUES (2, 'eeas_news', '新闻数据', NULL, NULL, 'News', 'crud', 'com.ruoyi.eeas', 'data', 'news', '新闻数据', 'zhouxinxing', '0', '/', '{\"parentMenuId\":\"2003\"}', 'admin', '2022-09-29 15:12:32', '', '2022-09-30 17:52:24', NULL);
-INSERT INTO `gen_table` VALUES (3, 'eeas_number_change', '病例变化数据', NULL, NULL, 'NumberChange', 'crud', 'com.ruoyi.eeas', 'change', 'data', '病例变化数据', 'zhouxinxing', '0', '/', '{\"parentMenuId\":\"2003\"}', 'admin', '2022-09-29 15:12:32', '', '2022-11-03 14:14:57', NULL);
+INSERT INTO `gen_table` VALUES (3, 'eeas_number_change', '病例变化数据', NULL, NULL, 'NumberChange', 'crud', 'com.ruoyi.eeas', 'data', 'change', '病例变化数据', 'zhouxinxing', '0', '/', '{\"parentMenuId\":2003}', 'admin', '2022-09-29 15:12:32', '', '2022-09-29 17:22:29', NULL);
 INSERT INTO `gen_table` VALUES (4, 'eeas_patient', '患者数据', NULL, NULL, 'Patient', 'crud', 'com.ruoyi.eeas', 'data', 'patient', '患者数据', 'zhouxinxing', '0', '/', '{\"parentMenuId\":\"2003\"}', 'admin', '2022-09-29 15:12:32', '', '2022-09-30 17:52:47', NULL);
 INSERT INTO `gen_table` VALUES (5, 'eeas_trajectory', '轨迹数据', NULL, NULL, 'Trajectory', 'crud', 'com.ruoyi.eeas', 'data', 'trajectory', '轨迹数据', 'zhouxinxing', '0', '/', '{\"parentMenuId\":2003}', 'admin', '2022-09-29 15:12:32', '', '2022-09-29 17:19:41', NULL);
-INSERT INTO `gen_table` VALUES (7, 'eeas_evolution', '疫情演化数据', NULL, NULL, 'Evolution', 'crud', 'com.ruoyi.system', 'evolution', 'datapredict', '疫情演化数据', 'ruoyi', '0', '/', '{\"parentMenuId\":\"2034\"}', 'admin', '2022-11-03 14:15:05', '', '2022-11-03 14:22:42', NULL);
 
 -- ----------------------------
 -- Table structure for gen_table_column
@@ -233,7 +202,7 @@ CREATE TABLE `gen_table_column`  (
   `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`column_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 46 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '代码生成业务表字段' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 37 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '代码生成业务表字段' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of gen_table_column
@@ -248,14 +217,14 @@ INSERT INTO `gen_table_column` VALUES (7, '2', 'type', '新闻类型：1、区�
 INSERT INTO `gen_table_column` VALUES (8, '2', 'title', '新闻标题', 'varchar(255)', 'String', 'title', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 3, 'admin', '2022-09-29 15:12:32', '', '2022-09-30 17:52:25');
 INSERT INTO `gen_table_column` VALUES (9, '2', 'link', '新闻链接', 'varchar(255)', 'String', 'link', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 4, 'admin', '2022-09-29 15:12:32', '', '2022-09-30 17:52:25');
 INSERT INTO `gen_table_column` VALUES (10, '2', 'content', '新闻全文', 'text', 'String', 'content', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'editor', '', 5, 'admin', '2022-09-29 15:12:32', '', '2022-09-30 17:52:25');
-INSERT INTO `gen_table_column` VALUES (11, '3', 'id', 'id', 'bigint', 'Long', 'id', '1', '0', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2022-09-29 15:12:32', '', '2022-11-03 14:14:57');
-INSERT INTO `gen_table_column` VALUES (12, '3', 'start_time', '起始时间', 'datetime', 'Date', 'startTime', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'datetime', '', 2, 'admin', '2022-09-29 15:12:32', '', '2022-11-03 14:14:57');
-INSERT INTO `gen_table_column` VALUES (13, '3', 'end_time', '结束时间', 'datetime', 'Date', 'endTime', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'datetime', '', 3, 'admin', '2022-09-29 15:12:32', '', '2022-11-03 14:14:57');
-INSERT INTO `gen_table_column` VALUES (14, '3', 'increase', '新增数', 'int', 'Long', 'increase', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 4, 'admin', '2022-09-29 15:12:32', '', '2022-11-03 14:14:57');
-INSERT INTO `gen_table_column` VALUES (15, '3', 'diagnosis', '确诊数', 'int', 'Long', 'diagnosis', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 5, 'admin', '2022-09-29 15:12:32', '', '2022-11-03 14:14:57');
-INSERT INTO `gen_table_column` VALUES (16, '3', 'close_contact', '密切接触者人数', 'int', 'Long', 'closeContact', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 6, 'admin', '2022-09-29 15:12:32', '', '2022-11-03 14:14:57');
-INSERT INTO `gen_table_column` VALUES (17, '3', 'medical_observation', '正在接受医学观察人数', 'int', 'Long', 'medicalObservation', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 7, 'admin', '2022-09-29 15:12:32', '', '2022-11-03 14:14:57');
-INSERT INTO `gen_table_column` VALUES (18, '3', 'source', '来源', 'bigint', 'Long', 'source', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 8, 'admin', '2022-09-29 15:12:32', '', '2022-11-03 14:14:57');
+INSERT INTO `gen_table_column` VALUES (11, '3', 'id', 'id', 'bigint', 'Long', 'id', '1', '0', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2022-09-29 15:12:32', '', '2022-09-29 17:22:29');
+INSERT INTO `gen_table_column` VALUES (12, '3', 'start_time', '起始时间', 'datetime', 'Date', 'startTime', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'datetime', '', 2, 'admin', '2022-09-29 15:12:32', '', '2022-09-29 17:22:29');
+INSERT INTO `gen_table_column` VALUES (13, '3', 'end_time', '结束时间', 'datetime', 'Date', 'endTime', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'datetime', '', 3, 'admin', '2022-09-29 15:12:32', '', '2022-09-29 17:22:29');
+INSERT INTO `gen_table_column` VALUES (14, '3', 'increase', '新增数', 'int', 'Long', 'increase', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 4, 'admin', '2022-09-29 15:12:32', '', '2022-09-29 17:22:29');
+INSERT INTO `gen_table_column` VALUES (15, '3', 'diagnosis', '确诊数', 'int', 'Long', 'diagnosis', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 5, 'admin', '2022-09-29 15:12:32', '', '2022-09-29 17:22:29');
+INSERT INTO `gen_table_column` VALUES (16, '3', 'close_contact', '密切接触者人数', 'int', 'Long', 'closeContact', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 6, 'admin', '2022-09-29 15:12:32', '', '2022-09-29 17:22:29');
+INSERT INTO `gen_table_column` VALUES (17, '3', 'medical_observation', '正在接受医学观察人数', 'int', 'Long', 'medicalObservation', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 7, 'admin', '2022-09-29 15:12:32', '', '2022-09-29 17:22:29');
+INSERT INTO `gen_table_column` VALUES (18, '3', 'source', '来源', 'bigint', 'Long', 'source', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 8, 'admin', '2022-09-29 15:12:32', '', '2022-09-29 17:22:29');
 INSERT INTO `gen_table_column` VALUES (19, '4', 'id', '患者id', 'bigint', 'Long', 'id', '1', '0', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2022-09-29 15:12:32', '', '2022-09-30 17:52:47');
 INSERT INTO `gen_table_column` VALUES (20, '4', 'sex', '性别，1、男 2、女 3、其他', 'tinyint', 'Long', 'sex', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'select', 'sys_user_sex', 2, 'admin', '2022-09-29 15:12:32', '', '2022-09-30 17:52:47');
 INSERT INTO `gen_table_column` VALUES (21, '4', 'age', '年龄', 'int', 'Long', 'age', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 3, 'admin', '2022-09-29 15:12:32', '', '2022-09-30 17:52:47');
@@ -274,14 +243,6 @@ INSERT INTO `gen_table_column` VALUES (33, '5', 'latitude', '纬度', 'varchar(2
 INSERT INTO `gen_table_column` VALUES (34, '5', 'risk_level', '风险等级', 'tinyint', 'Long', 'riskLevel', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 8, 'admin', '2022-09-29 15:12:32', '', '2022-09-29 17:19:41');
 INSERT INTO `gen_table_column` VALUES (35, '5', 'raw_text', '原始文本', 'text', 'String', 'rawText', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'textarea', '', 9, 'admin', '2022-09-29 15:12:32', '', '2022-09-29 17:19:41');
 INSERT INTO `gen_table_column` VALUES (36, '5', 'source', '来源', 'bigint', 'Long', 'source', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 10, 'admin', '2022-09-29 15:12:32', '', '2022-09-29 17:19:41');
-INSERT INTO `gen_table_column` VALUES (47, '7', 'id', 'id', 'bigint', 'Long', 'id', '1', '0', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2022-11-03 14:15:05', '', '2022-11-03 14:22:42');
-INSERT INTO `gen_table_column` VALUES (48, '7', 'predict_time', '预测时间', 'date', 'Date', 'predictTime', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'datetime', '', 2, 'admin', '2022-11-03 14:15:05', '', '2022-11-03 14:22:42');
-INSERT INTO `gen_table_column` VALUES (49, '7', 'increase', '新增数', 'int', 'Long', 'increase', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 3, 'admin', '2022-11-03 14:15:05', '', '2022-11-03 14:22:42');
-INSERT INTO `gen_table_column` VALUES (50, '7', 'diagnosis', '确诊数', 'int', 'Long', 'diagnosis', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 4, 'admin', '2022-11-03 14:15:05', '', '2022-11-03 14:22:42');
-INSERT INTO `gen_table_column` VALUES (51, '7', 'cure', '治愈数', 'int', 'Long', 'cure', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 5, 'admin', '2022-11-03 14:15:05', '', '2022-11-03 14:22:42');
-INSERT INTO `gen_table_column` VALUES (52, '7', 'dead', '死亡数', 'int', 'Long', 'dead', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 6, 'admin', '2022-11-03 14:15:05', '', '2022-11-03 14:22:42');
-INSERT INTO `gen_table_column` VALUES (53, '7', 'close_contact', '密切接触者人数', 'int', 'Long', 'closeContact', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 7, 'admin', '2022-11-03 14:15:05', '', '2022-11-03 14:22:42');
-INSERT INTO `gen_table_column` VALUES (54, '7', 'medical_observation', '医学观察人数', 'int', 'Long', 'medicalObservation', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 8, 'admin', '2022-11-03 14:15:05', '', '2022-11-03 14:22:42');
 
 -- ----------------------------
 -- Table structure for qrtz_blob_triggers
@@ -297,10 +258,6 @@ CREATE TABLE `qrtz_blob_triggers`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'Blob类型的触发器表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of qrtz_blob_triggers
--- ----------------------------
-
--- ----------------------------
 -- Table structure for qrtz_calendars
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_calendars`;
@@ -310,10 +267,6 @@ CREATE TABLE `qrtz_calendars`  (
   `calendar` blob NOT NULL COMMENT '存放持久化calendar对象',
   PRIMARY KEY (`sched_name`, `calendar_name`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '日历信息表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of qrtz_calendars
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for qrtz_cron_triggers
@@ -328,10 +281,6 @@ CREATE TABLE `qrtz_cron_triggers`  (
   PRIMARY KEY (`sched_name`, `trigger_name`, `trigger_group`) USING BTREE,
   CONSTRAINT `qrtz_cron_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `qrtz_triggers` (`sched_name`, `trigger_name`, `trigger_group`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'Cron类型的触发器表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of qrtz_cron_triggers
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for qrtz_fired_triggers
@@ -355,10 +304,6 @@ CREATE TABLE `qrtz_fired_triggers`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '已触发的触发器表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of qrtz_fired_triggers
--- ----------------------------
-
--- ----------------------------
 -- Table structure for qrtz_job_details
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_job_details`;
@@ -377,10 +322,6 @@ CREATE TABLE `qrtz_job_details`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '任务详细信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of qrtz_job_details
--- ----------------------------
-
--- ----------------------------
 -- Table structure for qrtz_locks
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_locks`;
@@ -389,10 +330,6 @@ CREATE TABLE `qrtz_locks`  (
   `lock_name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '悲观锁名称',
   PRIMARY KEY (`sched_name`, `lock_name`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '存储的悲观锁信息表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of qrtz_locks
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for qrtz_paused_trigger_grps
@@ -405,10 +342,6 @@ CREATE TABLE `qrtz_paused_trigger_grps`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '暂停的触发器表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of qrtz_paused_trigger_grps
--- ----------------------------
-
--- ----------------------------
 -- Table structure for qrtz_scheduler_state
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_scheduler_state`;
@@ -419,10 +352,6 @@ CREATE TABLE `qrtz_scheduler_state`  (
   `checkin_interval` bigint(0) NOT NULL COMMENT '检查间隔时间',
   PRIMARY KEY (`sched_name`, `instance_name`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '调度器状态表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of qrtz_scheduler_state
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for qrtz_simple_triggers
@@ -438,10 +367,6 @@ CREATE TABLE `qrtz_simple_triggers`  (
   PRIMARY KEY (`sched_name`, `trigger_name`, `trigger_group`) USING BTREE,
   CONSTRAINT `qrtz_simple_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `qrtz_triggers` (`sched_name`, `trigger_name`, `trigger_group`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '简单触发器的信息表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of qrtz_simple_triggers
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for qrtz_simprop_triggers
@@ -465,10 +390,6 @@ CREATE TABLE `qrtz_simprop_triggers`  (
   PRIMARY KEY (`sched_name`, `trigger_name`, `trigger_group`) USING BTREE,
   CONSTRAINT `qrtz_simprop_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `qrtz_triggers` (`sched_name`, `trigger_name`, `trigger_group`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '同步机制的行锁表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of qrtz_simprop_triggers
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for qrtz_triggers
@@ -497,10 +418,6 @@ CREATE TABLE `qrtz_triggers`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '触发器详细信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of qrtz_triggers
--- ----------------------------
-
--- ----------------------------
 -- Table structure for sys_config
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_config`;
@@ -516,7 +433,7 @@ CREATE TABLE `sys_config`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`config_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '参数配置表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '参数配置表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_config
@@ -547,7 +464,7 @@ CREATE TABLE `sys_dept`  (
   `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`dept_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 109 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '部门表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 200 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '部门表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_dept
@@ -583,7 +500,7 @@ CREATE TABLE `sys_dict_data`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`dict_code`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 130 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '字典数据表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 131 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '字典数据表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_dict_data
@@ -665,7 +582,7 @@ CREATE TABLE `sys_dict_type`  (
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`dict_id`) USING BTREE,
   UNIQUE INDEX `dict_type`(`dict_type`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 102 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '字典类型表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 103 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '字典类型表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_dict_type
@@ -703,7 +620,7 @@ CREATE TABLE `sys_job`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '备注信息',
   PRIMARY KEY (`job_id`, `job_name`, `job_group`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '定时任务调度表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '定时任务调度表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_job
@@ -729,10 +646,6 @@ CREATE TABLE `sys_job_log`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '定时任务调度日志表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of sys_job_log
--- ----------------------------
-
--- ----------------------------
 -- Table structure for sys_logininfor
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_logininfor`;
@@ -747,7 +660,7 @@ CREATE TABLE `sys_logininfor`  (
   `msg` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '提示消息',
   `login_time` datetime(0) NULL DEFAULT NULL COMMENT '访问时间',
   PRIMARY KEY (`info_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 141 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 131 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_logininfor
@@ -783,24 +696,6 @@ INSERT INTO `sys_logininfor` VALUES (127, 'admin', '127.0.0.1', '内网IP', 'Chr
 INSERT INTO `sys_logininfor` VALUES (128, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-10-02 09:25:51');
 INSERT INTO `sys_logininfor` VALUES (129, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-10-02 10:34:37');
 INSERT INTO `sys_logininfor` VALUES (130, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-10-02 11:10:34');
-INSERT INTO `sys_logininfor` VALUES (131, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-10-16 11:35:09');
-INSERT INTO `sys_logininfor` VALUES (132, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-10-16 11:35:09');
-INSERT INTO `sys_logininfor` VALUES (133, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-10-16 11:35:12');
-INSERT INTO `sys_logininfor` VALUES (134, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-10-16 17:44:46');
-INSERT INTO `sys_logininfor` VALUES (135, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-10-18 20:24:16');
-INSERT INTO `sys_logininfor` VALUES (136, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-10-26 23:02:22');
-INSERT INTO `sys_logininfor` VALUES (137, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-10-27 15:23:11');
-INSERT INTO `sys_logininfor` VALUES (138, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-10-27 16:03:34');
-INSERT INTO `sys_logininfor` VALUES (139, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-10-29 15:14:15');
-INSERT INTO `sys_logininfor` VALUES (140, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-10-29 15:42:48');
-INSERT INTO `sys_logininfor` VALUES (141, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-10-29 18:49:23');
-INSERT INTO `sys_logininfor` VALUES (142, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-11-03 14:13:17');
-INSERT INTO `sys_logininfor` VALUES (143, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-11-03 16:03:10');
-INSERT INTO `sys_logininfor` VALUES (144, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-11-03 19:00:56');
-INSERT INTO `sys_logininfor` VALUES (145, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-11-03 19:38:47');
-INSERT INTO `sys_logininfor` VALUES (146, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-11-03 19:40:22');
-INSERT INTO `sys_logininfor` VALUES (147, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-11-03 19:40:25');
-INSERT INTO `sys_logininfor` VALUES (148, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-11-03 19:41:29');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -827,7 +722,7 @@ CREATE TABLE `sys_menu`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2039 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单权限表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2034 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单权限表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -918,6 +813,7 @@ INSERT INTO `sys_menu` VALUES (1059, '预览代码', 116, 5, '#', '', '', 1, 0, 
 INSERT INTO `sys_menu` VALUES (1060, '生成代码', 116, 6, '#', '', '', 1, 0, 'F', '0', '0', 'tool:gen:code', '#', 'admin', '2022-09-17 12:49:13', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (2000, '分布地图', 0, 4, 'map', 'map/index', NULL, 1, 0, 'C', '0', '0', '', 'international', 'admin', '2022-09-26 11:08:52', 'admin', '2022-09-26 11:09:45', '');
 INSERT INTO `sys_menu` VALUES (2001, '风险区域', 0, 5, 'area', 'area/index', NULL, 1, 0, 'C', '0', '0', '', 'online', 'admin', '2022-09-26 21:08:24', 'admin', '2022-09-26 21:08:32', '');
+INSERT INTO `sys_menu` VALUES (2002, '病例演化', 0, 6, 'evolution', 'evolution/index', NULL, 1, 0, 'C', '0', '0', NULL, 'chart', 'admin', '2022-09-26 21:11:15', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (2003, '数据采集', 0, 7, 'data', NULL, NULL, 1, 0, 'M', '0', '0', NULL, 'clipboard', 'admin', '2022-09-29 14:59:51', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (2004, '新闻数据', 2003, 1, 'news', 'data/news/index', NULL, 1, 0, 'C', '0', '0', 'data:news:list', '#', 'admin', '2022-09-29 15:44:50', '', NULL, '新闻数据菜单');
 INSERT INTO `sys_menu` VALUES (2005, '新闻数据查询', 2004, 1, '#', '', NULL, 1, 0, 'F', '0', '0', 'data:news:query', '#', 'admin', '2022-09-29 15:44:51', '', NULL, '');
@@ -949,9 +845,6 @@ INSERT INTO `sys_menu` VALUES (2030, '轨迹数据新增', 2028, 2, '#', '', NUL
 INSERT INTO `sys_menu` VALUES (2031, '轨迹数据修改', 2028, 3, '#', '', NULL, 1, 0, 'F', '0', '0', 'data:trajectory:edit', '#', 'admin', '2022-09-29 15:49:02', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (2032, '轨迹数据删除', 2028, 4, '#', '', NULL, 1, 0, 'F', '0', '0', 'data:trajectory:remove', '#', 'admin', '2022-09-29 15:49:02', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (2033, '轨迹数据导出', 2028, 5, '#', '', NULL, 1, 0, 'F', '0', '0', 'data:trajectory:export', '#', 'admin', '2022-09-29 15:49:02', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (2034, '病例演化', 0, 6, 'dataprediction', 'evolution/datapredict/index', NULL, 1, 0, 'C', '0', '0', '', 'online', 'admin', '2022-10-29 16:11:22', 'admin', '2022-11-03 19:01:25', '病例演化菜单');
-INSERT INTO `sys_menu` VALUES (2046, '疫情演化数据', 2034, 1, 'datapredict', 'evolution/datapredict/index', NULL, 1, 0, 'C', '0', '0', 'evolution:datapredict:list', '#', 'admin', '2022-11-03 14:28:15', '', NULL, '疫情演化数据菜单');
-INSERT INTO `sys_menu` VALUES (2047, '疫情演化数据查询', 2046, 1, '#', '', NULL, 1, 0, 'F', '0', '0', 'evolution:datapredict:query', '#', 'admin', '2022-11-03 14:28:15', '', NULL, '');
 
 -- ----------------------------
 -- Table structure for sys_notice
@@ -969,7 +862,7 @@ CREATE TABLE `sys_notice`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`notice_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '通知公告表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '通知公告表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_notice
@@ -999,7 +892,7 @@ CREATE TABLE `sys_oper_log`  (
   `error_msg` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '错误消息',
   `oper_time` datetime(0) NULL DEFAULT NULL COMMENT '操作时间',
   PRIMARY KEY (`oper_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 216 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '操作日志记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 205 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '操作日志记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -1109,46 +1002,6 @@ INSERT INTO `sys_oper_log` VALUES (201, '代码生成', 2, 'com.ruoyi.generator.
 INSERT INTO `sys_oper_log` VALUES (202, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', NULL, '/tool/gen', '127.0.0.1', '内网IP', '{\"businessName\":\"event\",\"className\":\"Event\",\"columns\":[{\"capJavaField\":\"Id\",\"columnComment\":\"事件id\",\"columnId\":1,\"columnName\":\"id\",\"columnType\":\"bigint\",\"createBy\":\"admin\",\"createTime\":\"2022-09-29 15:12:32\",\"dictType\":\"\",\"edit\":false,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isPk\":\"1\",\"javaField\":\"id\",\"javaType\":\"Long\",\"list\":false,\"params\":{},\"pk\":true,\"query\":false,\"queryType\":\"EQ\",\"required\":false,\"sort\":1,\"superColumn\":false,\"tableId\":1,\"updateBy\":\"\",\"updateTime\":\"2022-10-01 16:42:06\",\"usableColumn\":false},{\"capJavaField\":\"Time\",\"columnComment\":\"时间\",\"columnId\":2,\"columnName\":\"time\",\"columnType\":\"datetime\",\"createBy\":\"admin\",\"createTime\":\"2022-09-29 15:12:32\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"datetime\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"time\",\"javaType\":\"Date\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":false,\"sort\":2,\"superColumn\":false,\"tableId\":1,\"updateBy\":\"\",\"updateTime\":\"2022-10-01 16:42:06\",\"usableColumn\":false},{\"capJavaField\":\"Place\",\"columnComment\":\"场所\",\"columnId\":3,\"columnName\":\"place\",\"columnType\":\"varchar(255)\",\"createBy\":\"admin\",\"createTime\":\"2022-09-29 15:12:32\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"place\",\"javaType\":\"String\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":false,\"sort\":3,\"superColumn\":false,\"tableId\":1,\"updateBy\":\"\",\"updateTime\":\"2022-10-01 16:42:06\",\"usableColumn\":false},{\"capJavaField\":\"Event\",\"columnComment\":\"事件，一一枚举\",\"columnId\":4,\"columnName\":\"event\",\"columnType\":\"tinyint\",\"createBy\":\"admin\",\"createTime\":\"2022-09-29 15:12:32\",\"dictType\":\"eeas_event\",\"edit\":true,\"htmlType\":\"select\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"ja', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-10-01 16:49:29');
 INSERT INTO `sys_oper_log` VALUES (203, '事件数据', 1, 'com.ruoyi.eeas.controller.EventController.add()', 'POST', 1, 'admin', NULL, '/data/event', '127.0.0.1', '内网IP', '{\"event\":17,\"id\":1576132565591670785,\"params\":{},\"place\":\"4\",\"source\":1576119416645873666,\"time\":\"2022-09-30 00:00:00\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-10-01 16:51:01');
 INSERT INTO `sys_oper_log` VALUES (204, '事件数据', 2, 'com.ruoyi.eeas.controller.EventController.edit()', 'PUT', 1, 'admin', NULL, '/data/event', '127.0.0.1', '内网IP', '{\"event\":11,\"id\":1576132565591670785,\"params\":{},\"place\":\"4-1\",\"source\":1576119416645873666,\"time\":\"2022-09-30 00:00:00\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-10-01 16:51:17');
-INSERT INTO `sys_oper_log` VALUES (205, '代码生成', 8, 'com.ruoyi.generator.controller.GenController.batchGenCode()', 'GET', 1, 'admin', NULL, '/tool/gen/batchGenCode', '127.0.0.1', '内网IP', '{}', NULL, 0, NULL, '2022-10-18 20:33:32');
-INSERT INTO `sys_oper_log` VALUES (206, '代码生成', 8, 'com.ruoyi.generator.controller.GenController.batchGenCode()', 'GET', 1, 'admin', NULL, '/tool/gen/batchGenCode', '127.0.0.1', '内网IP', '{}', NULL, 0, NULL, '2022-10-18 20:33:34');
-INSERT INTO `sys_oper_log` VALUES (207, '代码生成', 8, 'com.ruoyi.generator.controller.GenController.batchGenCode()', 'GET', 1, 'admin', NULL, '/tool/gen/batchGenCode', '127.0.0.1', '内网IP', '{}', NULL, 0, NULL, '2022-10-29 15:16:16');
-INSERT INTO `sys_oper_log` VALUES (208, '代码生成', 6, 'com.ruoyi.generator.controller.GenController.importTableSave()', 'POST', 1, 'admin', NULL, '/tool/gen/importTable', '127.0.0.1', '内网IP', '\"sys_config\"', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-10-29 15:44:15');
-INSERT INTO `sys_oper_log` VALUES (209, '代码生成', 3, 'com.ruoyi.generator.controller.GenController.remove()', 'DELETE', 1, 'admin', NULL, '/tool/gen/6', '127.0.0.1', '内网IP', '{tableIds=6}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-10-29 15:44:22');
-INSERT INTO `sys_oper_log` VALUES (210, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', NULL, '/tool/gen', '127.0.0.1', '内网IP', '{\"businessName\":\"change\",\"className\":\"Evolution\",\"columns\":[{\"capJavaField\":\"Id\",\"columnComment\":\"id\",\"columnId\":11,\"columnName\":\"id\",\"columnType\":\"bigint\",\"createBy\":\"admin\",\"createTime\":\"2022-09-29 15:12:32\",\"dictType\":\"\",\"edit\":false,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isPk\":\"1\",\"javaField\":\"id\",\"javaType\":\"Long\",\"list\":false,\"params\":{},\"pk\":true,\"query\":false,\"queryType\":\"EQ\",\"required\":false,\"sort\":1,\"superColumn\":false,\"tableId\":3,\"updateBy\":\"\",\"updateTime\":\"2022-09-29 17:22:29\",\"usableColumn\":false},{\"capJavaField\":\"StartTime\",\"columnComment\":\"起始时间\",\"columnId\":12,\"columnName\":\"start_time\",\"columnType\":\"datetime\",\"createBy\":\"admin\",\"createTime\":\"2022-09-29 15:12:32\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"datetime\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"startTime\",\"javaType\":\"Date\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":false,\"sort\":2,\"superColumn\":false,\"tableId\":3,\"updateBy\":\"\",\"updateTime\":\"2022-09-29 17:22:29\",\"usableColumn\":false},{\"capJavaField\":\"EndTime\",\"columnComment\":\"结束时间\",\"columnId\":13,\"columnName\":\"end_time\",\"columnType\":\"datetime\",\"createBy\":\"admin\",\"createTime\":\"2022-09-29 15:12:32\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"datetime\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"endTime\",\"javaType\":\"Date\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":false,\"sort\":3,\"superColumn\":false,\"tableId\":3,\"updateBy\":\"\",\"updateTime\":\"2022-09-29 17:22:29\",\"usableColumn\":false},{\"capJavaField\":\"Increase\",\"columnComment\":\"新增数\",\"columnId\":14,\"columnName\":\"increase\",\"columnType\":\"int\",\"createBy\":\"admin\",\"createTime\":\"2022-09-29 15:12:32\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\"', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-10-29 16:05:14');
-INSERT INTO `sys_oper_log` VALUES (211, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', NULL, '/tool/gen', '127.0.0.1', '内网IP', '{\"businessName\":\"change\",\"className\":\"Evolution\",\"columns\":[{\"capJavaField\":\"Id\",\"columnComment\":\"id\",\"columnId\":11,\"columnName\":\"id\",\"columnType\":\"bigint\",\"createBy\":\"admin\",\"createTime\":\"2022-09-29 15:12:32\",\"dictType\":\"\",\"edit\":false,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isPk\":\"1\",\"javaField\":\"id\",\"javaType\":\"Long\",\"list\":false,\"params\":{},\"pk\":true,\"query\":false,\"queryType\":\"EQ\",\"required\":false,\"sort\":1,\"superColumn\":false,\"tableId\":3,\"updateBy\":\"\",\"updateTime\":\"2022-10-29 16:05:14\",\"usableColumn\":false},{\"capJavaField\":\"StartTime\",\"columnComment\":\"起始时间\",\"columnId\":12,\"columnName\":\"start_time\",\"columnType\":\"datetime\",\"createBy\":\"admin\",\"createTime\":\"2022-09-29 15:12:32\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"datetime\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"startTime\",\"javaType\":\"Date\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":false,\"sort\":2,\"superColumn\":false,\"tableId\":3,\"updateBy\":\"\",\"updateTime\":\"2022-10-29 16:05:14\",\"usableColumn\":false},{\"capJavaField\":\"EndTime\",\"columnComment\":\"结束时间\",\"columnId\":13,\"columnName\":\"end_time\",\"columnType\":\"datetime\",\"createBy\":\"admin\",\"createTime\":\"2022-09-29 15:12:32\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"datetime\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"endTime\",\"javaType\":\"Date\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":false,\"sort\":3,\"superColumn\":false,\"tableId\":3,\"updateBy\":\"\",\"updateTime\":\"2022-10-29 16:05:14\",\"usableColumn\":false},{\"capJavaField\":\"Increase\",\"columnComment\":\"新增数\",\"columnId\":14,\"columnName\":\"increase\",\"columnType\":\"int\",\"createBy\":\"admin\",\"createTime\":\"2022-09-29 15:12:32\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\"', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-10-29 16:05:26');
-INSERT INTO `sys_oper_log` VALUES (212, '代码生成', 8, 'com.ruoyi.generator.controller.GenController.batchGenCode()', 'GET', 1, 'admin', NULL, '/tool/gen/batchGenCode', '127.0.0.1', '内网IP', '{}', NULL, 0, NULL, '2022-10-29 16:05:29');
-INSERT INTO `sys_oper_log` VALUES (213, '菜单管理', 3, 'com.ruoyi.web.controller.system.SysMenuController.remove()', 'DELETE', 1, 'admin', NULL, '/system/menu/2034', '127.0.0.1', '内网IP', '{menuId=2034}', '{\"msg\":\"存在子菜单,不允许删除\",\"code\":500}', 0, NULL, '2022-10-29 16:13:57');
-INSERT INTO `sys_oper_log` VALUES (214, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', NULL, '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"component\":\"evolution/change/index\",\"createTime\":\"2022-10-29 16:11:22\",\"icon\":\"#\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":2034,\"menuName\":\"病例演化\",\"menuType\":\"C\",\"orderNum\":8,\"params\":{},\"parentId\":0,\"path\":\"change\",\"perms\":\"evolution:change:list\",\"status\":\"0\",\"visible\":\"0\"}', '{\"msg\":\"修改菜单\'病例演化\'失败，菜单名称已存在\",\"code\":500}', 0, NULL, '2022-10-29 16:14:52');
-INSERT INTO `sys_oper_log` VALUES (215, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', NULL, '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"component\":\"evolution/index\",\"createTime\":\"2022-09-26 21:11:15\",\"icon\":\"chart\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":2002,\"menuName\":\"病例演化1\",\"menuType\":\"C\",\"orderNum\":6,\"params\":{},\"parentId\":0,\"path\":\"evolution\",\"perms\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-10-29 16:15:11');
-INSERT INTO `sys_oper_log` VALUES (216, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', NULL, '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"component\":\"evolution/change/index\",\"createTime\":\"2022-10-29 16:11:22\",\"icon\":\"#\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":2034,\"menuName\":\"病例演化\",\"menuType\":\"C\",\"orderNum\":11,\"params\":{},\"parentId\":0,\"path\":\"change\",\"perms\":\"evolution:change:list\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-10-29 16:15:19');
-INSERT INTO `sys_oper_log` VALUES (217, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', NULL, '/tool/gen', '127.0.0.1', '内网IP', '{\"businessName\":\"data\",\"className\":\"NumberChange\",\"columns\":[{\"capJavaField\":\"Id\",\"columnComment\":\"id\",\"columnId\":11,\"columnName\":\"id\",\"columnType\":\"bigint\",\"createBy\":\"admin\",\"createTime\":\"2022-09-29 15:12:32\",\"dictType\":\"\",\"edit\":false,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isPk\":\"1\",\"javaField\":\"id\",\"javaType\":\"Long\",\"list\":false,\"params\":{},\"pk\":true,\"query\":false,\"queryType\":\"EQ\",\"required\":false,\"sort\":1,\"superColumn\":false,\"tableId\":3,\"updateBy\":\"\",\"updateTime\":\"2022-10-29 16:05:26\",\"usableColumn\":false},{\"capJavaField\":\"StartTime\",\"columnComment\":\"起始时间\",\"columnId\":12,\"columnName\":\"start_time\",\"columnType\":\"datetime\",\"createBy\":\"admin\",\"createTime\":\"2022-09-29 15:12:32\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"datetime\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"startTime\",\"javaType\":\"Date\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":false,\"sort\":2,\"superColumn\":false,\"tableId\":3,\"updateBy\":\"\",\"updateTime\":\"2022-10-29 16:05:26\",\"usableColumn\":false},{\"capJavaField\":\"EndTime\",\"columnComment\":\"结束时间\",\"columnId\":13,\"columnName\":\"end_time\",\"columnType\":\"datetime\",\"createBy\":\"admin\",\"createTime\":\"2022-09-29 15:12:32\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"datetime\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"endTime\",\"javaType\":\"Date\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":false,\"sort\":3,\"superColumn\":false,\"tableId\":3,\"updateBy\":\"\",\"updateTime\":\"2022-10-29 16:05:26\",\"usableColumn\":false},{\"capJavaField\":\"Increase\",\"columnComment\":\"新增数\",\"columnId\":14,\"columnName\":\"increase\",\"columnType\":\"int\",\"createBy\":\"admin\",\"createTime\":\"2022-09-29 15:12:32\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-11-03 14:14:57');
-INSERT INTO `sys_oper_log` VALUES (218, '代码生成', 6, 'com.ruoyi.generator.controller.GenController.importTableSave()', 'POST', 1, 'admin', NULL, '/tool/gen/importTable', '127.0.0.1', '内网IP', '\"eeas_evolution\"', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-11-03 14:15:05');
-INSERT INTO `sys_oper_log` VALUES (219, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', NULL, '/tool/gen', '127.0.0.1', '内网IP', '{\"businessName\":\"evolution\",\"className\":\"EeasEvolution\",\"columns\":[{\"capJavaField\":\"Id\",\"columnComment\":\"id\",\"columnId\":47,\"columnName\":\"id\",\"columnType\":\"bigint\",\"createBy\":\"admin\",\"createTime\":\"2022-11-03 14:15:05\",\"dictType\":\"\",\"edit\":false,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isPk\":\"1\",\"javaField\":\"id\",\"javaType\":\"Long\",\"list\":false,\"params\":{},\"pk\":true,\"query\":false,\"queryType\":\"EQ\",\"required\":false,\"sort\":1,\"superColumn\":false,\"tableId\":7,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"PredictTime\",\"columnComment\":\"预测时间\",\"columnId\":48,\"columnName\":\"predict_time\",\"columnType\":\"date\",\"createBy\":\"admin\",\"createTime\":\"2022-11-03 14:15:05\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"datetime\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"predictTime\",\"javaType\":\"Date\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":false,\"sort\":2,\"superColumn\":false,\"tableId\":7,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"Increase\",\"columnComment\":\"新增数\",\"columnId\":49,\"columnName\":\"increase\",\"columnType\":\"int\",\"createBy\":\"admin\",\"createTime\":\"2022-11-03 14:15:05\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"increase\",\"javaType\":\"Long\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":false,\"sort\":3,\"superColumn\":false,\"tableId\":7,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"Diagnosis\",\"columnComment\":\"确诊数\",\"columnId\":50,\"columnName\":\"diagnosis\",\"columnType\":\"int\",\"createBy\":\"admin\",\"createTime\":\"2022-11-03 14:15:05\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"diagnosis\",\"javaType\":\"Long\",\"list\":true,\"params\":{},\"pk\":false,\"query\":t', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-11-03 14:15:51');
-INSERT INTO `sys_oper_log` VALUES (220, '菜单管理', 3, 'com.ruoyi.web.controller.system.SysMenuController.remove()', 'DELETE', 1, 'admin', NULL, '/system/menu/2002', '127.0.0.1', '内网IP', '{menuId=2002}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-11-03 14:16:18');
-INSERT INTO `sys_oper_log` VALUES (221, '菜单管理', 3, 'com.ruoyi.web.controller.system.SysMenuController.remove()', 'DELETE', 1, 'admin', NULL, '/system/menu/2035', '127.0.0.1', '内网IP', '{menuId=2035}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-11-03 14:17:40');
-INSERT INTO `sys_oper_log` VALUES (222, '菜单管理', 3, 'com.ruoyi.web.controller.system.SysMenuController.remove()', 'DELETE', 1, 'admin', NULL, '/system/menu/2036', '127.0.0.1', '内网IP', '{menuId=2036}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-11-03 14:17:41');
-INSERT INTO `sys_oper_log` VALUES (223, '菜单管理', 3, 'com.ruoyi.web.controller.system.SysMenuController.remove()', 'DELETE', 1, 'admin', NULL, '/system/menu/2037', '127.0.0.1', '内网IP', '{menuId=2037}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-11-03 14:17:43');
-INSERT INTO `sys_oper_log` VALUES (224, '菜单管理', 3, 'com.ruoyi.web.controller.system.SysMenuController.remove()', 'DELETE', 1, 'admin', NULL, '/system/menu/2038', '127.0.0.1', '内网IP', '{menuId=2038}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-11-03 14:17:44');
-INSERT INTO `sys_oper_log` VALUES (225, '菜单管理', 3, 'com.ruoyi.web.controller.system.SysMenuController.remove()', 'DELETE', 1, 'admin', NULL, '/system/menu/2039', '127.0.0.1', '内网IP', '{menuId=2039}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-11-03 14:17:46');
-INSERT INTO `sys_oper_log` VALUES (226, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', NULL, '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"component\":\"evolution/index\",\"createTime\":\"2022-10-29 16:11:22\",\"icon\":\"#\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":2034,\"menuName\":\"病例演化\",\"menuType\":\"C\",\"orderNum\":11,\"params\":{},\"parentId\":0,\"path\":\"dataprediction\",\"perms\":\"evolution:list\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-11-03 14:19:14');
-INSERT INTO `sys_oper_log` VALUES (227, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', NULL, '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"component\":\"evolution/index\",\"createTime\":\"2022-10-29 16:11:22\",\"icon\":\"online\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":2034,\"menuName\":\"病例演化\",\"menuType\":\"C\",\"orderNum\":11,\"params\":{},\"parentId\":0,\"path\":\"dataprediction\",\"perms\":\"evolution:list\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-11-03 14:19:34');
-INSERT INTO `sys_oper_log` VALUES (228, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', NULL, '/tool/gen', '127.0.0.1', '内网IP', '{\"businessName\":\"datapredict\",\"className\":\"EeasEvolution\",\"columns\":[{\"capJavaField\":\"Id\",\"columnComment\":\"id\",\"columnId\":47,\"columnName\":\"id\",\"columnType\":\"bigint\",\"createBy\":\"admin\",\"createTime\":\"2022-11-03 14:15:05\",\"dictType\":\"\",\"edit\":false,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isPk\":\"1\",\"javaField\":\"id\",\"javaType\":\"Long\",\"list\":false,\"params\":{},\"pk\":true,\"query\":false,\"queryType\":\"EQ\",\"required\":false,\"sort\":1,\"superColumn\":false,\"tableId\":7,\"updateBy\":\"\",\"updateTime\":\"2022-11-03 14:15:51\",\"usableColumn\":false},{\"capJavaField\":\"PredictTime\",\"columnComment\":\"预测时间\",\"columnId\":48,\"columnName\":\"predict_time\",\"columnType\":\"date\",\"createBy\":\"admin\",\"createTime\":\"2022-11-03 14:15:05\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"datetime\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"predictTime\",\"javaType\":\"Date\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":false,\"sort\":2,\"superColumn\":false,\"tableId\":7,\"updateBy\":\"\",\"updateTime\":\"2022-11-03 14:15:51\",\"usableColumn\":false},{\"capJavaField\":\"Increase\",\"columnComment\":\"新增数\",\"columnId\":49,\"columnName\":\"increase\",\"columnType\":\"int\",\"createBy\":\"admin\",\"createTime\":\"2022-11-03 14:15:05\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"increase\",\"javaType\":\"Long\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":false,\"sort\":3,\"superColumn\":false,\"tableId\":7,\"updateBy\":\"\",\"updateTime\":\"2022-11-03 14:15:51\",\"usableColumn\":false},{\"capJavaField\":\"Diagnosis\",\"columnComment\":\"确诊数\",\"columnId\":50,\"columnName\":\"diagnosis\",\"columnType\":\"int\",\"createBy\":\"admin\",\"createTime\":\"2022-11-03 14:15:05\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isP', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-11-03 14:20:07');
-INSERT INTO `sys_oper_log` VALUES (229, '代码生成', 8, 'com.ruoyi.generator.controller.GenController.batchGenCode()', 'GET', 1, 'admin', NULL, '/tool/gen/batchGenCode', '127.0.0.1', '内网IP', '{}', NULL, 0, NULL, '2022-11-03 14:20:17');
-INSERT INTO `sys_oper_log` VALUES (230, '代码生成', 8, 'com.ruoyi.generator.controller.GenController.batchGenCode()', 'GET', 1, 'admin', NULL, '/tool/gen/batchGenCode', '127.0.0.1', '内网IP', '{}', NULL, 0, NULL, '2022-11-03 14:22:23');
-INSERT INTO `sys_oper_log` VALUES (231, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', NULL, '/tool/gen', '127.0.0.1', '内网IP', '{\"businessName\":\"datapredict\",\"className\":\"Evolution\",\"columns\":[{\"capJavaField\":\"Id\",\"columnComment\":\"id\",\"columnId\":47,\"columnName\":\"id\",\"columnType\":\"bigint\",\"createBy\":\"admin\",\"createTime\":\"2022-11-03 14:15:05\",\"dictType\":\"\",\"edit\":false,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isPk\":\"1\",\"javaField\":\"id\",\"javaType\":\"Long\",\"list\":false,\"params\":{},\"pk\":true,\"query\":false,\"queryType\":\"EQ\",\"required\":false,\"sort\":1,\"superColumn\":false,\"tableId\":7,\"updateBy\":\"\",\"updateTime\":\"2022-11-03 14:20:07\",\"usableColumn\":false},{\"capJavaField\":\"PredictTime\",\"columnComment\":\"预测时间\",\"columnId\":48,\"columnName\":\"predict_time\",\"columnType\":\"date\",\"createBy\":\"admin\",\"createTime\":\"2022-11-03 14:15:05\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"datetime\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"predictTime\",\"javaType\":\"Date\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":false,\"sort\":2,\"superColumn\":false,\"tableId\":7,\"updateBy\":\"\",\"updateTime\":\"2022-11-03 14:20:07\",\"usableColumn\":false},{\"capJavaField\":\"Increase\",\"columnComment\":\"新增数\",\"columnId\":49,\"columnName\":\"increase\",\"columnType\":\"int\",\"createBy\":\"admin\",\"createTime\":\"2022-11-03 14:15:05\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"increase\",\"javaType\":\"Long\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":false,\"sort\":3,\"superColumn\":false,\"tableId\":7,\"updateBy\":\"\",\"updateTime\":\"2022-11-03 14:20:07\",\"usableColumn\":false},{\"capJavaField\":\"Diagnosis\",\"columnComment\":\"确诊数\",\"columnId\":50,\"columnName\":\"diagnosis\",\"columnType\":\"int\",\"createBy\":\"admin\",\"createTime\":\"2022-11-03 14:15:05\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-11-03 14:22:42');
-INSERT INTO `sys_oper_log` VALUES (232, '代码生成', 8, 'com.ruoyi.generator.controller.GenController.batchGenCode()', 'GET', 1, 'admin', NULL, '/tool/gen/batchGenCode', '127.0.0.1', '内网IP', '{}', NULL, 0, NULL, '2022-11-03 14:22:45');
-INSERT INTO `sys_oper_log` VALUES (233, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', NULL, '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"component\":\"evolution/index\",\"createTime\":\"2022-10-29 16:11:22\",\"icon\":\"online\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":2034,\"menuName\":\"病例演化\",\"menuType\":\"C\",\"orderNum\":11,\"params\":{},\"parentId\":0,\"path\":\"dataprediction\",\"perms\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-11-03 14:41:17');
-INSERT INTO `sys_oper_log` VALUES (234, '菜单管理', 3, 'com.ruoyi.web.controller.system.SysMenuController.remove()', 'DELETE', 1, 'admin', NULL, '/system/menu/2042', '127.0.0.1', '内网IP', '{menuId=2042}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-11-03 14:41:42');
-INSERT INTO `sys_oper_log` VALUES (235, '菜单管理', 3, 'com.ruoyi.web.controller.system.SysMenuController.remove()', 'DELETE', 1, 'admin', NULL, '/system/menu/2043', '127.0.0.1', '内网IP', '{menuId=2043}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-11-03 14:41:44');
-INSERT INTO `sys_oper_log` VALUES (236, '菜单管理', 3, 'com.ruoyi.web.controller.system.SysMenuController.remove()', 'DELETE', 1, 'admin', NULL, '/system/menu/2044', '127.0.0.1', '内网IP', '{menuId=2044}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-11-03 14:41:46');
-INSERT INTO `sys_oper_log` VALUES (237, '菜单管理', 3, 'com.ruoyi.web.controller.system.SysMenuController.remove()', 'DELETE', 1, 'admin', NULL, '/system/menu/2045', '127.0.0.1', '内网IP', '{menuId=2045}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-11-03 14:41:47');
-INSERT INTO `sys_oper_log` VALUES (238, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', NULL, '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"component\":\"evolution/dataprediction/index\",\"createTime\":\"2022-10-29 16:11:22\",\"icon\":\"online\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":2034,\"menuName\":\"病例演化\",\"menuType\":\"C\",\"orderNum\":11,\"params\":{},\"parentId\":0,\"path\":\"dataprediction\",\"perms\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-11-03 14:42:11');
-INSERT INTO `sys_oper_log` VALUES (239, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', NULL, '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"component\":\"evolution/datapredict/index\",\"createTime\":\"2022-10-29 16:11:22\",\"icon\":\"online\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":2034,\"menuName\":\"病例演化\",\"menuType\":\"C\",\"orderNum\":11,\"params\":{},\"parentId\":0,\"path\":\"dataprediction\",\"perms\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-11-03 14:42:17');
-INSERT INTO `sys_oper_log` VALUES (240, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', NULL, '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"component\":\"evolution/datapredict/index\",\"createTime\":\"2022-10-29 16:11:22\",\"icon\":\"online\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":2034,\"menuName\":\"病例演化\",\"menuType\":\"C\",\"orderNum\":6,\"params\":{},\"parentId\":0,\"path\":\"dataprediction\",\"perms\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-11-03 19:01:25');
-INSERT INTO `sys_oper_log` VALUES (241, '菜单管理', 3, 'com.ruoyi.web.controller.system.SysMenuController.remove()', 'DELETE', 1, 'admin', NULL, '/system/menu/2048', '127.0.0.1', '内网IP', '{menuId=2048}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-11-03 19:40:44');
-INSERT INTO `sys_oper_log` VALUES (242, '菜单管理', 3, 'com.ruoyi.web.controller.system.SysMenuController.remove()', 'DELETE', 1, 'admin', NULL, '/system/menu/2049', '127.0.0.1', '内网IP', '{menuId=2049}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-11-03 19:40:46');
-INSERT INTO `sys_oper_log` VALUES (243, '菜单管理', 3, 'com.ruoyi.web.controller.system.SysMenuController.remove()', 'DELETE', 1, 'admin', NULL, '/system/menu/2050', '127.0.0.1', '内网IP', '{menuId=2050}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-11-03 19:40:47');
-INSERT INTO `sys_oper_log` VALUES (244, '菜单管理', 3, 'com.ruoyi.web.controller.system.SysMenuController.remove()', 'DELETE', 1, 'admin', NULL, '/system/menu/2051', '127.0.0.1', '内网IP', '{menuId=2051}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2022-11-03 19:40:50');
 
 -- ----------------------------
 -- Table structure for sys_post
@@ -1166,7 +1019,7 @@ CREATE TABLE `sys_post`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`post_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '岗位信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '岗位信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_post
@@ -1196,7 +1049,7 @@ CREATE TABLE `sys_role`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`role_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role
@@ -1345,12 +1198,12 @@ CREATE TABLE `sys_user`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 103, 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2022-11-03 19:41:30', 'admin', '2022-09-17 12:49:08', '', '2022-11-03 19:41:29', '管理员');
+INSERT INTO `sys_user` VALUES (1, 103, 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2022-10-02 11:10:34', 'admin', '2022-09-17 12:49:08', '', '2022-10-02 11:10:33', '管理员');
 INSERT INTO `sys_user` VALUES (2, 105, 'ry', '若依', '00', 'ry@qq.com', '15666666666', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2022-09-17 16:31:09', 'admin', '2022-09-17 12:49:08', '', '2022-09-17 16:31:08', '测试员');
 
 -- ----------------------------
