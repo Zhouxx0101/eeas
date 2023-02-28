@@ -9,7 +9,7 @@
     </div>
 </template>
 <script>
-import { listArea } from "@/api/data/area";
+import { listArea } from "@/api/data/event";
 
 
 export default {
@@ -72,7 +72,6 @@ export default {
                 queryHouseOutlineCallbacks[i] = "queryHouseOutlineCallbacks" + i;
             }
             for (let i = 0; i < house.length; i++) {
-                alert(urls[i]);
                 this.$jsonp(urls[i], {
                     callbackQuery: "callback",
                     callbackName: queryHouseCallbacks[i],
