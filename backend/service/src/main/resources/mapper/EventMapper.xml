@@ -12,18 +12,19 @@
         <result property="source" column="source"/>
     </resultMap>
 
-    <resultMap type="com.ruoyi.eeas.domain.Event" id="AreaResult">
-        <result property="place" column="place"/>
-    </resultMap>
+<!--    <resultMap type="com.ruoyi.eeas.domain.Event" id="AreaResult">-->
+<!--        <result property="place" column="place"/>-->
+<!--    </resultMap>-->
 
     <sql id="selectEventVo">
         select id, time, place, event, source
         from eeas_event
     </sql>
 
-    <select id="selectAreaList" resultMap="AreaResult">
+    <select id="selectAreaList" resultType="java.lang.String">
         select place
         from eeas_event
+        limit 10
     </select>
 
     <select id="selectEventList" parameterType="com.ruoyi.eeas.domain.Event" resultMap="EventResult">
