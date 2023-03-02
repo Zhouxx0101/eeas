@@ -1,6 +1,7 @@
 package com.ruoyi.eeas.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.eeas.domain.Trajectory;
@@ -60,4 +61,32 @@ public interface ITrajectoryService extends IService<Trajectory>
      * @return 结果
      */
     int deleteTrajectoryById(Long id);
+
+    /**
+     * 查询近1天的轨迹数据
+     *
+     * @return 轨迹数据
+     */
+    List<Map<String, String>> get1();
+
+    /**
+     * 查询1天至7天的轨迹数据
+     *
+     * @return 轨迹数据
+     */
+    List<Map<String, String>> get1To7();
+
+    /**
+     * 查询7天至14天的轨迹数据
+     *
+     * @return 轨迹数据
+     */
+    List<Map<String, String>> get7To14();
+
+    /**
+     * 查询14天以上的轨迹数据
+     *
+     * @return 轨迹数据
+     */
+    List<Map<String, String>> get14();
 }
