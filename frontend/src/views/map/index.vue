@@ -20,16 +20,18 @@
         :autoLocation="true"
       ></bm-geolocation>
       <bm-city-list anchor="BMAP_ANCHOR_TOP_LEFT"></bm-city-list>
+      <bm-marker :position="{lng: 116.404, lat: 39.915}" :dragging="false" animation="BMAP_ANIMATION_BOUNCE">
+      </bm-marker>
       <!-- 绘制点1 -->
-      <bm-marker :position="{lng: 116.404, lat: 39.915}" :dragging="true" animation="BMAP_ANIMATION_BOUNCE">
+      <!-- <bm-marker :position="{lng: 116.404, lat: 39.915}" :dragging="true" animation="BMAP_ANIMATION_BOUNCE">
         <bm-label content="我爱北京天安门" :labelStyle="{color: 'red', fontSize : '24px'}" :offset="{width: -35, height: 30}"/>
-      </bm-marker>
+      </bm-marker> -->
       <!-- 绘制点2 -->
-      <bm-marker :position="{lng: 116.404, lat: 39.925}" :dragging="true" animation="BMAP_ANIMATION_BOUNCE" :icon="{url: 'http://developer.baidu.com/map/jsdemo/img/fox.gif', size: {width: 300, height: 157}}"></bm-marker>
+      <!-- <bm-marker :position="{lng: 116.404, lat: 39.925}" :dragging="true" animation="BMAP_ANIMATION_BOUNCE" :icon="{url: 'http://developer.baidu.com/map/jsdemo/img/fox.gif', size: {width: 300, height: 157}}"></bm-marker> -->
       <!-- 绘制点3 -->
-      <bm-marker :position="{lng: 116.404, lat: 39.935}" :dragging="true" @click="infoWindowOpen">
+      <!-- <bm-marker :position="{lng: 116.404, lat: 39.935}" :dragging="true" @click="infoWindowOpen">
         <bm-info-window :show="show" @close="infoWindowClose" @open="infoWindowOpen">我爱北京天安门</bm-info-window>
-      </bm-marker>
+      </bm-marker> -->
       <!-- 绘制点4 - failed -->
       <!-- 推测：只能通过经纬度来进行点标注？ -->
       <!-- <bm-marker :position="故宫" :dragging="true" @click="infoWindowOpen">
@@ -39,18 +41,22 @@
   </div>
 </template>
 <script>
+
+import { get1, get1To7, get7To14, get14 } from "@/api/data/trajectory";
+
 export default {
   data() {
     return {
       // 地址信息
       address: null,
-      // center通过经纬度过城市名均可?
+      // center通过经纬度或城市名均可?
       center: { lng: 0, lat: 0 },
       // center: "北京",
       //地图展示级别
       zoom: 11,
       show: false,
       point: null,
+      place1: ["中辛庄公交站", "高庄子小学"],
     };
   },
   methods: {

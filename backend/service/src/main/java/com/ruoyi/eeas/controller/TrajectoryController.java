@@ -1,6 +1,7 @@
 package com.ruoyi.eeas.controller;
 
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,5 +101,53 @@ public class TrajectoryController extends BaseController
     public AjaxResult remove(@PathVariable Long[] ids)
     {
         return toAjax(trajectoryService.deleteTrajectoryByIds(ids));
+    }
+
+    /**
+     * 查询近1天轨迹数据列表
+     */
+    @PreAuthorize("@ss.hasPermi('data:trajectory:list')")
+    @GetMapping("/get1")
+    public TableDataInfo get1()
+    {
+        startPage();
+        List<Map<String, String>> list = trajectoryService.get1();
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询1天至7天轨迹数据列表
+     */
+    @PreAuthorize("@ss.hasPermi('data:trajectory:list')")
+    @GetMapping("/get1To7")
+    public TableDataInfo get1To7()
+    {
+        startPage();
+        List<Map<String, String>> list = trajectoryService.get1To7();
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询7天至14天轨迹数据列表
+     */
+    @PreAuthorize("@ss.hasPermi('data:trajectory:list')")
+    @GetMapping("/get7To14")
+    public TableDataInfo get7To14()
+    {
+        startPage();
+        List<Map<String, String>> list = trajectoryService.get7To14();
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询14天以上轨迹数据列表
+     */
+    @PreAuthorize("@ss.hasPermi('data:trajectory:list')")
+    @GetMapping("/get14")
+    public TableDataInfo get14()
+    {
+        startPage();
+        List<Map<String, String>> list = trajectoryService.get14();
+        return getDataTable(list);
     }
 }
