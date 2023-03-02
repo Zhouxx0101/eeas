@@ -1,42 +1,72 @@
 <template>
-  <div class="BaiDuMap">
-  <!-- <div class="app-container"> -->
-    <baidu-map
-      :center="center"
-      :zoom="zoom"
-      :scroll-wheel-zoom="true"
-      style="width: 100%; height: 100%"
-      @ready="handler"
-      @click="getClickInfo"
-      @moving="syncCenterAndZoom"
-      @moveend="syncCenterAndZoom"
-      @zoomend="syncCenterAndZoom"
-    >
-      <!-- 必须给容器指高度，不然地图将显示在一个高度为0的容器中，看不到 -->
-      <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
-      <bm-geolocation
-        anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
-        :showAddressBar="true"
-        :autoLocation="true"
-      ></bm-geolocation>
-      <bm-city-list anchor="BMAP_ANCHOR_TOP_LEFT"></bm-city-list>
-      <!-- 绘制点1 -->
-      <bm-marker :position="{lng: 116.404, lat: 39.915}" :dragging="true" animation="BMAP_ANIMATION_BOUNCE">
-        <bm-label content="我爱北京天安门" :labelStyle="{color: 'red', fontSize : '24px'}" :offset="{width: -35, height: 30}"/>
-      </bm-marker>
-      <!-- 绘制点2 -->
-      <bm-marker :position="{lng: 116.404, lat: 39.925}" :dragging="true" animation="BMAP_ANIMATION_BOUNCE" :icon="{url: 'http://developer.baidu.com/map/jsdemo/img/fox.gif', size: {width: 300, height: 157}}"></bm-marker>
-      <!-- 绘制点3 -->
-      <bm-marker :position="{lng: 116.404, lat: 39.935}" :dragging="true" @click="infoWindowOpen">
-        <bm-info-window :show="show" @close="infoWindowClose" @open="infoWindowOpen">我爱北京天安门</bm-info-window>
-      </bm-marker>
-      <!-- 绘制点4 - failed -->
-      <!-- 推测：只能通过经纬度来进行点标注？ -->
-      <!-- <bm-marker :position="故宫" :dragging="true" @click="infoWindowOpen">
-        <bm-info-window :show="show" @close="infoWindowClose" @open="infoWindowOpen">test1</bm-info-window>
-      </bm-marker> -->
-    </baidu-map>
-  </div>
+ <div>
+  <el-row :gutter="50">
+      <el-col :span="100"><div class="circle">近一天内</div></el-col>
+      <el-col :span="100"><div class="circle"></div></el-col>
+      <el-col :span="100"><div class="circle"></div></el-col>
+      <el-col :span="100"><div class="circle"></div></el-col>
+  </el-row>
+    <el-row >
+      <el-col >
+    <div class="BaiDuMap">
+    <!-- <div class="app-container"> -->
+      <!--添加近几天的提示，与前端显示对应-->
+
+      <baidu-map
+        :center="center"
+        :zoom="zoom"
+        :scroll-wheel-zoom="true"
+        style="width: 100%; height: 100%"
+        @ready="handler"
+        @click="getClickInfo"
+        @moving="syncCenterAndZoom"
+        @moveend="syncCenterAndZoom"
+        @zoomend="syncCenterAndZoom"
+      >
+        <!-- 必须给容器指高度，不然地图将显示在一个高度为0的容器中，看不到 -->
+        <!--bm-navigation表示缩放控件 anchor为停靠位置-->
+        <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
+        <!--bm-geolocation表示地图定位控件 autoLocation表示用户点击控件时是否显示定位，需要获得用户的许可-->
+        <bm-geolocation
+          anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
+          :showAddressBar="true"
+          :autoLocation="true"
+        ></bm-geolocation>
+        <!--bm-city-list 城市选择控件-->
+        <bm-city-list anchor="BMAP_ANCHOR_TOP_LEFT"></bm-city-list>
+
+        <!--海量点绘制-->
+        <!--近一天-->
+        <bm-point-collection :points="points1" shape="BMAP_POINT_SHAPE_CIRCLE" color="red" size="BMAP_POINT_SIZE_SMALL" @click="clickHandler"></bm-point-collection>
+        <!--小于等于7天-->
+        <bm-point-collection :points="points2" shape="BMAP_POINT_SHAPE_STAR" color="blue" size="BMAP_POINT_SIZE_SMALL" @click="clickHandler"></bm-point-collection>
+        <!--小于等于14天-->
+        <bm-point-collection :points="points3" shape="BMAP_POINT_SHAPE_STAR" color="yellow" size="BMAP_POINT_SIZE_SMALL" @click="clickHandler"></bm-point-collection>
+        <!--大于14天-->
+        <bm-point-collection :points="points4" shape="BMAP_POINT_SHAPE_STAR" color="brown" size="BMAP_POINT_SIZE_SMALL" @click="clickHandler"></bm-point-collection>
+        <!--
+        
+        <bm-marker :position="{lng: 116.404, lat: 39.915}" :dragging="true" animation="BMAP_ANIMATION_BOUNCE">
+          <bm-label content="我爱北京天安门" :labelStyle="{color: 'red', fontSize : '24px'}" :offset="{width: -35, height: 30}"/>
+        </bm-marker>
+      
+        <bm-marker :position="{lng: 116.404, lat: 39.925}" :dragging="true" animation="BMAP_ANIMATION_BOUNCE" :icon="{url: 'http://developer.baidu.com/map/jsdemo/img/fox.gif', size: {width: 300, height: 157}}"></bm-marker>
+        
+        <bm-marker :position="{lng: 116.404, lat: 39.935}" :dragging="true" @click="infoWindowOpen">
+          <bm-info-window :show="show" @close="infoWindowClose" @open="infoWindowOpen">我爱北京天安门</bm-info-window>
+        </bm-marker>
+        -->
+    
+        <!-- 绘制点4 - failed -->
+        <!-- 推测：只能通过经纬度来进行点标注？ -->
+        <!-- <bm-marker :position="故宫" :dragging="true" @click="infoWindowOpen">
+          <bm-info-window :show="show" @close="infoWindowClose" @open="infoWindowOpen">test1</bm-info-window>
+        </bm-marker> -->
+      </baidu-map>
+    </div>
+  </el-col>
+  </el-row>
+</div>
 </template>
 <script>
 export default {
@@ -51,6 +81,19 @@ export default {
       zoom: 11,
       show: false,
       point: null,
+      points:[],
+
+      //近一天
+      points1:[],
+      // 小于等于7天
+      points2:[],
+       // 小于等于14天
+      points3:[],
+      // 大于14天
+      points4:[],
+      
+     
+      
     };
   },
   methods: {
@@ -58,6 +101,38 @@ export default {
       this.center.lng = 116.404;
       this.center.lat = 39.915;
       this.zoom = this.zoom;
+
+      // 海量点绘制点集合初始化
+      // 从后端取数据
+      this.addPoints(this.points1)
+      this.addPoints(this.points2)
+      this.addPoints(this.points3)
+      this.addPoints(this.points4)
+
+      // 从后端取数据
+      // TODO:前后端打通
+      //this.getPoints()
+    },
+    addPoints (p) {
+      for (var i = 0; i < 100; i++) {
+        const position = {lng: Math.random() * 40 + 85, lat: Math.random() * 30 + 21}
+        p.push(position)
+      }
+      
+    },
+    getPoints(){
+      axios.get('/', {
+    params: {
+      ID: 12345
+    }
+  })
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+
     },
     getClickInfo(e) {
       // 创建地理编码实例
@@ -83,6 +158,10 @@ export default {
     infoWindowOpen () {
       this.show = true
     },
+    // 海量点绘制出来后，单击某点所触发的事件
+    clickHandler (e) {
+      alert(`单击点的坐标为：${e.point.lng}, ${e.point.lat}`);
+    },
   },
 };
 </script>
@@ -91,4 +170,52 @@ export default {
   width: 100%;
   height: 781px;
 }
+
+.star {
+    width:10px;
+    height:10px;
+    margin: 200px auto 0;
+    position: relative;
+    width: 0px;
+    height: 0px;
+    border-color: red transparent transparent transparent;
+    border-width: 41.41px 57.06px;
+    border-style: solid;
+  }
+
+  .star::before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: -57.06px;
+    top: -41.41px;
+    border-color: red transparent transparent transparent;
+    border-width: 41.41px 57.06px;
+    border-style: solid;
+    transform: rotate(72deg);
+    transform-origin: 50% 22.5%;
+  }
+
+
+  .star::after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: -57.06px;
+    top: -41.41px;
+    border-color: red transparent transparent transparent;
+    border-width: 41.41px 57.06px;
+    border-style: solid;
+    transform: rotate(-72deg);
+    transform-origin: 50% 22.5%;
+  }
+
+  .circle {
+    width:35px;
+    height:35px;
+    background: red;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 50px;
+ }
 </style>
