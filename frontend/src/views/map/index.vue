@@ -1,4 +1,5 @@
 <template>
+
  <div>
   <el-row :gutter="50">
       <el-col :span="100"><div class="circle">近一天内</div></el-col>
@@ -69,18 +70,22 @@
 </div>
 </template>
 <script>
+
+import { get1, get1To7, get7To14, get14 } from "@/api/data/trajectory";
+
 export default {
   data() {
     return {
       // 地址信息
       address: null,
-      // center通过经纬度过城市名均可?
+      // center通过经纬度或城市名均可?
       center: { lng: 0, lat: 0 },
       // center: "北京",
       //地图展示级别
       zoom: 11,
       show: false,
       point: null,
+
       points:[],
 
       //近一天
@@ -92,8 +97,8 @@ export default {
       // 大于14天
       points4:[],
       
-     
-      
+      place1: ["中辛庄公交站", "高庄子小学"],
+
     };
   },
   methods: {
