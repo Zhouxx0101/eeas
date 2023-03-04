@@ -2,6 +2,7 @@
 
  <div>
   <el-row :gutter="50">
+      <!--还需要进一步调整-->
       <el-col :span="100"><div class="circle">近一天内</div></el-col>
       <el-col :span="100"><div class="circle"></div></el-col>
       <el-col :span="100"><div class="circle"></div></el-col>
@@ -38,7 +39,7 @@
 
         <!--海量点绘制-->
         <!--近一天-->
-        <bm-point-collection :points="points1" shape="BMAP_POINT_SHAPE_CIRCLE" color="red" size="BMAP_POINT_SIZE_SMALL" @click="clickHandler"></bm-point-collection>
+        <bm-point-collection :points="points1" shape="BMAP_POINT_SHAPE_STAR" color="red" size="BMAP_POINT_SIZE_SMALL" @click="clickHandler"></bm-point-collection>
         <!--小于等于7天-->
         <bm-point-collection :points="points2" shape="BMAP_POINT_SHAPE_STAR" color="blue" size="BMAP_POINT_SIZE_SMALL" @click="clickHandler"></bm-point-collection>
         <!--小于等于14天-->
@@ -88,13 +89,13 @@ export default {
 
       points:[],
 
-      //近一天
+     // 1日内轨迹数据
       points1:[],
-      // 小于等于7天
+      // 1日至7日轨迹数据
       points2:[],
-       // 小于等于14天
+       // 7日至14日轨迹数据
       points3:[],
-      // 大于14天
+      // 14日以上轨迹数据
       points4:[],
       
       place1: ["中辛庄公交站", "高庄子小学"],
@@ -108,15 +109,14 @@ export default {
       this.zoom = this.zoom;
 
       // 海量点绘制点集合初始化
-      // 从后端取数据
-      this.addPoints(this.points1)
-      this.addPoints(this.points2)
-      this.addPoints(this.points3)
-      this.addPoints(this.points4)
+      //this.addPoints(this.points1)
+      //this.addPoints(this.points2)
+      //this.addPoints(this.points3)
+      //this.addPoints(this.points4)
 
       // 从后端取数据
-      // TODO:前后端打通
-      //this.getPoints()
+      // TODO:将串行执行的方法改为并行执行
+      this.getPoints()
     },
     addPoints (p) {
       for (var i = 0; i < 100; i++) {
@@ -126,18 +126,53 @@ export default {
       
     },
     getPoints(){
-      axios.get('/', {
-    params: {
-      ID: 12345
-    }
-  })
-  .then(function (response) {
-    console.log(response);
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
-
+      console.log("getPoints called")
+      get1().then(response => {
+        console.log("get1 called")
+        console.log(response)
+        if (response.code===200){
+          console.log("1")
+          for (let i = 0; i < response.rows.length; i++) {
+            const position = {lng: response.rows[i].longitude, lat: response.rows[i].latitude}
+            this.points1.push(position)
+              }
+            } 
+            });
+      get1To7().then(response => {
+        console.log("get1To7 called")
+        console.log(response)
+        if (response.code===200){
+            console.log("2")
+            for (let i = 0; i < response.rows.length; i++) {
+              const position = {lng: response.rows[i].longitude, lat: response.rows[i].latitude}
+              this.points2.push(position)
+              }
+            } 
+            });
+         
+      get7To14().then(response => {
+        console.log("get7To4 called")
+        console.log(response)
+        if (response.code===200){
+          console.log("1")
+          for (let i = 0; i < response.rows.length; i++) {
+            const position = {lng: response.rows[i].longitude, lat: response.rows[i].latitude}
+            this.points3.push(position)
+              }
+            } 
+            });            
+      get14().then(response => {
+        console.log("get14 called")
+        console.log(response)
+        if (response.code===200){
+            console.log("1")
+            for (let i = 0; i < response.rows.length; i++) {
+              const position = {lng: response.rows[i].longitude, lat: response.rows[i].latitude}
+              this.points4.push(position)
+              }
+            } 
+            });            
+                
     },
     getClickInfo(e) {
       // 创建地理编码实例

@@ -43,6 +43,7 @@ import BaiduMap from 'vue-baidu-map'
 import echarts from 'echarts'
 import { VueJsonp } from 'vue-jsonp'
 
+
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
 Vue.prototype.getConfigKey = getConfigKey
@@ -54,6 +55,8 @@ Vue.prototype.selectDictLabels = selectDictLabels
 Vue.prototype.download = download
 Vue.prototype.handleTree = handleTree
 Vue.prototype.$echarts = echarts
+
+
 
 // 全局组件挂载
 Vue.component('DictTag', DictTag)
