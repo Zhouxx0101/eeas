@@ -48,7 +48,7 @@ export function get1() {
   return request({
     url: '/data/trajectory/get1',
     method: 'get',
-    params: query
+    //params: query
   })
 }
 
@@ -57,7 +57,7 @@ export function get1To7() {
   return request({
     url: '/data/trajectory/get1To7',
     method: 'get',
-    params: query
+    //params: query
   })
 }
 
@@ -66,7 +66,7 @@ export function get7To14() {
   return request({
     url: '/data/trajectory/get7To14',
     method: 'get',
-    params: query
+    //params: query
   })
 }
 
@@ -75,6 +75,6 @@ export function get14() {
   return request({
     url: '/data/trajectory/get14',
     method: 'get',
-    params: query
+    //params: query
   })
 }
