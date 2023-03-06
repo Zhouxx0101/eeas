@@ -1,6 +1,9 @@
 package com.ruoyi.eeas.controller;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,5 +103,49 @@ public class NumberChangeController extends BaseController
     public AjaxResult remove(@PathVariable Long[] ids)
     {
         return toAjax(numberChangeService.deleteNumberChangeByIds(ids));
+    }
+
+    /**
+     * 查询每日新增数
+     */
+    @PreAuthorize("@ss.hasPermi('data:change:list')")
+    @GetMapping("/increase")
+    public List<Map<Object, Object>> increase()
+    {
+        List<Map<Object, Object>> map = numberChangeService.getIncrease();
+        return map;
+    }
+
+    /**
+     * 查询每日确诊数
+     */
+    @PreAuthorize("@ss.hasPermi('data:change:list')")
+    @GetMapping("/diagnosis")
+    public List<Map<Object, Object>> diagnosis()
+    {
+        List<Map<Object, Object>> map = numberChangeService.getDiagnosis();
+        return map;
+    }
+
+    /**
+     * 查询每日密切接触者人数
+     */
+    @PreAuthorize("@ss.hasPermi('data:change:list')")
+    @GetMapping("/closeContact")
+    public List<Map<Object, Object>> closeContact()
+    {
+        List<Map<Object, Object>> map = numberChangeService.getCloseContact();
+        return map;
+    }
+
+    /**
+     * 查询每日正在接受医学观察人数
+     */
+    @PreAuthorize("@ss.hasPermi('data:change:list')")
+    @GetMapping("/medicalObservation")
+    public List<Map<Object, Object>> medicalObservation()
+    {
+        List<Map<Object, Object>> map = numberChangeService.getMedicalObservation();
+        return map;
     }
 }
