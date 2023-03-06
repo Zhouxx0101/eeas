@@ -1,6 +1,9 @@
 package com.ruoyi.eeas.service;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.eeas.domain.NumberChange;
@@ -60,4 +63,32 @@ public interface INumberChangeService extends IService<NumberChange>
      * @return 结果
      */
     int deleteNumberChangeById(Long id);
+
+    /**
+     * 查询每日新增数
+     *
+     * @return 结果
+     */
+    List<Map<Object, Object>> getIncrease();
+
+    /**
+     * 查询每日确诊数
+     *
+     * @return 结果
+     */
+    List<Map<Object, Object>> getDiagnosis();
+
+    /**
+     * 查询每日密切接触者人数
+     *
+     * @return 结果
+     */
+    List<Map<Object, Object>> getCloseContact();
+
+    /**
+     * 查询每日正在接受医学观察人数
+     *
+     * @return 结果
+     */
+    List<Map<Object, Object>> getMedicalObservation();
 }

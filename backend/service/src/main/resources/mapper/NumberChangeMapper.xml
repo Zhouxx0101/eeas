@@ -85,4 +85,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <select id="getIncrease" resultType="Map">
+        select start_time, increase
+        from eeas_number_change
+    </select>
+
+    <select id="getDiagnosis" resultType="Map">
+        select start_time, diagnosis
+        from eeas_number_change
+    </select>
+
+    <select id="getCloseContact" resultType="Map">
+        select start_time, close_contact
+        from eeas_number_change
+    </select>
+
+    <select id="getMedicalObservation" resultType="Map">
+        select start_time, medical_observation
+        from eeas_number_change
+    </select>
 </mapper>
