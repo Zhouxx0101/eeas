@@ -135,4 +135,24 @@ public class NumberChangeServiceImpl extends ServiceImpl<NumberChangeMapper, Num
     public List<Map<Object, Object>> getMedicalObservation() {
         return numberChangeMapper.getMedicalObservation();
     }
+
+    /**
+     * 查询每日新增和确诊数
+     *
+     * @return 结果
+     */
+    @Override
+    public List<Map<Object, Object>> getIncreaseAndDiagnosis() {
+        return numberChangeMapper.getIncreaseAndDiagnosis();
+    }
+
+    /**
+     * 查询每日密切接触者人数和正在接受医学观察人数
+     *
+     * @return 结果
+     */
+    @Override
+    public List<Map<Object, Object>> getCloseContactAndMedicalObservation() {
+        return numberChangeMapper.getCloseContactAndMedicalObservation();
+    }
 }
