@@ -106,7 +106,7 @@ public class TrajectoryController extends BaseController
     /**
      * 查询近1天轨迹数据列表
      */
-    @PreAuthorize("@ss.hasPermi('data:trajectory:list')")
+    //@PreAuthorize("@ss.hasPermi('data:trajectory:list')")
     @GetMapping("/get1")
     public AjaxResult get1()
     {
@@ -117,7 +117,7 @@ public class TrajectoryController extends BaseController
     /**
      * 查询1天至7天轨迹数据列表
      */
-    @PreAuthorize("@ss.hasPermi('data:trajectory:list')")
+   //@PreAuthorize("@ss.hasPermi('data:trajectory:list')")
     @GetMapping("/get1To7")
     public AjaxResult get1To7()
     {
@@ -128,7 +128,7 @@ public class TrajectoryController extends BaseController
     /**
      * 查询7天至14天轨迹数据列表
      */
-    @PreAuthorize("@ss.hasPermi('data:trajectory:list')")
+   //@PreAuthorize("@ss.hasPermi('data:trajectory:list')")
     @GetMapping("/get7To14")
     public AjaxResult get7To14()
     {
@@ -139,7 +139,7 @@ public class TrajectoryController extends BaseController
     /**
      * 查询14天以上轨迹数据列表
      */
-    @PreAuthorize("@ss.hasPermi('data:trajectory:list')")
+   //@PreAuthorize("@ss.hasPermi('data:trajectory:list')")
     @GetMapping("/get14")
     public AjaxResult get14()
     {
