@@ -114,9 +114,10 @@ export default {
   },
   methods: {
     handler({ BMap, map }) {
-      // center坐标是天津市津南区的经纬度
-      this.center.lng = 117.380;
-      this.center.lat = 38.890;
+      // this.center.lng = 116.404;
+      // this.center.lat = 39.915;
+      this.center.lng = 117.35267834853804;
+      this.center.lat = 38.99494446989348;
       this.zoom = this.zoom;
 
       // 海量点绘制点集合初始化
@@ -145,49 +146,49 @@ export default {
       }
       
     },
-    getPoints(){
-      console.log("getPoints called")
-      get1().then(response => {
+    async getPoints(){
+      // console.log("getPoints called")
+      await get1().then(response => {
         console.log("get1 called")
         console.log(response)
         if (response.code===200){
           console.log("1")
-          for (let i = 0; i < response.rows.length; i++) {
-            const position = {lng: response.rows[i].longitude, lat: response.rows[i].latitude}
+          for (let i = 0; i < response.data.length; i++) {
+            const position = {lng: response.data[i].longitude, lat: response.data[i].latitude}
             this.points1.push(position)
               }
             } 
             });
-      get1To7().then(response => {
+      await get1To7().then(response => {
         console.log("get1To7 called")
         console.log(response)
         if (response.code===200){
-            console.log("2")
-            for (let i = 0; i < response.rows.length; i++) {
-              const position = {lng: response.rows[i].longitude, lat: response.rows[i].latitude}
+            // console.log("2")
+            for (let i = 0; i < response.data.length; i++) {
+              const position = {lng: response.data[i].longitude, lat: response.data[i].latitude}
               this.points2.push(position)
               }
             } 
             });
          
-      get7To14().then(response => {
+      await get7To14().then(response => {
         console.log("get7To4 called")
         console.log(response)
         if (response.code===200){
-          console.log("1")
-          for (let i = 0; i < response.rows.length; i++) {
-            const position = {lng: response.rows[i].longitude, lat: response.rows[i].latitude}
+          // console.log("1")
+          for (let i = 0; i < response.data.length; i++) {
+            const position = {lng: response.data[i].longitude, lat: response.data[i].latitude}
             this.points3.push(position)
               }
             } 
             });            
-      get14().then(response => {
+      await get14().then(response => {
         console.log("get14 called")
         console.log(response)
         if (response.code===200){
-            console.log("1")
-            for (let i = 0; i < response.rows.length; i++) {
-              const position = {lng: response.rows[i].longitude, lat: response.rows[i].latitude}
+            // console.log("1")
+            for (let i = 0; i < response.data.length; i++) {
+              const position = {lng: response.data[i].longitude, lat: response.data[i].latitude}
               this.points4.push(position)
               }
             } 
@@ -276,7 +277,7 @@ export default {
       this.center.lat = e.point.lat;
     },
     syncCenterAndZoom(e) {
-      console.log(e.target, 'e.target-->>>>')
+      // console.log(e.target, 'e.target-->>>>')
       const { lng, lat } = e.target.getCenter();
       this.zoom = e.target.getZoom();
     },

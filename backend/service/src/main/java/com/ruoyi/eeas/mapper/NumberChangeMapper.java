@@ -1,9 +1,13 @@
 package com.ruoyi.eeas.mapper;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ruoyi.eeas.domain.NumberChange;
+import org.apache.ibatis.annotations.MapKey;
 
 /**
  * 病例变化数据Mapper接口
@@ -60,4 +64,46 @@ public interface NumberChangeMapper extends BaseMapper<NumberChange>
      * @return 结果
      */
     int deleteNumberChangeByIds(Long[] ids);
+
+    /**
+     * 查询每日新增数
+     *
+     * @return 结果
+     */
+    List<Map<Object, Object>> getIncrease();
+
+    /**
+     * 查询每日确诊数
+     *
+     * @return 结果
+     */
+    List<Map<Object, Object>> getDiagnosis();
+
+    /**
+     * 查询每日密切接触者人数
+     *
+     * @return 结果
+     */
+    List<Map<Object, Object>> getCloseContact();
+
+    /**
+     * 查询每日正在接受医学观察人数
+     *
+     * @return 结果
+     */
+    List<Map<Object, Object>> getMedicalObservation();
+
+    /**
+     * 查询每日新增和确诊数
+     *
+     * @return 结果
+     */
+    List<Map<Object, Object>> getIncreaseAndDiagnosis();
+
+    /**
+     * 查询每日密切接触者人和正在接受医学观察人数
+     *
+     * @return 结果
+     */
+    List<Map<Object, Object>> getCloseContactAndMedicalObservation();
 }
