@@ -92,4 +92,18 @@ public interface NumberChangeMapper extends BaseMapper<NumberChange>
      * @return 结果
      */
     List<Map<Object, Object>> getMedicalObservation();
+
+    /**
+     * 查询每日新增和确诊数
+     *
+     * @return 结果
+     */
+    List<Map<Object, Object>> getIncreaseAndDiagnosis();
+
+    /**
+     * 查询每日密切接触者人和正在接受医学观察人数
+     *
+     * @return 结果
+     */
+    List<Map<Object, Object>> getCloseContactAndMedicalObservation();
 }
