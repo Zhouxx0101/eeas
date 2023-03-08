@@ -42,3 +42,21 @@ export function delChange(id) {
     method: 'delete'
   })
 }
+
+// 查询每日新增和确诊数
+export function getIncreaseAndDiagnosis(query) {
+  return request({
+    url: '/data/change/increaseAndDiagnosis',
+    method: 'get',
+    params: query
+  })
+}
+
+// 查询每日密切接触者人数和正在接受医学观察人数
+export function getCloseContactAndMedicalObservation(query) {
+  return request({
+    url: '/data/change/closeContactAndMedicalObservation',
+    method: 'get',
+    params: query
+  })
+}

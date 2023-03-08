@@ -99,22 +99,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="get1" resultType="Map">
         select longitude, latitude from eeas_trajectory
         where to_days(start_time) = to_days(now())
+        and longitude != "" and latitude != ""
+        limit 200
     </select>
 
     <select id="get1To7" resultType="Map">
         select longitude, latitude from eeas_trajectory
         where date(start_time) <![CDATA[<=]]> DATE_SUB(CURDATE(),INTERVAL 1 DAY)
         and date(start_time) > DATE_SUB(CURDATE(),INTERVAL 7 DAY)
+        and longitude != "" and latitude != ""
+        limit 200
     </select>
 
     <select id="get7To14" resultType="Map">
         select longitude, latitude from eeas_trajectory
         where date(start_time) <![CDATA[<=]]> DATE_SUB(CURDATE(),INTERVAL 7 DAY)
         and date(start_time) > DATE_SUB(CURDATE(),INTERVAL 14 DAY)
+        and longitude != "" and latitude != ""
+        limit 200
     </select>
 
     <select id="get14" resultType="Map">
         select longitude, latitude from eeas_trajectory
         where date(start_time) <![CDATA[<=]]> DATE_SUB(CURDATE(),INTERVAL 14 DAY)
+        and longitude != "" and latitude != ""
+        limit 200
     </select>
 </mapper>

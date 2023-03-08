@@ -148,4 +148,26 @@ public class NumberChangeController extends BaseController
         List<Map<Object, Object>> map = numberChangeService.getMedicalObservation();
         return map;
     }
+
+    /**
+     * 查询每日新增和确诊数
+     */
+    @PreAuthorize("@ss.hasPermi('data:change:list')")
+    @GetMapping("/increaseAndDiagnosis")
+    public List<Map<Object, Object>> increaseAndDiagnosis()
+    {
+        List<Map<Object, Object>> map = numberChangeService.getIncreaseAndDiagnosis();
+        return map;
+    }
+
+    /**
+     * 查询每日密切接触者人数和正在接受医学观察人数
+     */
+    @PreAuthorize("@ss.hasPermi('data:change:list')")
+    @GetMapping("/closeContactAndMedicalObservation")
+    public List<Map<Object, Object>> closeContactAndMedicalObservation()
+    {
+        List<Map<Object, Object>> map = numberChangeService.getCloseContactAndMedicalObservation();
+        return map;
+    }
 }
