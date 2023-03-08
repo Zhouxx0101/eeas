@@ -108,11 +108,10 @@ public class TrajectoryController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('data:trajectory:list')")
     @GetMapping("/get1")
-    public TableDataInfo get1()
+    public AjaxResult get1()
     {
-        startPage();
         List<Map<String, String>> list = trajectoryService.get1();
-        return getDataTable(list);
+        return AjaxResult.success(list);
     }
 
     /**
@@ -120,11 +119,10 @@ public class TrajectoryController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('data:trajectory:list')")
     @GetMapping("/get1To7")
-    public TableDataInfo get1To7()
+    public AjaxResult get1To7()
     {
-        startPage();
         List<Map<String, String>> list = trajectoryService.get1To7();
-        return getDataTable(list);
+        return AjaxResult.success(list);
     }
 
     /**
@@ -132,11 +130,10 @@ public class TrajectoryController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('data:trajectory:list')")
     @GetMapping("/get7To14")
-    public TableDataInfo get7To14()
+    public AjaxResult get7To14()
     {
-        startPage();
         List<Map<String, String>> list = trajectoryService.get7To14();
-        return getDataTable(list);
+        return AjaxResult.success(list);
     }
 
     /**
@@ -144,10 +141,9 @@ public class TrajectoryController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('data:trajectory:list')")
     @GetMapping("/get14")
-    public TableDataInfo get14()
+    public AjaxResult get14()
     {
-        startPage();
         List<Map<String, String>> list = trajectoryService.get14();
-        return getDataTable(list);
+        return AjaxResult.success(list);
     }
 }
