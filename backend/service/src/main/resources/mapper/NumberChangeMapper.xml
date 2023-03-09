@@ -111,9 +111,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="getIncreaseAndDiagnosis" resultType="Map">
-        select start_time, increase, diagnosis
+        select start_time, increase, diagnosis, pred_increase, pred_diag
         from eeas_number_change
-        where start_time is true and increase != "" and diagnosis != ""
+        where start_time is true and (increase != "" or pred_increase != " ") and (diagnosis != ""  or pred_diag != " ")
+        and start_time >= "2022-01-08" and start_time <![CDATA[<=]]>  "2022-04-7"
     </select>
 
     <select id="getCloseContactAndMedicalObservation" resultType="Map">
