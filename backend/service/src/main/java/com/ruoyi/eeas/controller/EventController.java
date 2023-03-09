@@ -41,7 +41,7 @@ public class EventController extends BaseController {
     /**
      * 查询风险区域列表
      */
-    @PreAuthorize("@ss.hasPermi('data:event:area')")
+    @PreAuthorize("@ss.hasPermi('data:event:list')")
     @GetMapping("/area")
     public List<String> getArea() {
         return eventService.selectAreaList();
