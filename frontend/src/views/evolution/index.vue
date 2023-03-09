@@ -10,6 +10,7 @@
 
 import * as echarts from "echarts";
 import { getIncreaseAndDiagnosis, getCloseContactAndMedicalObservation } from "@/api/data/change";
+import { color } from 'echarts/lib/export';
 
   export default {
     data() {
@@ -17,6 +18,8 @@ import { getIncreaseAndDiagnosis, getCloseContactAndMedicalObservation } from "@
         date1: [],
         increase: [],
         diagnosis: [],
+        pred_increase: [],
+        pred_diagnosis: [],
         date2: [],
         closeContact: [],
         medicalObservation: []
@@ -39,8 +42,15 @@ import { getIncreaseAndDiagnosis, getCloseContactAndMedicalObservation } from "@
           console.log("1")
           for (let i = 0; i < response.length; i++) {
             this.date1.push(response[i].start_time.slice(0, 10))
-            this.increase.push(response[i].increase)
-            this.diagnosis.push(response[i].diagnosis)
+            if(response[i].start_time.slice(0, 10) > "2022-03-24") {
+              this.increase.push(null)
+              this.diagnosis.push(null)
+            } else {
+              this.increase.push(response[i].increase)
+              this.diagnosis.push(response[i].diagnosis)
+            }
+            this.pred_increase.push(response[i].pred_increase)
+            this.pred_diagnosis.push(response[i].pred_diag)
               }
             // } 
             });
@@ -74,7 +84,7 @@ import { getIncreaseAndDiagnosis, getCloseContactAndMedicalObservation } from "@
           }
         },
         legend: {
-          data: ["新增数", "确诊数"],
+          data: ["新增数", "确诊数", "预测确诊数", "预测新增数"],
           textStyle: {
             color: "#B4B4B4"
           },
@@ -124,26 +134,43 @@ import { getIncreaseAndDiagnosis, getCloseContactAndMedicalObservation } from "@
         ],
 
         series: [
-          // {
-          //   name: "比率",
-          //   type: "line",
-          //   smooth: true,
-          //   showAllSymbol: true,
-          //   symbol: "emptyCircle",
-          //   symbolSize: 8,
-          //   yAxisIndex: 1,
-          //   itemStyle: {
-          //     normal: {
-          //       color: "#F02FC2"
-          //     }
-          //   },
-          //   data: rateData
-          // },
+          {
+            name: "预测确诊数",
+            type: "line",
+            smooth: true,
+            showAllSymbol: true,
+            symbol: "emptyCircle",
+            symbolSize: 8,
+            // yAxisIndex: 1,
+            itemStyle: {
+              normal: {
+                color: "#F02FC2"
+              }
+            },
+            data: this.pred_diagnosis
+          },
+
+          {
+            name: "预测新增数",
+            type: "line",
+            smooth: true,
+            showAllSymbol: true,
+            symbol: "emptyCircle",
+            symbolSize: 8,
+            yAxisIndex: 1,
+            itemStyle: {
+              normal: {
+                color: "#A000A0"
+              }
+            },
+            data: this.pred_increase
+          },
 
           {
             name: "新增数",
             type: "bar",
             barWidth: 10,
+            yAxisIndex: 1,
             itemStyle: {
               normal: {
                 barBorderRadius: 5,
@@ -399,13 +426,15 @@ import { getIncreaseAndDiagnosis, getCloseContactAndMedicalObservation } from "@
         myChart.dispatchAction({
           type: "highlight",
           seriesIndex: 0,
-          dataIndex: app.currentIndex
+          dataIndex: app.currentIndex,
+          // color: "#000000"
         });
         // 显示 tooltip
         myChart.dispatchAction({
           type: "showTip",
           seriesIndex: 0,
-          dataIndex: app.currentIndex
+          dataIndex: app.currentIndex,
+          // color: "#000000"
         });
       }, 3000);
       if (option && typeof option === "object") {
@@ -423,3 +452,10 @@ import { getIncreaseAndDiagnosis, getCloseContactAndMedicalObservation } from "@
     }
   }
 </script>
+
+<!-- <style>
+  .multipleXAxes1 {
+    color: #000000   
+  }
+  
+</style> -->
