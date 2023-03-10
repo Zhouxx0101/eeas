@@ -2,6 +2,7 @@ package com.ruoyi.eeas.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ruoyi.eeas.domain.Event;
+import io.lettuce.core.dynamic.annotation.Param;
 
 import java.util.List;
 
@@ -31,9 +32,10 @@ public interface EventMapper extends BaseMapper<Event> {
     /**
      * 查询风险区域列表
      *
+     * @param time_ 目标时间段
      * @return 风险区域集合
      */
-    List<String> selectAreaList();
+    List<String> selectAreaList(String time_);
 
     /**
      * 新增事件数据
