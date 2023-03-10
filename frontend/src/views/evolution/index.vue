@@ -81,6 +81,9 @@ import { color } from 'echarts/lib/export';
               show: true,
               backgroundColor: "transparent"
             }
+          },
+          textStyle: {
+            color: "#969696"
           }
         },
         legend: {
@@ -300,7 +303,10 @@ import { color } from 'echarts/lib/export';
               show: true,
               backgroundColor: "transparent"
             }
-          }
+          },
+          textStyle : {
+            color: "#969696"
+        },
         },
         legend: {
           data: ["密切接触者人数", "正在接受医学观察人数", "比率"],
@@ -427,14 +433,12 @@ import { color } from 'echarts/lib/export';
           type: "highlight",
           seriesIndex: 0,
           dataIndex: app.currentIndex,
-          // color: "#000000"
         });
         // 显示 tooltip
         myChart.dispatchAction({
           type: "showTip",
           seriesIndex: 0,
           dataIndex: app.currentIndex,
-          // color: "#000000"
         });
       }, 3000);
       if (option && typeof option === "object") {
@@ -452,10 +456,3 @@ import { color } from 'echarts/lib/export';
     }
   }
 </script>
-
-<!-- <style>
-  .multipleXAxes1 {
-    color: #000000   
-  }
-  
-</style> -->
