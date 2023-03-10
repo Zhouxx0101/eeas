@@ -61,7 +61,7 @@ import { color } from 'echarts/lib/export';
       );
       // 绘制图表
       option = {
-                        backgroundColor: "transparent",
+        backgroundColor: "transparent",
         title: {
           text: "新增与确诊人数演化统计",
           x: "center",
@@ -280,7 +280,7 @@ import { color } from 'echarts/lib/export';
       );
       // 绘制图表
       option = {
-                        backgroundColor: "transparent",
+        backgroundColor: "transparent",
         title: {
           text: "密接与隔离者演化统计",
           x: "center",
