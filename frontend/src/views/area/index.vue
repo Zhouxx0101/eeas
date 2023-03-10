@@ -3,7 +3,7 @@
         <label>地区：<input v-model="location" /></label>
         <label>小区：<input v-model="keyword" /></label>
         <input type="button" value="搜索" @click="searchBtn" />
-        <Timeline :timelineList="timeLineArr" @scrollEvent="scrollEvent" @refresh="refresh" id="timeline" />
+        <Timeline :timelineList="timeLineArr" @refresh="refresh" id="timeline" />
         <baidu-map :center="center" :zoom="zoom" @ready="handler" class="getMap" @click="getClickInfo"
             :scroll-wheel-zoom="true">
         </baidu-map>
@@ -261,25 +261,8 @@ export default {
             };
             return result;
         },
-        // 滚动监听
-        scrollEvent(e) {
-            if (
-                e.srcElement.scrollLeft + e.srcElement.clientWidth >=
-                e.srcElement.scrollWidth
-            ) {
-                // 这里正常请求数据即可
-                let data = [
 
-                ];
-                if (!this.nomore) {
-                    this.timeLineArr[this.timeLineArr.length - 1].isShow = true;
-                    this.timeLineArr.push(...data);
-                    this.nomore = true;
-                }
-            }
-        },
-
-        //更新地图
+        //时间轴更新地图
         async refresh(val) {
             /*
             this.map.addControl(new BMap.MapTypeControl());
