@@ -5,11 +5,9 @@
                 <div class="out-circle">
                     <div class="in-circle"></div>
                     <div class="timeline-date">
-                        <el-popover placement="bottom" width="100" trigger="hover" :content="item.content">
-                            <el-button type="primary" plain slot="reference" size="small" @click="refresh(item.date)">
-                                {{ item.date }}
-                            </el-button>
-                        </el-popover>
+                        <el-button plain type="primary" size="mini" @click="refresh(item.date)">
+                            {{ item.date }}
+                        </el-button>
                     </div>
                 </div>
                 <div class="long-line" v-show="item.isShow"
@@ -34,12 +32,6 @@ export default Vue.component("Timeline", {
     },
     mounted() { },
     methods: {
-        scrollEvent(e) {
-            this.$emit("scrollEvent", e);
-        },
-        handleBottomClick() {
-            this.$emit("handleBottomClick");
-        },
         refresh(val) {
             this.$emit("refresh", val);
         },
@@ -53,7 +45,7 @@ ul.timeline-wrapper {
     margin: 0;
     padding-top: 20px;
     padding-bottom: 50px;
-    padding-left: 40px;
+    padding-left: 50px;
     padding-right: 20px;
     white-space: nowrap;
     overflow-x: auto;
@@ -66,7 +58,6 @@ ul.timeline-wrapper {
 
     .timeline-box {
         text-align: center;
-
         // position: absolute;
         display: flex;
         align-items: center;
@@ -94,6 +85,7 @@ ul.timeline-wrapper {
             .timeline-date {
                 color: #333;
                 margin-top: 60px;
+                margin-left: -30px;
 
                 .father-text {
                     font-weight: 700;
@@ -174,7 +166,7 @@ ul.timeline-wrapper {
 
     .timeline-content {
         box-sizing: border-box;
-        margin-left: 20px;
+        margin-left: -20px;
         height: 100px;
         padding: 0 0 0 20px;
         text-align: left;
