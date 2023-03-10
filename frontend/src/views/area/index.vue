@@ -3,6 +3,7 @@
         <label>地区：<input v-model="location" /></label>
         <label>小区：<input v-model="keyword" /></label>
         <input type="button" value="搜索" @click="searchBtn" />
+        <Timeline :timelineList="timeLineArr" @scrollEvent="scrollEvent" @refresh="refresh" id="timeline" />
         <baidu-map :center="center" :zoom="zoom" @ready="handler" class="getMap" @click="getClickInfo"
             :scroll-wheel-zoom="true">
         </baidu-map>
@@ -10,7 +11,7 @@
 </template>
 <script>
 import { listArea } from "@/api/data/event";
-
+import { Timeline } from "@/components/TimeLine/index";
 
 export default {
     data() {
@@ -21,7 +22,82 @@ export default {
             location: "天津",
             keyword: "南开大学津南校区",
             BMap: "",
-            map: ""
+            map: "",
+            nomore: true,
+            timeLineArr: [
+                {
+                    id: 1,
+                    date: "2022-01",
+                    content: "2022-01",
+                    isShow: true,
+                },
+                {
+                    id: 2,
+                    date: "2022-02",
+                    content: "2022-02",
+                    isShow: true,
+                },
+                {
+                    id: 3,
+                    date: "2022-03",
+                    content: "2022-03",
+                    isShow: true,
+                },
+                {
+                    id: 4,
+                    date: "2022-04",
+                    content: "2022-04",
+                    isShow: true,
+                },
+                {
+                    id: 5,
+                    date: "2022-05",
+                    content: "2022-05",
+                    isShow: true,
+                },
+                {
+                    id: 6,
+                    date: "2022-06",
+                    content: "2022-06",
+                    isShow: true,
+                },
+                {
+                    id: 7,
+                    date: "2022-07",
+                    content: "2022-07",
+                    isShow: true,
+                },
+                {
+                    id: 8,
+                    date: "2022-08",
+                    content: "2022-08",
+                    isShow: true,
+                },
+                {
+                    id: 9,
+                    date: "2022-09",
+                    content: "2022-09",
+                    isShow: true,
+                },
+                {
+                    id: 10,
+                    date: "2022-10",
+                    content: "2022-10",
+                    isShow: true,
+                },
+                {
+                    id: 11,
+                    date: "2022-11",
+                    content: "2022-11",
+                    isShow: true,
+                },
+                {
+                    id: 12,
+                    date: "2022-12",
+                    content: "2022-12",
+                    isShow: false,
+                }
+            ]
         };
     },
     methods: {
@@ -31,8 +107,6 @@ export default {
             var point = new BMap.Point(this.center.lng, this.center.lat);
             map.addControl(new BMap.MapTypeControl());
             map.centerAndZoom(point, 13);
-            var marker = new BMap.Marker(point); // 创建标注
-            map.addOverlay(marker); // 将标注添加到地图中
             var circle = new BMap.Circle(point, 6, {
                 strokeColor: "Blue",
                 strokeWeight: 6,
@@ -41,14 +115,12 @@ export default {
                 fillColor: "#f03",
             });
             map.addOverlay(circle);
-            await listArea().then(response => {
+            await listArea("2022-01").then(response => {
                 this.areas = response;
             });
             this.showArea(this.location, this.areas, map);
         },
         getClickInfo(e) {
-            //   console.log(e.point.lng);
-            //   console.log(e.point.lat);
             this.center.lng = e.point.lng;
             this.center.lat = e.point.lat;
         },
@@ -91,7 +163,7 @@ export default {
                                 if (!geo) {
                                     var location = house.location;
                                     var point = new BMap.Point(location.lng, location.lat);
-                                    map.centerAndZoom(point, 19);
+                                    //map.centerAndZoom(point, 19);
                                     var marker = new BMap.Marker(point);
                                     marker.setAnimation(BMAP_ANIMATION_BOUNCE);
                                     map.addOverlay(marker);
@@ -189,13 +261,57 @@ export default {
             };
             return result;
         },
+        // 滚动监听
+        scrollEvent(e) {
+            if (
+                e.srcElement.scrollLeft + e.srcElement.clientWidth >=
+                e.srcElement.scrollWidth
+            ) {
+                // 这里正常请求数据即可
+                let data = [
+
+                ];
+                if (!this.nomore) {
+                    this.timeLineArr[this.timeLineArr.length - 1].isShow = true;
+                    this.timeLineArr.push(...data);
+                    this.nomore = true;
+                }
+            }
+        },
+
+        //更新地图
+        async refresh(val) {
+            /*
+            this.map.addControl(new BMap.MapTypeControl());
+            this.map.centerAndZoom(point, 13);
+            var circle = new this.BMap.Circle(point, 6, {
+                strokeColor: "Blue",
+                strokeWeight: 6,
+                strokeOpacity: 1,
+                Color: "Blue",
+                fillColor: "#f03",
+            });
+            this.map.addOverlay(circle);
+            */
+            let allOverlayList = this.map.getOverlays();
+            //清除所有覆盖物
+            for (var i = 0; i < allOverlayList.length; i++) {
+                this.map.removeOverlay(allOverlayList[i]);
+            }
+            await listArea(val).then(response => {
+                this.areas = response;
+            });
+            this.showArea(this.location, this.areas, this.map);
+        },
     },
 };
 
 </script>
+
 <style lang="scss" scoped>
 .getMap {
     width: 100%;
     height: 781px;
 }
 </style>
+   
