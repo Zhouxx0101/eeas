@@ -43,13 +43,13 @@
 
         <!--海量点绘制-->
         <!--近一天-->
-        <bm-point-collection :points="points1" shape="BMAP_POINT_SHAPE_STAR" color="rgb(165, 42, 42)" size="BMAP_POINT_SIZE_SMALL" @click="clickHandler"></bm-point-collection>
+        <bm-point-collection :points="points1" shape="BMAP_POINT_SHAPE_STAR" color="red" size="BMAP_POINT_SIZE_SMALL" @click="clickHandler"></bm-point-collection>
         <!--小于等于7天-->
-        <bm-point-collection :points="points2" shape="BMAP_POINT_SHAPE_STAR" color="red" size="BMAP_POINT_SIZE_SMALL" @click="clickHandler"></bm-point-collection>
+        <bm-point-collection :points="points2" shape="BMAP_POINT_SHAPE_STAR" color="purple" size="BMAP_POINT_SIZE_SMALL" @click="clickHandler"></bm-point-collection>
         <!--小于等于14天-->
-        <bm-point-collection :points="points3" shape="BMAP_POINT_SHAPE_STAR" color="rgb(255, 0, 136)" size="BMAP_POINT_SIZE_SMALL" @click="clickHandler"></bm-point-collection>
+        <bm-point-collection :points="points3" shape="BMAP_POINT_SHAPE_STAR" color="green" size="BMAP_POINT_SIZE_SMALL" @click="clickHandler"></bm-point-collection>
         <!--大于14天-->
-        <bm-point-collection :points="points4" shape="BMAP_POINT_SHAPE_STAR" color="rgb(221, 160, 160)" size="BMAP_POINT_SIZE_SMALL" @click="clickHandler"></bm-point-collection>
+        <bm-point-collection :points="points4" shape="BMAP_POINT_SHAPE_STAR" color="brown" size="BMAP_POINT_SIZE_SMALL" @click="clickHandler"></bm-point-collection>
         <!--
         
         <bm-marker :position="{lng: 116.404, lat: 39.915}" :dragging="true" animation="BMAP_ANIMATION_BOUNCE">
@@ -344,7 +344,7 @@ export default {
   .circle1 {
     width:35px;
     height:35px;
-    background: rgb(165, 42, 42);
+    background: red;
     -moz-border-radius: 50px;
     -webkit-border-radius: 50px;
     border-radius: 50px;
@@ -352,7 +352,7 @@ export default {
   .circle2 {
     width:35px;
     height:35px;
-    background: red;
+    background: purple;
     -moz-border-radius: 50px;
     -webkit-border-radius: 50px;
     border-radius: 50px;
@@ -360,7 +360,7 @@ export default {
  .circle3 {
     width:35px;
     height:35px;
-    background: rgb(255, 0, 136);
+    background: green;
     -moz-border-radius: 50px;
     -webkit-border-radius: 50px;
     border-radius: 50px;
@@ -368,7 +368,7 @@ export default {
  .circle4 {
     width:35px;
     height:35px;
-    background: rgb(221, 160, 160);
+    background: brown;
     -moz-border-radius: 50px;
     -webkit-border-radius: 50px;
     border-radius: 50px;
