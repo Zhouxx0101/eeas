@@ -125,4 +125,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         and longitude != "" and latitude != ""
         limit 200
     </select>
+
+    <select id="getByDate" parameterType="String" resultType="Map">
+        select longitude, latitude from eeas_trajectory
+        where start_time = #{date}
+        and longitude != "" and latitude != ""
+        limit 200
+    </select>
+
+    <select id="getPlacesByDate" parameterType="String" resultType="String">
+        select place from eeas_trajectory
+        where start_time = #{date}
+    </select>
 </mapper>
