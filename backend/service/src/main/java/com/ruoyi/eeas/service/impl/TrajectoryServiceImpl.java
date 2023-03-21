@@ -1,5 +1,6 @@
 package com.ruoyi.eeas.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -132,5 +133,25 @@ public class TrajectoryServiceImpl extends ServiceImpl<TrajectoryMapper, Traject
     @Override
     public List<Map<String, String>> get14() {
         return trajectoryMapper.get14();
+    }
+
+    /**
+     * 根据日期查询轨迹数据
+     *
+     * @return 轨迹数据
+     */
+    @Override
+    public List<Map<String, String>> getByDate(String date) {
+        return trajectoryMapper.getByDate(date);
+    }
+
+    /**
+     * 根据日期查询地点数据
+     *
+     * @return 轨迹数据
+     */
+    @Override
+    public List<String> getPlacesByDate(String date) {
+        return trajectoryMapper.getPlacesByDate(date);
     }
 }

@@ -1,6 +1,7 @@
 package com.ruoyi.eeas.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.eeas.domain.Event;
@@ -67,4 +68,18 @@ public interface IEventService extends IService<Event>
      * @return 结果
      */
     int deleteEventById(Long id);
+
+    /**
+     * 根据日期查询封控数据
+     *
+     * @return 轨迹数据
+     */
+    String getByDate(String date);
+
+    /**
+     * 根据地点查询经纬度
+     *
+     * @return 经纬度
+     */
+    List<Map<String, String>> selectLongitudeAndLatitudeByPlace(String place);
 }
