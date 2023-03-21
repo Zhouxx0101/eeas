@@ -1,5 +1,6 @@
 package com.ruoyi.eeas.mapper;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -89,4 +90,18 @@ public interface TrajectoryMapper extends BaseMapper<Trajectory>
      * @return 轨迹数据
      */
     List<Map<String, String>> get14();
+
+    /**
+     * 根据日期查询轨迹数据
+     *
+     * @return 轨迹数据
+     */
+    List<Map<String, String>> getByDate(String date);
+
+    /**
+     * 根据日期查询地点数据
+     *
+     * @return 轨迹数据
+     */
+    List<String> getPlacesByDate(String date);
 }

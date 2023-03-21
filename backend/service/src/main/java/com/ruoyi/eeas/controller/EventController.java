@@ -1,19 +1,26 @@
 package com.ruoyi.eeas.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.core.redis.RedisCache;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.eeas.config.RedisKeyUtil;
 import com.ruoyi.eeas.domain.Event;
 import com.ruoyi.eeas.service.IEventService;
+import com.ruoyi.eeas.service.ITrajectoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * 事件数据Controller
@@ -26,6 +33,10 @@ import java.util.List;
 public class EventController extends BaseController {
     @Autowired
     private IEventService eventService;
+    @Autowired
+    private ITrajectoryService trajectoryService;
+    @Autowired
+    private RedisCache redisCache;
 
     /**
      * 查询事件数据列表
@@ -96,5 +107,60 @@ public class EventController extends BaseController {
     @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids) {
         return toAjax(eventService.deleteEventByIds(ids));
+    }
+
+    /**
+     * 根据日期查询封控小区列表
+     */
+    @PreAuthorize("@ss.hasPermi('data:event:list')")
+    @GetMapping("/getByDate")
+    public AjaxResult getByDate(String date)
+    {
+        String places = eventService.getByDate(date);
+        places = places.replace('{', '[').replace('}', ']');
+        List<String> listSealedPlaces = JSONArray.parseArray(places, String.class);
+        List<String> listTrajectoryPlaces = trajectoryService.getPlacesByDate(date);
+        //取交集
+        List<String> sealedAndTrajectory = listSealedPlaces.stream().filter(item -> listTrajectoryPlaces.contains(item)).collect(toList());
+        //取差集
+        List<String> OnlySealed = listSealedPlaces.stream().filter(item -> !listTrajectoryPlaces.contains(item)).collect(toList());
+        List<String> OnlyTrajectory = listTrajectoryPlaces.stream().filter(item -> !listSealedPlaces.contains(item)).collect(toList());
+        //根据地名获取经纬度
+        Map<String, List<Map<String, String>>> map = new HashMap<>();
+        List<Map<String, String>> sealedAndTrajectoryList = getLongitudeAndLatitudeByPlaces(sealedAndTrajectory);
+        List<Map<String, String>> OnlySealedList = getLongitudeAndLatitudeByPlaces(OnlySealed);
+        List<Map<String, String>> OnlyTrajectoryList = getLongitudeAndLatitudeByPlaces(OnlyTrajectory);
+        map.put("sealedAndTrajectoryList", sealedAndTrajectoryList);
+        map.put("OnlySealedList", OnlySealedList);
+        map.put("OnlyTrajectoryList", OnlyTrajectoryList);
+        return AjaxResult.success(map);
+    }
+
+    /**
+     * 根据地名查询经纬度
+     * @param listPlaces
+     * @return
+     */
+    public List<Map<String, String>> getLongitudeAndLatitudeByPlaces(List<String> listPlaces) {
+        List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+        for (int i = 0; i < listPlaces.size(); i++) {
+            String place = listPlaces.get(i);
+            Object val = redisCache.getCacheObject(RedisKeyUtil.REDIS_PLACE_LONGITUDE_LATITUDE+place);
+            if(Objects.nonNull(val)) {
+                Map<String, String> map = new HashMap<String, String>();
+                String[] point = val.toString().split(",");
+                map.put("longitude", point[0]);
+                map.put("latitude", point[1]);
+                list.add(map);
+            } else {
+                List<Map<String, String>> res = eventService.selectLongitudeAndLatitudeByPlace(place);
+                if(res.size() > 0) {
+                    Map<String, String> map = res.get(0);
+                    list.add(map);
+                    redisCache.setCacheObject(RedisKeyUtil.REDIS_PLACE_LONGITUDE_LATITUDE+place, map.get("longitude")+','+map.get("latitude"), RedisKeyUtil.REDIS_PLACE_LONGITUDE_LATITUDE_EXPIRATION, TimeUnit.DAYS);
+                }
+            }
+        }
+        return list;
     }
 }

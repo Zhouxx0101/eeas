@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ruoyi.eeas.domain.Event;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 事件数据Mapper接口
@@ -66,4 +67,18 @@ public interface EventMapper extends BaseMapper<Event> {
      * @return 结果
      */
     int deleteEventByIds(Long[] ids);
+
+    /**
+     * 根据日期查询封控数据
+     *
+     * @return 轨迹数据
+     */
+    String getByDate(String date);
+
+    /**
+     * 根据地点查询经纬度
+     *
+     * @return 经纬度
+     */
+    List<Map<String, String>> selectLongitudeAndLatitudeByPlace(String place);
 }
