@@ -1,6 +1,8 @@
 package com.ruoyi.eeas.mapper;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ruoyi.eeas.domain.Trajectory;
@@ -60,4 +62,46 @@ public interface TrajectoryMapper extends BaseMapper<Trajectory>
      * @return 结果
      */
     int deleteTrajectoryByIds(Long[] ids);
+
+    /**
+     * 查询近1天的轨迹数据
+     *
+     * @return 轨迹数据
+     */
+    List<Map<String, String>> get1();
+
+    /**
+     * 查询1天至7天的轨迹数据
+     *
+     * @return 轨迹数据
+     */
+    List<Map<String, String>> get1To7();
+
+    /**
+     * 查询7天至14天的轨迹数据
+     *
+     * @return 轨迹数据
+     */
+    List<Map<String, String>> get7To14();
+
+    /**
+     * 查询14天以上的轨迹数据
+     *
+     * @return 轨迹数据
+     */
+    List<Map<String, String>> get14();
+
+    /**
+     * 根据日期查询轨迹数据
+     *
+     * @return 轨迹数据
+     */
+    List<Map<String, String>> getByDate(String date);
+
+    /**
+     * 根据日期查询地点数据
+     *
+     * @return 轨迹数据
+     */
+    List<String> getPlacesByDate(String date);
 }

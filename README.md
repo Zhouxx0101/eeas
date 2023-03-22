@@ -33,9 +33,9 @@
 ## 启动方式
 
 1. 数据库导入SQL文件
-2. 启动Redis
+2. 启动Redis，Windows安装Redis参考链接：https://blog.csdn.net/qq_43571415/article/details/103715019
 3. 导入backend项目
-4. 修改数据库配置（username & password），redis配置，等待Maven下载依赖
+4. 在ruoyi-admin/src/main/resources目录级下，在文件application.yml,application-druid.yml中修改mysql数据库配置（username & password），redis配置，等待Maven下载依赖
 5. 启动backend项目
 6. 切换到frontend文件夹下
 7. 下载依赖npm install (需要提前安装node.js)

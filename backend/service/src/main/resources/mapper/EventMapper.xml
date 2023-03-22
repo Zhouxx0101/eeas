@@ -21,9 +21,10 @@
         from eeas_event
     </sql>
 
-    <select id="selectAreaList" resultMap="AreaResult">
+    <select id="selectAreaList" resultType="java.lang.String">
         select place
         from eeas_event
+
         where DATE_FORMAT(date, '%Y-%m-%d') like #{time_}
     </select>
 
@@ -83,4 +84,14 @@
             #{id}
         </foreach>
     </delete>
+
+    <select id="getByDate" parameterType="String" resultType="String">
+        select place from eeas_event_sealed
+        where time = #{date}
+    </select>
+
+    <select id="selectLongitudeAndLatitudeByPlace" parameterType="String" resultType="Map">
+        select longitude, latitude from eeas_place
+        where place = #{place}
+    </select>
 </mapper>

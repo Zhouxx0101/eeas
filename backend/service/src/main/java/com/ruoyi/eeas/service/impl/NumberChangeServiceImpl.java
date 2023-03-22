@@ -1,6 +1,9 @@
 package com.ruoyi.eeas.service.impl;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,5 +94,65 @@ public class NumberChangeServiceImpl extends ServiceImpl<NumberChangeMapper, Num
     public int deleteNumberChangeById(Long id)
     {
         return numberChangeMapper.deleteNumberChangeById(id);
+    }
+
+    /**
+     * 查询每日新增数
+     *
+     * @return 结果
+     */
+    @Override
+    public List<Map<Object, Object>> getIncrease() {
+        return numberChangeMapper.getIncrease();
+    }
+
+    /**
+     * 查询每日确诊数
+     *
+     * @return 结果
+     */
+    @Override
+    public List<Map<Object, Object>> getDiagnosis() {
+        return numberChangeMapper.getDiagnosis();
+    }
+
+    /**
+     * 查询每日密切接触者人数
+     *
+     * @return 结果
+     */
+    @Override
+    public List<Map<Object, Object>> getCloseContact() {
+        return numberChangeMapper.getCloseContact();
+    }
+
+    /**
+     * 查询每日正在接受医学观察人数
+     *
+     * @return 结果
+     */
+    @Override
+    public List<Map<Object, Object>> getMedicalObservation() {
+        return numberChangeMapper.getMedicalObservation();
+    }
+
+    /**
+     * 查询每日新增和确诊数
+     *
+     * @return 结果
+     */
+    @Override
+    public List<Map<Object, Object>> getIncreaseAndDiagnosis() {
+        return numberChangeMapper.getIncreaseAndDiagnosis();
+    }
+
+    /**
+     * 查询每日密切接触者人数和正在接受医学观察人数
+     *
+     * @return 结果
+     */
+    @Override
+    public List<Map<Object, Object>> getCloseContactAndMedicalObservation() {
+        return numberChangeMapper.getCloseContactAndMedicalObservation();
     }
 }

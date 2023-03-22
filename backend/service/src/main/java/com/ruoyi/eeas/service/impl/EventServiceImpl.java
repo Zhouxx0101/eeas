@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 事件数据Service业务层处理
@@ -97,5 +98,25 @@ public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements
     @Override
     public int deleteEventById(Long id) {
         return eventMapper.deleteEventById(id);
+    }
+
+    /**
+     * 根据日期查询封控数据
+     *
+     * @return 轨迹数据
+     */
+    @Override
+    public String getByDate(String date) {
+        return eventMapper.getByDate(date);
+    }
+
+    /**
+     * 根据地点查询经纬度
+     *
+     * @return 经纬度
+     */
+    @Override
+    public List<Map<String, String>> selectLongitudeAndLatitudeByPlace(String place) {
+        return eventMapper.selectLongitudeAndLatitudeByPlace(place);
     }
 }
