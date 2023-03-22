@@ -12,9 +12,9 @@
         <result property="source" column="source"/>
     </resultMap>
 
-<!--    <resultMap type="com.ruoyi.eeas.domain.Event" id="AreaResult">-->
-<!--        <result property="place" column="place"/>-->
-<!--    </resultMap>-->
+    <resultMap type="String" id="AreaResult">
+        <result property="place" column="place"/>
+    </resultMap>
 
     <sql id="selectEventVo">
         select id, time, place, event, source
@@ -24,7 +24,8 @@
     <select id="selectAreaList" resultType="java.lang.String">
         select place
         from eeas_event
-        limit 10
+
+        where DATE_FORMAT(date, '%Y-%m-%d') like #{time_}
     </select>
 
     <select id="selectEventList" parameterType="com.ruoyi.eeas.domain.Event" resultMap="EventResult">
