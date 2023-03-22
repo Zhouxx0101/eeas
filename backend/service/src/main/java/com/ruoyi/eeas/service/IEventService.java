@@ -35,7 +35,7 @@ public interface IEventService extends IService<Event>
      *
      * @return 风险区域集合
      */
-    List<String> selectAreaList();
+    List<String> selectAreaList(String time);
 
     /**
      * 新增事件数据
