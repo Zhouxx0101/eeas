@@ -85,4 +85,41 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <select id="getIncrease" resultType="Map">
+        select start_time, increase
+        from eeas_number_change
+        where start_time is true and increase != ""
+    </select>
+
+    <select id="getDiagnosis" resultType="Map">
+        select start_time, diagnosis
+        from eeas_number_change
+        where start_time is true and diagnosis != ""
+    </select>
+
+    <select id="getCloseContact" resultType="Map">
+        select start_time, close_contact
+        from eeas_number_change
+        where start_time is true and close_contact != ""
+    </select>
+
+    <select id="getMedicalObservation" resultType="Map">
+        select start_time, medical_observation
+        from eeas_number_change
+        where start_time is true and medical_observation != ""
+    </select>
+
+    <select id="getIncreaseAndDiagnosis" resultType="Map">
+        select start_time, increase, diagnosis, pred_increase, pred_diag
+        from eeas_number_change
+        where start_time is true and (increase != "" or pred_increase != " ") and (diagnosis != ""  or pred_diag != " ")
+        and start_time >= "2022-01-08" and start_time <![CDATA[<=]]>  "2022-04-7"
+    </select>
+
+    <select id="getCloseContactAndMedicalObservation" resultType="Map">
+        select start_time, close_contact, medical_observation
+        from eeas_number_change
+        where start_time is true and close_contact != "" and medical_observation != ""
+    </select>
 </mapper>

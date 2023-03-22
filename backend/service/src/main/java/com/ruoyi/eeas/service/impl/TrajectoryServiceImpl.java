@@ -1,6 +1,8 @@
 package com.ruoyi.eeas.service.impl;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,5 +93,65 @@ public class TrajectoryServiceImpl extends ServiceImpl<TrajectoryMapper, Traject
     public int deleteTrajectoryById(Long id)
     {
         return trajectoryMapper.deleteTrajectoryById(id);
+    }
+
+    /**
+     * 查询近1天的轨迹数据
+     *
+     * @return 轨迹数据
+     */
+    @Override
+    public List<Map<String, String>> get1() {
+        return trajectoryMapper.get1();
+    }
+
+    /**
+     * 查询1天至7天的轨迹数据
+     *
+     * @return 轨迹数据
+     */
+    @Override
+    public List<Map<String, String>> get1To7() {
+        return trajectoryMapper.get1To7();
+    }
+
+    /**
+     * 查询7天至14天的轨迹数据
+     *
+     * @return 轨迹数据
+     */
+    @Override
+    public List<Map<String, String>> get7To14() {
+        return trajectoryMapper.get7To14();
+    }
+
+    /**
+     * 查询14天以上的轨迹数据
+     *
+     * @return 轨迹数据
+     */
+    @Override
+    public List<Map<String, String>> get14() {
+        return trajectoryMapper.get14();
+    }
+
+    /**
+     * 根据日期查询轨迹数据
+     *
+     * @return 轨迹数据
+     */
+    @Override
+    public List<Map<String, String>> getByDate(String date) {
+        return trajectoryMapper.getByDate(date);
+    }
+
+    /**
+     * 根据日期查询地点数据
+     *
+     * @return 轨迹数据
+     */
+    @Override
+    public List<String> getPlacesByDate(String date) {
+        return trajectoryMapper.getPlacesByDate(date);
     }
 }

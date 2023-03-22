@@ -42,3 +42,39 @@ export function delTrajectory(id) {
     method: 'delete'
   })
 }
+
+// 查询1日内轨迹数据
+export function get1() {
+  return request({
+    url: '/data/trajectory/get1',
+    method: 'get',
+    //params: query
+  })
+}
+
+// 查询1日至7日轨迹数据
+export function get1To7() {
+  return request({
+    url: '/data/trajectory/get1To7',
+    method: 'get',
+    //params: query
+  })
+}
+
+// 查询7日至14日轨迹数据
+export function get7To14() {
+  return request({
+    url: '/data/trajectory/get7To14',
+    method: 'get',
+    //params: query
+  })
+}
+
+// 查询14日以上轨迹数据
+export function get14() {
+  return request({
+    url: '/data/trajectory/get14',
+    method: 'get',
+    //params: query
+  })
+}
