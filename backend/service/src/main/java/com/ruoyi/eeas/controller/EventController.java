@@ -110,13 +110,15 @@ public class EventController extends BaseController {
     }
 
     /**
-     * 根据日期查询封控小区列表
+     * 根据日期查询封控/患者经过/both列表
      */
     @PreAuthorize("@ss.hasPermi('data:event:list')")
-    @GetMapping("/getByDate")
-    public AjaxResult getByDate(String date)
+    @GetMapping("/getByDate/{date}")
+    public AjaxResult getByDate(@PathVariable("date") String date)
     {
         String places = eventService.getByDate(date);
+        System.out.println(date);
+        System.out.println(places);
         places = places.replace('{', '[').replace('}', ']');
         List<String> listSealedPlaces = JSONArray.parseArray(places, String.class);
         List<String> listTrajectoryPlaces = trajectoryService.getPlacesByDate(date);
@@ -131,8 +133,8 @@ public class EventController extends BaseController {
         List<Map<String, String>> OnlySealedList = getLongitudeAndLatitudeByPlaces(OnlySealed);
         List<Map<String, String>> OnlyTrajectoryList = getLongitudeAndLatitudeByPlaces(OnlyTrajectory);
         map.put("sealedAndTrajectoryList", sealedAndTrajectoryList);
-        map.put("OnlySealedList", OnlySealedList);
-        map.put("OnlyTrajectoryList", OnlyTrajectoryList);
+        map.put("onlySealedList", OnlySealedList);
+        map.put("onlyTrajectoryList", OnlyTrajectoryList);
         return AjaxResult.success(map);
     }
 

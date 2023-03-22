@@ -50,3 +50,11 @@ export function delEvent(id) {
     method: 'delete'
   })
 }
+
+// 根据日期查询封控/患者经过/both列表
+export function getByDate(date) {
+  return request({
+    url: '/data/event/getByDate/' + date,
+    method: 'get',
+  })
+}
