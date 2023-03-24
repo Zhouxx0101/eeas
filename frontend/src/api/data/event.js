@@ -58,3 +58,11 @@ export function getByDate(date) {
     method: 'get',
   })
 }
+
+// 查询时间列表
+export function getTimeList() {
+  return request({
+    url: '/data/event/time',
+    method: 'get',
+  })
+}

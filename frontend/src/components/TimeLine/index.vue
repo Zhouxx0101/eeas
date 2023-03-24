@@ -5,7 +5,8 @@
                 <div class="out-circle">
                     <div class="in-circle"></div>
                     <div class="timeline-date">
-                        <el-button plain type="primary" size="mini" @click="refresh(item.date)">
+                        <el-button plain type="primary" size="mini" v-trigger @click="refresh(item.date)">
+                        <!-- <el-button plain type="primary" size="mini" @click="info"> -->
                             {{ item.date }}
                         </el-button>
                     </div>
@@ -32,10 +33,21 @@ export default Vue.component("Timeline", {
     },
     mounted() { },
     methods: {
+        // info() {
+            
+        // },
         refresh(val) {
             this.$emit("refresh", val);
         },
     },
+    directive: {
+        trigger: {
+            inserted(el, binging) {
+                console.log(el)
+                el.click()
+            }
+        }
+    }
 });
 </script>
   
