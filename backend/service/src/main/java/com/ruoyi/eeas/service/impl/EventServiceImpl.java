@@ -119,4 +119,13 @@ public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements
     public List<Map<String, String>> selectLongitudeAndLatitudeByPlace(String place) {
         return eventMapper.selectLongitudeAndLatitudeByPlace(place);
     }
+
+    /**
+     * 查询时间列表
+     * @return 时间列表
+     */
+    @Override
+    public List<String> selectTimeList() {
+        return eventMapper.selectTimeList();
+    }
 }

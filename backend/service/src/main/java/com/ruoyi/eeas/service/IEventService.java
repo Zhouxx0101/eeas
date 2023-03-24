@@ -82,4 +82,10 @@ public interface IEventService extends IService<Event>
      * @return 经纬度
      */
     List<Map<String, String>> selectLongitudeAndLatitudeByPlace(String place);
+
+    /**
+     * 查询时间列表
+     * @return 时间列表
+     */
+    List<String> selectTimeList();
 }
