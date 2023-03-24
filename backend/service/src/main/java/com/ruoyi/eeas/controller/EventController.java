@@ -112,13 +112,15 @@ public class EventController extends BaseController {
     }
 
     /**
-     * 根据日期查询封控小区列表
+     * 根据日期查询封控/患者经过/both列表
      */
     @PreAuthorize("@ss.hasPermi('data:event:list')")
-    @GetMapping("/getByDate")
-    public AjaxResult getByDate(String date)
+    @GetMapping("/getByDate/{date}")
+    public AjaxResult getByDate(@PathVariable("date") String date)
     {
         String places = eventService.getByDate(date);
+        System.out.println(date);
+        System.out.println(places);
         places = places.replace('{', '[').replace('}', ']');
         List<String> listSealedPlaces = JSONArray.parseArray(places, String.class);
         List<String> listTrajectoryPlaces = trajectoryService.getPlacesByDate(date);
@@ -133,8 +135,8 @@ public class EventController extends BaseController {
         List<Map<String, String>> OnlySealedList = getLongitudeAndLatitudeByPlaces(OnlySealed);
         List<Map<String, String>> OnlyTrajectoryList = getLongitudeAndLatitudeByPlaces(OnlyTrajectory);
         map.put("sealedAndTrajectoryList", sealedAndTrajectoryList);
-        map.put("OnlySealedList", OnlySealedList);
-        map.put("OnlyTrajectoryList", OnlyTrajectoryList);
+        map.put("onlySealedList", OnlySealedList);
+        map.put("onlyTrajectoryList", OnlyTrajectoryList);
         return AjaxResult.success(map);
     }
 
@@ -154,15 +156,34 @@ public class EventController extends BaseController {
                 map.put("longitude", point[0]);
                 map.put("latitude", point[1]);
                 list.add(map);
+//                System.out.println("redis");
+//                System.out.println("val: " + val);
+//                System.out.println("point[0]: " + point[0]);
+//                System.out.println("point[1]: " + point[1]);
             } else {
                 List<Map<String, String>> res = eventService.selectLongitudeAndLatitudeByPlace(place);
+//                System.out.println("mysql");
                 if(res.size() > 0) {
+//                    System.out.println("11");
                     Map<String, String> map = res.get(0);
                     list.add(map);
                     redisCache.setCacheObject(RedisKeyUtil.REDIS_PLACE_LONGITUDE_LATITUDE+place, map.get("longitude")+','+map.get("latitude"), RedisKeyUtil.REDIS_PLACE_LONGITUDE_LATITUDE_EXPIRATION, TimeUnit.DAYS);
+//                    System.out.println("map: " + map);
+//                    System.out.println("map.get(\"longitude\")+','+map.get(\"latitude\"): " + map.get("longitude")+','+map.get("latitude"));
+
                 }
             }
         }
         return list;
+    }
+
+    /**
+     * 查询时间列表
+     */
+    @PreAuthorize("@ss.hasPermi('data:event:list')")
+    @GetMapping("/time")
+    public AjaxResult timeList() {
+        List<String> list = eventService.selectTimeList();
+        return AjaxResult.success(list);
     }
 }
