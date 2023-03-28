@@ -31,7 +31,6 @@
 18. 连接池监视：监视当前系统数据库连接池状态，可进行分析SQL找出系统性能瓶颈。
 
 ## 启动方式
-
 1. 数据库导入SQL文件
 2. 启动Redis，Windows安装Redis参考链接：https://blog.csdn.net/qq_43571415/article/details/103715019
 3. 导入backend项目
