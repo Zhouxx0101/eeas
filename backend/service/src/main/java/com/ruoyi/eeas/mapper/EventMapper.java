@@ -78,6 +78,13 @@ public interface EventMapper extends BaseMapper<Event> {
     String getByDate(String date);
 
     /**
+     * 根据日期查询封控小区预测数据
+     *
+     * @return 封控小区预测数据
+     */
+    String getPredictionDataByDate(String date);
+
+    /**
      * 根据地点查询经纬度
      *
      * @return 经纬度

@@ -111,6 +111,16 @@ public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements
     }
 
     /**
+     * 根据日期查询封控预测数据
+     *
+     * @return 轨迹数据
+     */
+    @Override
+    public String getPredictionDataByDate(String date) {
+        return eventMapper.getPredictionDataByDate(date);
+    }
+
+    /**
      * 根据地点查询经纬度
      *
      * @return 经纬度
