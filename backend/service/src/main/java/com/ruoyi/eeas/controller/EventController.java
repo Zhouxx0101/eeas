@@ -141,6 +141,23 @@ public class EventController extends BaseController {
     }
 
     /**
+     * 根据日期查询封控小区预测数据
+     */
+     @PreAuthorize("@ss.hasPermi('data:event:list')")
+     @GetMapping("/getPredictionDataByDate/{date}")
+     public AjaxResult getPredictionDataByDate(@PathVariable("date") String date){
+        String places= eventService.getPredictionDataByDate(date);
+        System.out.println(date);
+        System.out.println(places);
+        places = places.replace('{', '[').replace('}', ']');
+        List<String> sealedPredictionPlaces = JSONArray.parseArray(places, String.class);
+        List<Map<String, String>> sealedPredictionPlacesWithLongitudeAndLatitude = getLongitudeAndLatitudeByPlaces(sealedPredictionPlaces);
+        Map<String,List<Map<String,String>>> map=new HashMap<>();
+        map.put("sealedPredictionList", sealedPredictionPlacesWithLongitudeAndLatitude);
+        return AjaxResult.success(map);
+    }
+
+    /**
      * 根据地名查询经纬度
      * @param listPlaces
      * @return
