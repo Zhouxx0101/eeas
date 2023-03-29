@@ -5,7 +5,8 @@
                 <div class="out-circle">
                     <div class="in-circle"></div>
                     <div class="timeline-date">
-                        <el-button plain type="primary" size="mini" v-trigger @click="refresh(item.date)">
+                        <el-button plain type="primary" size="mini" @click="refresh(item.date)">
+                        <!-- <el-button plain type="primary" size="mini" v-trigger @click="refresh(item.date)"> -->
                         <!-- <el-button plain type="primary" size="mini" @click="info"> -->
                             {{ item.date }}
                         </el-button>
@@ -21,6 +22,18 @@
   
 <script>
 import Vue from "vue";
+// Vue.directive('trigger', {
+//     inserted(el, binging) {
+//         console.log(el)
+//         console.log(el.textContent )
+//         // el.textContent === '20220110' ? el.click() : null
+//         if(el.textContent == ' 20220110 ') {
+//             console.log("bingo!")
+//             el.click()
+//         }
+//         // el.click()
+//     }
+// })
 export default Vue.component("Timeline", {
     name: "Timeline",
     props: {
@@ -33,21 +46,27 @@ export default Vue.component("Timeline", {
     },
     mounted() { },
     methods: {
-        // info() {
-            
-        // },
         refresh(val) {
+            // this.$refs.inputDom.$el.click();
+            // this.$refs.import.$el.click()
+            // this.$refs.btn.$emit('click')
+            // this.$refs.btn
+            // this.el.click()
+            // console.log(this.$el)
+            // console.log(this.$refs.btn[0])
+            // this.$refs.btn[0].click
             this.$emit("refresh", val);
         },
     },
-    directive: {
-        trigger: {
-            inserted(el, binging) {
-                console.log(el)
-                el.click()
-            }
-        }
-    }
+    // directive: {
+    //     trigger: {
+    //         inserted(el, binging) {
+    //             console.log(el)
+    //             el.click()
+                
+    //         }
+    //     }
+    // }
 });
 </script>
   
