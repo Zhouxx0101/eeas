@@ -59,6 +59,14 @@ export function getByDate(date) {
   })
 }
 
+// 根据日期查询封控小区预测数据
+export function getPredictionDataByDate(date) {
+  return request({
+    url: '/data/event/getPredictionDataByDate/' + date,
+    method: 'get',
+  })
+}
+
 // 查询时间列表
 export function getTimeList() {
   return request({
