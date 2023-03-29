@@ -76,23 +76,24 @@
                     </div>
                     <div class="text item">
                         <span>数据源：</span>
-                        <!-- <span>自动导入</span> -->
+                        <span v-if="item.dataSource=='0'">自动导入</span>
+                        <span v-if="item.dataSource=='1'">手动录入</span>
                         <!-- <span>{{item.dataSource}}</span> -->
-                         <dict-tag :options="dict.type.eeas_task" :value="item.dataSource"/>
+                         <!-- <dict-tag :options="dict.type.eeas_task" :value="item.dataSource"/> -->
                         <!-- <dict-tag :options="dict.type.eeas_task">数据源：{{item.dataSource}}</dict-tag> -->
                     </div>
                     <el-button
                         size="mini"
                         type="text"
                         icon="el-icon-edit"
-                        @click="handleUpdate(scope.row)"
+                        @click="handleUpdate(item)"
                         v-hasPermi="['system:task:edit']"
                     >修改</el-button>
                     <el-button
                         size="mini"
                         type="text"
                         icon="el-icon-delete"
-                        @click="handleDelete(scope.row)"
+                        @click="handleDelete(item)"
                         v-hasPermi="['system:task:remove']"
                     >删除</el-button>
 
@@ -248,9 +249,9 @@ export default {
       this.title = "添加任务";
     },
     /** 修改按钮操作 */
-    handleUpdate(row) {
+    handleUpdate(item) {
       this.reset();
-      const id = row.id || this.ids
+      const id = item.id
       getTask(id).then(response => {
         this.form = response.data;
         this.open = true;
@@ -278,8 +279,8 @@ export default {
       });
     },
     /** 删除按钮操作 */
-    handleDelete(row) {
-      const ids = row.id || this.ids;
+    handleDelete(item) {
+      const ids = item.id
       this.$modal.confirm('是否确认删除任务编号为"' + ids + '"的数据项？').then(function() {
         return delTask(ids);
       }).then(() => {
