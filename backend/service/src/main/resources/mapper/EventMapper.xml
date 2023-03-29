@@ -90,8 +90,13 @@
         where time = #{date}
     </select>
 
+    <select id="getPredictionDataByDate" parameterType="String" resultType="String">
+        select place from eeas_event_sealed_prediction
+        where time = #{date}
+    </select>
+
     <select id="selectLongitudeAndLatitudeByPlace" parameterType="String" resultType="Map">
-        select longitude, latitude from eeas_place_copy2
+        select longitude, latitude from eeas_place
         where place = #{place}
     </select>
 

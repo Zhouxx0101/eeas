@@ -31,6 +31,10 @@
                   <p class="mapLegend" style="background-color:blue"/>
                   <span style="color:blue">封控且有患者经过</span>
                 </div>
+                <div>
+                  <p class="mapLegend" style="background-color:yellow"/>
+                  <span style="color:yellow">封控预测数据</span>
+                </div>
                 <!-- <div>
                   <p class="mapLegend" style="background-color:purple"/>
                   <span style="color:purple">仅封控</span>
@@ -58,7 +62,7 @@
             <bm-marker v-for="(item, i) in onlyTrajectoryPoints" :key="i" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_org.png'), size: {width: 32, height: 32}}"></bm-marker>
             <bm-marker v-for="(item, i) in onlySealedPoints" :key="i+onlyTrajectoryPoints.length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_red.png'), size: {width: 32, height: 32}}"></bm-marker>
             <bm-marker v-for="(item, i) in sealedAndTrajectoryPoints" :key="i+onlyTrajectoryPoints.length+onlySealedPoints.length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_blue.png'), size: {width: 32, height: 32}}"></bm-marker>
-   
+            <bm-marker v-for="(item, i) in sealedPredictionPoints" :key="i+onlyTrajectoryPoints.length+onlySealedPoints.length+sealedAndTrajectoryPoints.length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_yellow.png'), size: {width: 32, height: 32}}"></bm-marker>
             <!--海量点绘制-->
             <!--仅有患者经过-->
             <!-- <bm-point-collection :points="onlyTrajectoryPoints" shape="BMAP_POINT_SHAPE_STAR" color="green" size="BMAP_POINT_SIZE_SMALL" @click="clickHandler"></bm-point-collection> -->
@@ -79,8 +83,9 @@
     </div>
     </template>
     <script >
-    import { getByDate, getTimeList } from "@/api/data/event";
+    import { getByDate, getTimeList, getPredictionDataByDate } from "@/api/data/event";
     import { Timeline } from "@/components/TimeLine/index";
+  
       
     export default {
       data() {
@@ -103,6 +108,8 @@
             onlySealedPoints:[],
             // 仅有患者经过
             onlyTrajectoryPoints:[],
+            // 封控小区预测数据
+            sealedPredictionPoints:[],
             
             place1: ["中辛庄公交站", "高庄子小学"],
 
@@ -127,7 +134,9 @@
           // 从后端取数据
           // TODO:将串行执行的方法改为并行执行
           this.initTimeLineArr();
+          // TODO：读取任务的预测天数配置
           this.getPoints("20220108");
+          //this.getPredictionPoints("20220108");
           // this.refresh("20220108");
         },
 
@@ -179,6 +188,23 @@
                       this.onlySealedPoints.push(position)
                   }
                   console.log(this.sealedAndTrajectoryPoints)
+              } 
+          });
+          
+        },
+        async getPredictionPoints(date){
+          await getPredictionDataByDate(date).then(response => {
+              console.log("getPredictionDataByDate called")
+              console.log(response)
+              if (response.code===200){
+                  console.log("getPredictionDataByDate success!")
+                  console.log(response.data.sealedPredictionList)
+                  this.sealedPredictionPoints = []
+                  for (let i = 0; i < response.data.sealedPredictionList.length; i++) {
+                      const position = {lng: response.data.sealedPredictionList[i].longitude, lat: response.data.sealedPredictionList[i].latitude}
+                      this.sealedPredictionPoints.push(position)
+                  }
+                  console.log(response.data.sealedPredictionList)
               } 
           });
           
@@ -276,9 +302,40 @@
         },
         //时间轴更新地图
         async refresh(val) {
-              this.getPoints(val);
-              console.log(this.onlySealedPoints)
+          console.log("refresh called")
+          console.log(val)
+          console.log(typeof val)
+          this.getPoints(val);
+          // 拿预测数据时进行限制，开始日期：20220108，只有在距开始日期task.PredictionDays后才有预测数据
+          // 例如：需要7天数据才能预测
+          // 那么只有在已知20220108-20220114的数据时才知道20220115那一天的预测数据
+          // 在20220114画这个预测数据
+          if (val>=20220114){
+            console.log("可以拿到预测数据")
+            var nextday=this.getNextDayStr(val)
+            console.log(nextday)
+            this.getPredictionPoints(nextday);
+          }else{
+            console.log("没有预测数据")
+            sealedPredictionPoints=[]
+          }
+          
+          console.log(this.onlySealedPoints)
           },
+          getNextDayStr(date){
+          console.log("getNextDayStr called")
+          // 先将字符串拼接成为日期格式
+          var dayStr=date.substr(0,4)+"-"+date.substr(4,2)+"-"+date.substr(6,2)
+          console.log(dayStr)
+          // 转换成为日期数据类型
+          var day=new Date(dayStr)
+          // 获取后一天日期
+          day.setDate(day.getDate() + 1);
+          var y = day.getFullYear();
+          var m = day.getMonth() + 1 < 10 ? "0" + (day.getMonth() + 1) : day.getMonth() + 1;
+          var d = day.getDate() < 10 ? "0" + day.getDate() : day.getDate();
+          return y + m + d;
+        },
       },
     };
     

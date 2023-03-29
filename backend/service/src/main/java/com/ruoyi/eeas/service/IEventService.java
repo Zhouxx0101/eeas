@@ -77,6 +77,13 @@ public interface IEventService extends IService<Event>
     String getByDate(String date);
 
     /**
+     * 根据日期查询封控预测数据
+     *
+     * @return 预测封控小区列表
+     */
+    String getPredictionDataByDate(String date);
+
+    /**
      * 根据地点查询经纬度
      *
      * @return 经纬度
