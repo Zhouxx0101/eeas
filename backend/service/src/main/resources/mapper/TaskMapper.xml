@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.eeas.mapper.TaskMapper">
+    
+    <resultMap type="Task" id="TaskResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="timeInterval"    column="time_interval"    />
+        <result property="place"    column="place"    />
+        <result property="dataSource"    column="data_source"    />
+    </resultMap>
+
+    <sql id="selectTaskVo">
+        select id, name, start_time, end_time, time_interval, place, data_source from eeas_task
+    </sql>
+
+    <select id="selectTaskList" parameterType="Task" resultMap="TaskResult">
+        <include refid="selectTaskVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="startTime != null "> and start_time = #{startTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="timeInterval != null "> and time_interval = #{timeInterval}</if>
+            <if test="place != null  and place != ''"> and place = #{place}</if>
+            <if test="dataSource != null "> and data_source = #{dataSource}</if>
+        </where>
+    </select>
+    
+    <select id="selectTaskById" parameterType="Long" resultMap="TaskResult">
+        <include refid="selectTaskVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTask" parameterType="Task" useGeneratedKeys="true" keyProperty="id">
+        insert into eeas_task
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="timeInterval != null">time_interval,</if>
+            <if test="place != null">place,</if>
+            <if test="dataSource != null">data_source,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="timeInterval != null">#{timeInterval},</if>
+            <if test="place != null">#{place},</if>
+            <if test="dataSource != null">#{dataSource},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTask" parameterType="Task">
+        update eeas_task
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="timeInterval != null">time_interval = #{timeInterval},</if>
+            <if test="place != null">place = #{place},</if>
+            <if test="dataSource != null">data_source = #{dataSource},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTaskById" parameterType="Long">
+        delete from eeas_task where id = #{id}
+    </delete>
+
+    <delete id="deleteTaskByIds" parameterType="String">
+        delete from eeas_task where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
