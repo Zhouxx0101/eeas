@@ -9,85 +9,56 @@
                 size="mini"
                 @click="handleAdd"
                 v-hasPermi="['system:task:add']"
-                >新增</el-button>
+                >新建任务</el-button>
             </el-col>
-            <el-col :span="1.5">
-                <el-button
-                type="success"
-                plain
-                icon="el-icon-edit"
-                size="mini"
-                :disabled="single"
-                @click="handleUpdate"
-                v-hasPermi="['system:task:edit']"
-                >修改</el-button>
-            </el-col>
-            <el-col :span="1.5">
-                <el-button
-                type="danger"
-                plain
-                icon="el-icon-delete"
-                size="mini"
-                :disabled="multiple"
-                @click="handleDelete"
-                v-hasPermi="['system:task:remove']"
-                >删除</el-button>
-            </el-col>
-            <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
         </el-row>
 
         <el-row>
-            <el-col :span="8" v-for="(item, i) in taskList" :key="i" :offset="2">
-                <el-card class="box-card">
-                    <div slot="header" class="clearfix">
-                        <!-- <span>2022年1月至2月天津市津南区疫情演化分析</span> -->
-                        <span>{{item.name}}</span>
-                        <el-button style="float: right; padding: 3px 0" type="text">查看</el-button>
-                    </div>
-                    <div class="text item">
-                        <span>地区：</span>
-                        <!-- <span>天津市津南区</span> -->
-                        <span>{{item.place}}</span>
-                    </div>
-                    <div class="text item">
-                        <span>开始时间：</span>
-                        <!-- <span>2022-01-08</span> -->
-                        <span>{{item.startTime}}</span>
-                    </div>
-                    <div class="text item">
-                        <span>结束时间：</span>
-                        <!-- <span>2022-02-16</span> -->
-                        <span>{{item.endTime}}</span>
-                    </div>
-                    <div class="text item">
-                        <span>时间窗口：</span>
-                        <!-- <span>7</span> -->
-                        <span>{{item.timeInterval}}</span>
-                    </div>
-                    <div class="text item">
-                        <span>数据源：</span>
-                        <span v-if="item.dataSource=='0'">自动导入</span>
-                        <span v-if="item.dataSource=='1'">手动录入</span>
-                        <!-- <span>{{item.dataSource}}</span> -->
-                         <!-- <dict-tag :options="dict.type.eeas_task" :value="item.dataSource"/> -->
-                        <!-- <dict-tag :options="dict.type.eeas_task">数据源：{{item.dataSource}}</dict-tag> -->
-                    </div>
-                    <el-button
-                        size="mini"
-                        type="text"
-                        icon="el-icon-edit"
-                        @click="handleUpdate(item)"
-                        v-hasPermi="['system:task:edit']"
-                    >修改</el-button>
-                    <el-button
-                        size="mini"
-                        type="text"
-                        icon="el-icon-delete"
-                        @click="handleDelete(item)"
-                        v-hasPermi="['system:task:remove']"
-                    >删除</el-button>
+            <el-col :span="8" v-for="(item, i) in taskList" :key="i" :offset="1.5">
+                <div style="margin-top:30px">        
+                    <el-card class="box-card">
+                        <div slot="header" class="clearfix">
+                            <span>{{item.name}}</span>
+                            <el-button style="float: right; padding: 3px 0" type="text">查看</el-button>
+                        </div>
+                        <div class="text item">
+                            <span>地区：</span>
+                            <span>{{item.place}}</span>
+                        </div>
+                        <div class="text item">
+                            <span>开始时间：</span>
+                            <span>{{item.startTime}}</span>
+                        </div>
+                        <div class="text item">
+                            <span>结束时间：</span>
+                            <span>{{item.endTime}}</span>
+                        </div>
+                        <div class="text item">
+                            <span>时间窗口：</span>
+                            <span>{{item.timeInterval}}</span>
+                        </div>
+                        <div class="text item">
+                            <span>数据源：</span>
+                            <span v-if="item.dataSource=='0'">自动导入</span>
+                            <span v-if="item.dataSource=='1'">手动录入</span>
+                        </div>
+                        <el-button
+                            size="mini"
+                            type="text"
+                            icon="el-icon-edit"
+                            @click="handleUpdate(item)"
+                            v-hasPermi="['system:task:edit']"
+                        >修改</el-button>
+                        <el-button
+                            size="mini"
+                            type="text"
+                            icon="el-icon-delete"
+                            @click="handleDelete(item)"
+                            v-hasPermi="['system:task:remove']"
+                        >删除</el-button>
 
-                </el-card>
+                    </el-card>
+                </div>
 
             </el-col>
         </el-row>
@@ -96,13 +67,14 @@
         v-show="total>0"
         :total="total"
         :page.sync="queryParams.pageNum"
+        :page-sizes="[6, 12, 24, 36]"
         :limit.sync="queryParams.pageSize"
         @pagination="getList"
         />
 
-        <!-- 添加或修改任务对话框 -->
-        <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-        <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <!-- 添加任务对话框 -->
+        <el-dialog :title="title" :visible.sync="openAdd" width="500px" append-to-body>
+        <el-form ref="form" :model="form" :rules="rulesAdd" label-width="80px">
             <el-form-item label="任务名称" prop="name">
                 <el-input v-model="form.name" placeholder="请输入任务名称" />
             </el-form-item>
@@ -130,6 +102,52 @@
             </el-form-item>
             <el-form-item label="数据源" prop="dataSource">
             <el-select v-model="form.dataSource" placeholder="请选择数据源">
+                <el-option
+                v-for="dict in dict.type.eeas_task"
+                :key="dict.value"
+                :label="dict.label"
+    :value="parseInt(dict.value)"
+                ></el-option>
+            </el-select>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="submitForm">确 定</el-button>
+            <el-button @click="cancel">取 消</el-button>
+        </div>
+        </el-dialog>
+
+        <!-- 修改任务对话框 -->
+        <el-dialog :title="title" :visible.sync="openEdit" width="500px" append-to-body>
+        <el-form ref="form" :model="form" :rules="rulesEdit" label-width="80px">
+            <el-form-item label="任务名称" prop="name">
+                <el-input v-model="form.name" placeholder="请输入任务名称" />
+            </el-form-item>
+            <el-form-item label="开始时间" prop="startTime">
+            <el-date-picker clearable
+                v-model="form.startTime"
+                :disabled="true"
+                type="date"
+                value-format="yyyy-MM-dd"
+                placeholder="请选择开始时间">
+            </el-date-picker>
+            </el-form-item>
+            <el-form-item label="结束时间" prop="endTime">
+            <el-date-picker clearable
+                v-model="form.endTime"
+                type="date"
+                value-format="yyyy-MM-dd"
+                placeholder="请选择结束时间">
+            </el-date-picker>
+            </el-form-item>
+            <el-form-item label="时间窗口" prop="timeInterval">
+            <el-input v-model="form.timeInterval" placeholder="请输入时间窗口" />
+            </el-form-item>
+            <el-form-item label="地点" prop="place">
+            <el-input v-model="form.place" :disabled="true" placeholder="请输入地点" />
+            </el-form-item>
+            <el-form-item label="数据源" prop="dataSource">
+            <el-select v-model="form.dataSource" :disabled="true" placeholder="请选择数据源">
                 <el-option
                 v-for="dict in dict.type.eeas_task"
                 :key="dict.value"
@@ -173,11 +191,12 @@ export default {
       // 弹出层标题
       title: "",
       // 是否显示弹出层
-      open: false,
+      openAdd: false,
+      openEdit: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 6,
         name: null,
         startTime: null,
         endTime: null,
@@ -188,7 +207,15 @@ export default {
       // 表单参数
       form: {},
       // 表单校验
-      rules: {
+      rulesAdd: {
+        name: [{required: true, trigger: 'blur'}],
+        startTime: [{required: true, trigger: 'blur'}],
+        timeInterval: [{required: true, trigger: 'blur'}],
+        place: [{required: true, trigger: 'blur'}],
+        dataSource: [{required: true, trigger: 'blur'}],
+      },
+      rulesEdit: {
+        // endTime: [{required: true, trigger: 'blur'}],
       }
     };
   },
@@ -210,7 +237,8 @@ export default {
     },
     // 取消按钮
     cancel() {
-      this.open = false;
+      this.openAdd = false;
+      this.openEdit = false;
       this.reset();
     },
     // 表单重置
@@ -245,7 +273,7 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
-      this.open = true;
+      this.openAdd = true;
       this.title = "添加任务";
     },
     /** 修改按钮操作 */
@@ -254,7 +282,7 @@ export default {
       const id = item.id
       getTask(id).then(response => {
         this.form = response.data;
-        this.open = true;
+        this.openEdit = true;
         this.title = "修改任务";
       });
     },
@@ -265,13 +293,13 @@ export default {
           if (this.form.id != null) {
             updateTask(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
-              this.open = false;
+              this.openEdit = false;
               this.getList();
             });
           } else {
             addTask(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
-              this.open = false;
+              this.openAdd = false;
               this.getList();
             });
           }
