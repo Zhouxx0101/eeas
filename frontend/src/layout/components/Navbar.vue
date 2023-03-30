@@ -1,8 +1,14 @@
 <template>
   <div class="navbar">
-    <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+    <!-- <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" /> -->
 
-    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!topNav"/>
+    <!-- <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!topNav"/> -->
+    <img v-if="logo" :src="logo" class="sidebar-logo"/>
+    <span style="{
+    text-align: center;
+    font-size: 20px;
+  }">疫情演化分析系统</span>
+  <!-- </div> -->
     <top-nav id="topmenu-container" class="topmenu-container" v-if="topNav"/>
 
     <div class="right-menu">
@@ -56,8 +62,15 @@ import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
 import RuoYiGit from '@/components/RuoYi/Git'
 import RuoYiDoc from '@/components/RuoYi/Doc'
+import logoImg from '@/assets/logo/logo.png'
 
 export default {
+  data() {
+    return {
+      title: '疫情演化分析系统',
+      logo: logoImg
+    }
+  },
   components: {
     Breadcrumb,
     TopNav,
@@ -131,6 +144,17 @@ export default {
     }
   }
 
+  .my-title {
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    font-size: 40px;
+    display: block;
+    margin: auto auto;
+    text-align: center;
+    line-height: 100px;
+  }
+
   .breadcrumb-container {
     float: left;
   }
@@ -197,4 +221,11 @@ export default {
     }
   }
 }
+.sidebar-logo {
+      width: 55px;
+      height: 55px;
+      vertical-align: middle;
+      margin-left: 20px;
+      margin-right: 20px;
+    }
 </style>
