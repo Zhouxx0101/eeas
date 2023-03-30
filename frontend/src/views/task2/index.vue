@@ -33,16 +33,6 @@
                 v-hasPermi="['system:task:remove']"
                 >删除</el-button>
             </el-col>
-            <el-col :span="1.5">
-                <el-button
-                type="warning"
-                plain
-                icon="el-icon-download"
-                size="mini"
-                @click="handleExport"
-                v-hasPermi="['system:task:export']"
-                >导出</el-button>
-            </el-col>
             <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
         </el-row>
 
@@ -101,6 +91,14 @@
 
             </el-col>
         </el-row>
+
+        <pagination
+        v-show="total>0"
+        :total="total"
+        :page.sync="queryParams.pageNum"
+        :limit.sync="queryParams.pageSize"
+        @pagination="getList"
+        />
 
         <!-- 添加或修改任务对话框 -->
         <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
