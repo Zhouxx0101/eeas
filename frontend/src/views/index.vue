@@ -19,7 +19,7 @@
                   <el-card class="box-card">
                       <div slot="header" class="clearfix">
                           <span>{{item.name}}</span>
-                          <el-button style="float: right; padding: 3px 0" type="text">查看</el-button>
+                          <el-button style="float: right; padding: 3px 0" type="text" @click="jumpToMap(item)">查看</el-button>
                       </div>
                       <div class="text item">
                           <span>地区：</span>
@@ -308,8 +308,8 @@ methods: {
   },
   /** 删除按钮操作 */
   handleDelete(item) {
-    const ids = item.id
-    this.$modal.confirm('是否确认删除任务编号为"' + ids + '"的数据项？').then(function() {
+    const idp = item.name
+    this.$modal.confirm('是否确认删除任务名称为"' + idp + '"的任务项？').then(function() {
       return delTask(ids);
     }).then(() => {
       this.getList();
@@ -322,6 +322,12 @@ methods: {
       ...this.queryParams
     }, `task_${new Date().getTime()}.xlsx`)
   },
+  // 点击查看按钮，跳转到交互地图
+  jumpToMap(item){
+    console.log("查看")
+    this.$router.push("/diagram")
+    localStorage.setItem("taskid",item.id);
+  }
 }
 };
 </script>
