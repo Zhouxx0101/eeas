@@ -21,19 +21,19 @@
               <el-card class="box-card" shadow="always">
                 <div>
                   <p class="mapLegend" style="background-color:red"/>
-                  <span style="color:red">仅封控</span>
+                  <span style="color:black">仅封控</span>
                 </div>
                 <div>
                   <p class="mapLegend" style="background-color:orange"/>
-                  <span style="color:orange">仅有患者经过</span>
+                  <span style="color:black">仅有患者经过</span>
                 </div>
                 <div>
                   <p class="mapLegend" style="background-color:blue"/>
-                  <span style="color:blue">封控且有患者经过</span>
+                  <span style="color:black">封控且有患者经过</span>
                 </div>
                 <div>
                   <p class="mapLegend" style="background-color:yellow"/>
-                  <span style="color:yellow">封控预测数据</span>
+                  <span style="color:black">封控预测数据</span>
                 </div>
                 <!-- <div>
                   <p class="mapLegend" style="background-color:purple"/>
@@ -78,7 +78,7 @@
  </ul> -->
       </el-col>
     </el-row>
-      <Timeline :timelineList="timeLineArr" @refresh="refresh" id="timeline" />
+     <Timeline :timelineList="timeLineArr" @refresh="refresh" id="timeline" />
     <div id="container"></div>
     </div>
     </template>
@@ -317,7 +317,7 @@
             this.getPredictionPoints(nextday);
           }else{
             console.log("没有预测数据")
-            sealedPredictionPoints=[]
+            this.sealedPredictionPoints=[]
           }
           
           console.log(this.onlySealedPoints)
@@ -422,7 +422,7 @@
       .box-card {
         /* min-height: 100%;
         height: 100%; */
-        height: 100px;
+        height: 130px;
         width: 200px;
         /* height: 50px;
         width: 400px; */

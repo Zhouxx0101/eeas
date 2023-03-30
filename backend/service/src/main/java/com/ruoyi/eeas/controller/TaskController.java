@@ -42,7 +42,9 @@ public class TaskController extends BaseController
     public TableDataInfo list(Task task)
     {
         startPage();
+        System.out.println(task);
         List<Task> list = taskService.selectTaskList(task);
+        System.out.println(list);
         return getDataTable(list);
     }
 
