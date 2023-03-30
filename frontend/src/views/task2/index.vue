@@ -200,6 +200,8 @@ export default {
     getList() {
       this.loading = true;
       listTask(this.queryParams).then(response => {
+        console.log("listTask called")
+        console.log(response)
         this.taskList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -291,7 +293,7 @@ export default {
       this.download('system/task/export', {
         ...this.queryParams
       }, `task_${new Date().getTime()}.xlsx`)
-    }
+    },
   }
 };
 </script>
