@@ -84,6 +84,7 @@
     </template>
     <script >
     import { getByDate, getTimeList, getPredictionDataByDate } from "@/api/data/event";
+    import {getTask} from "@/api/data/task";
     import { Timeline } from "@/components/TimeLine/index";
   
       
@@ -99,8 +100,7 @@
             zoom: 11,
             show: false,
             point: null,
-      
-            points:[],
+           points:[],
       
             // 封控 & 有患者经过
             sealedAndTrajectoryPoints:[],
@@ -114,15 +114,32 @@
             place1: ["中辛庄公交站", "高庄子小学"],
 
             timeLineArr:[],
+
+            task: {
+              taskID:1,
+              name: null,
+              startTime: null,
+              endTime: null,
+              timeInterval: null,
+              place: null,
+              dataSource: null
+      },
+      startPredictionFirstDay:null,
     
         };
       },
       methods: {
-        handler({ BMap, map }) {
+     async handler({ BMap, map }) {
           // this.center.lng = 116.404;
           // this.center.lat = 39.915;
-          this.center.lng = 117.35267834853804;
-          this.center.lat = 38.99494446989348;
+          this.taskID=localStorage.getItem("taskid");
+          console.log("taskID:"+this.taskID);
+          // 获取任务配置信息
+          await this.getTaskInfo(this.taskID);
+          this.setStartPredictionFirstDay()
+          // this.center.lng = 117.35267834853804;
+          // this.center.lat = 38.99494446989348;
+          this.center=this.task.place;
           this.zoom = this.zoom;
     
           // 海量点绘制点集合初始化
@@ -131,17 +148,75 @@
           //this.addPoints(this.points3)
           //this.addPoints(this.points4)
     
-          // 从后端取数据
-          // TODO:将串行执行的方法改为并行执行
-          this.initTimeLineArr();
-          // TODO：读取任务的预测天数配置
-          this.getPoints("20220108");
-          //this.getPredictionPoints("20220108");
-          // this.refresh("20220108");
+    
+          //this.initTimeLineArr();
+           // 根据任务配置来初始化时间轴
+          this.initTimeLineArrByTask()
+        
+          // 根据任务配置来取第一天的真实数据
+          this.getPoints(this.task.startTime);
+         
+          
         },
+        setStartPredictionFirstDay(){
+          var dayStr=this.task.startTime;
+          for(var i=0;i<this.task.timeInterval-1;i++){
+            var day=new Date(dayStr);
+            // 获取后一天日期
+            day.setDate(day.getDate() + 1);
+            var y = day.getFullYear();
+            var m = day.getMonth() + 1 < 10 ? "0" + (day.getMonth() + 1) : day.getMonth() + 1;
+            var d = day.getDate() < 10 ? "0" + day.getDate() : day.getDate();
+            dayStr=y+"-"+m+"-"+d;
+            console.log(dayStr)
+          }
+          this.startPredictionFirstDay=dayStr;
+          console.log("startPredictionFirstDay:"+this.startPredictionFirstDay);
 
+        },
+        async getTaskInfo(id){
+          await getTask(id).then(response =>{
+            console.log("getTask called")
+            console.log(response)
+            if (response.code===200){
+            var data=response.data
+            console.log("data:"+data)
+            this.task.name=data.name
+            this.task.startTime=data.startTime
+            this.task.endTime=data.endTime
+            this.task.timeInterval=data.timeInterval
+            this.task.place=data.place
+            this.task.dataSource=data.dataSource
+            }
+
+          })
+
+        },
+        initTimeLineArrByTask() {
+          // 根据任务起止时间造时间轴数据
+          console.log("task.endTime:"+this.task.endTime)
+          if (this.task.endTime!=="0"){
+            console.log("任务有截止时间");
+            // 转换成为日期数据类型
+          var dayStr=this.task.startTime
+          const timeNode = {date: dayStr, content: dayStr, isShow: true};
+          this.timeLineArr.push(timeNode);
+          while(dayStr!==this.task.endTime){
+            var day=new Date(dayStr)
+            // 获取后一天日期
+            day.setDate(day.getDate() + 1);
+            var y = day.getFullYear();
+            var m = day.getMonth() + 1 < 10 ? "0" + (day.getMonth() + 1) : day.getMonth() + 1;
+            var d = day.getDate() < 10 ? "0" + day.getDate() : day.getDate();
+            dayStr=y+"-"+m+"-"+d
+            const timeNode = {date: dayStr, content: dayStr, isShow: true};
+            this.timeLineArr.push(timeNode);
+          }
+          }
+        },
           initTimeLineArr() {
-            getTimeList().then(response => {
+            getTimeListFromTask().then(response => {
+              console.log("getTimeList called")
               console.log(response)
               if(response.code===200) {
                 console.log(response.data)
@@ -150,6 +225,7 @@
                   const timeNode = {date: date, content: date, isShow: true}
                   this.timeLineArr.push(timeNode)
                 }
+                console.log("timeLineArr")
                 console.log(this.timeLineArr)
               }
             })
@@ -166,6 +242,7 @@
         async getPoints(date){
           await getByDate(date).then(response => {
               console.log("getByDate called")
+              console.log("date:"+date)
               console.log(response)
               if (response.code===200){
                   console.log("1")
@@ -195,6 +272,7 @@
         async getPredictionPoints(date){
           await getPredictionDataByDate(date).then(response => {
               console.log("getPredictionDataByDate called")
+              console.log("pppppp:"+date)
               console.log(response)
               if (response.code===200){
                   console.log("getPredictionDataByDate success!")
@@ -301,40 +379,37 @@
           alert(`单击点的坐标为：${e.point.lng}, ${e.point.lat}`);
         },
         //时间轴更新地图
-        async refresh(val) {
+        async refresh(date) {
           console.log("refresh called")
-          console.log(val)
-          console.log(typeof val)
-          this.getPoints(val);
-          // 拿预测数据时进行限制，开始日期：20220108，只有在距开始日期task.PredictionDays后才有预测数据
+          console.log(date)
+          this.getPoints(date);
+          // 拿预测数据时进行限制，开始日期：2022-01-08，只有在距开始日期task.TimeInterVal后才有预测数据
           // 例如：需要7天数据才能预测
           // 那么只有在已知20220108-20220114的数据时才知道20220115那一天的预测数据
           // 在20220114画这个预测数据
-          if (val>=20220114){
+          var dateStr=date.substr(0,4)+date.substr(5,2)+date.substr(8,2)
+          var predictionDayStr=this.startPredictionFirstDay.substr(0,4)+this.startPredictionFirstDay.substr(5,2)+this.startPredictionFirstDay.substr(8,2)
+          if (dateStr>=predictionDayStr){
             console.log("可以拿到预测数据")
-            var nextday=this.getNextDayStr(val)
+            var nextday=this.getNextDayStr(date)
             console.log(nextday)
             this.getPredictionPoints(nextday);
           }else{
             console.log("没有预测数据")
             this.sealedPredictionPoints=[]
-          }
-          
-          console.log(this.onlySealedPoints)
+          }  
+       
           },
           getNextDayStr(date){
           console.log("getNextDayStr called")
-          // 先将字符串拼接成为日期格式
-          var dayStr=date.substr(0,4)+"-"+date.substr(4,2)+"-"+date.substr(6,2)
-          console.log(dayStr)
           // 转换成为日期数据类型
-          var day=new Date(dayStr)
+          var day=new Date(date)
           // 获取后一天日期
           day.setDate(day.getDate() + 1);
           var y = day.getFullYear();
           var m = day.getMonth() + 1 < 10 ? "0" + (day.getMonth() + 1) : day.getMonth() + 1;
           var d = day.getDate() < 10 ? "0" + day.getDate() : day.getDate();
-          return y + m + d;
+          return y+"-" + m +"-"+ d;
         },
       },
     };
