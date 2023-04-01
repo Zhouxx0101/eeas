@@ -74,7 +74,7 @@ public interface IEventService extends IService<Event>
      *
      * @return 轨迹数据
      */
-    String getByDate(String date);
+    String getByDateAndTaskId(String date,String taskId);
 
     /**
      * 根据日期查询封控预测数据
