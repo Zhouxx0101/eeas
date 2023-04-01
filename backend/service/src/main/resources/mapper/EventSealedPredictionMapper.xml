@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.eeas.mapper.EventSealedPredictionMapper">
+    
+    <resultMap type="EventSealedPrediction" id="EventSealedPredictionResult">
+        <result property="id"    column="id"    />
+        <result property="time"    column="time"    />
+        <result property="place"    column="place"    />
+        <result property="taskId"    column="task_id"    />
+    </resultMap>
+
+    <sql id="selectEventSealedPredictionVo">
+        select id, time, place, task_id from eeas_event_sealed_prediction
+    </sql>
+
+    <select id="selectEventSealedPredictionList" parameterType="EventSealedPrediction" resultMap="EventSealedPredictionResult">
+        <include refid="selectEventSealedPredictionVo"/>
+        <where>  
+            <if test="time != null "> and time = #{time}</if>
+            <if test="place != null  and place != ''"> and place = #{place}</if>
+            <if test="taskId != null "> and task_id = #{taskId}</if>
+        </where>
+    </select>
+    
+    <select id="selectEventSealedPredictionById" parameterType="Long" resultMap="EventSealedPredictionResult">
+        <include refid="selectEventSealedPredictionVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectEventSealedPredictionByDateAndTaskId" parameterType="String" resultMap="EventSealedPredictionResult">
+        <include refid="selectEventSealedPredictionVo"/>
+        where time = #{date} and task_id=#{taskId}
+    </select>
+        
+    <insert id="insertEventSealedPrediction" parameterType="EventSealedPrediction" useGeneratedKeys="true" keyProperty="id">
+        insert into eeas_event_sealed_prediction
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="time != null">time,</if>
+            <if test="place != null and place != ''">place,</if>
+            <if test="taskId != null">task_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="time != null">#{time},</if>
+            <if test="place != null and place != ''">#{place},</if>
+            <if test="taskId != null">#{taskId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEventSealedPrediction" parameterType="EventSealedPrediction">
+        update eeas_event_sealed_prediction
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="time != null">time = #{time},</if>
+            <if test="place != null and place != ''">place = #{place},</if>
+            <if test="taskId != null">task_id = #{taskId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteEventSealedPredictionById" parameterType="Long">
+        delete from eeas_event_sealed_prediction where id = #{id}
+    </delete>
+
+    <delete id="deleteEventSealedPredictionByIds" parameterType="String">
+        delete from eeas_event_sealed_prediction where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
