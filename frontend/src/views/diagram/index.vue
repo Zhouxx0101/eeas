@@ -85,6 +85,7 @@
     <script >
     import { getByDate, getTimeList, getPredictionDataByDate } from "@/api/data/event";
     import {getTask} from "@/api/data/task";
+    import {getPredictionDataByDateAndTaskId} from "@/api/data/predictionData";
     import { Timeline } from "@/components/TimeLine/index";
   
       
@@ -270,7 +271,7 @@
           
         },
         async getPredictionPoints(date){
-          await getPredictionDataByDate(date).then(response => {
+          await getPredictionDataByDateAndTaskId(date,this.task.taskID).then(response => {
               console.log("getPredictionDataByDate called")
               console.log("pppppp:"+date)
               console.log(response)
