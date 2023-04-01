@@ -128,7 +128,7 @@ public class EventController extends BaseController {
             return AjaxResult.error("地点为空！");
         }
         if (places == null) {
-            map.put("sealedAndTrajectoryList", getLongitudeAndLatitudeByPlaces(listTrajectoryPlaces));
+            map.put("sealedAndTrajectoryList", new ArrayList<>());
             map.put("onlySealedList", new ArrayList<>());
             map.put("onlyTrajectoryList", getLongitudeAndLatitudeByPlaces(listTrajectoryPlaces));
             return AjaxResult.success(map);
@@ -136,7 +136,7 @@ public class EventController extends BaseController {
         if (listTrajectoryPlaces.size() == 0) {
             places = places.replace('{', '[').replace('}', ']');
             List<String> listSealedPlaces = JSONArray.parseArray(places, String.class);
-            map.put("sealedAndTrajectoryList", getLongitudeAndLatitudeByPlaces(listSealedPlaces));
+            map.put("sealedAndTrajectoryList", new ArrayList<>());
             map.put("onlySealedList", new ArrayList<>());
             map.put("onlyTrajectoryList", getLongitudeAndLatitudeByPlaces(listSealedPlaces));
             return AjaxResult.success(map);
