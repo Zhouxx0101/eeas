@@ -106,8 +106,8 @@ public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements
      * @return 轨迹数据
      */
     @Override
-    public String getByDate(String date) {
-        return eventMapper.getByDate(date);
+    public String getByDateAndTaskId(String date,String taskId) {
+        return eventMapper.getByDateAndTaskId(date,taskId);
     }
 
     /**

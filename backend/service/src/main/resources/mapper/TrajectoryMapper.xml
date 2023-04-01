@@ -133,8 +133,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         limit 200
     </select>
 
-    <select id="getPlacesByDate" parameterType="String" resultType="String">
+    <select id="getPlacesByDateAndTaskId" parameterType="String" resultType="String">
         select place from eeas_trajectory
-        where start_time = #{date}
+        where start_time = #{date} and task_id=#{taskId}
     </select>
 </mapper>
