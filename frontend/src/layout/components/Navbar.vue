@@ -1,6 +1,6 @@
 <template>
   <div class="navbar">
-    <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+    <hamburger v-if="this.user.roles.indexOf('admin') != -1" id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
 
     <!-- <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!topNav"/> -->
     <img v-if="logo" :src="logo" class="sidebar-logo"/>
@@ -68,7 +68,8 @@ export default {
   data() {
     return {
       title: '疫情演化分析系统',
-      logo: logoImg
+      logo: logoImg,
+      user: null
     }
   },
   components: {
@@ -119,6 +120,11 @@ export default {
         })
       }).catch(() => {});
     }
+  },
+  created() {
+    this.user = this.$store.state.user
+    // console.log(this.user.roles)
+    // console.log(this.user.roles.indexOf('admin'))
   }
 }
 </script>
