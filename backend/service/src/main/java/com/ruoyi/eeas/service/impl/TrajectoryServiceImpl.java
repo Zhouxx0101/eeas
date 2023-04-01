@@ -141,7 +141,7 @@ public class TrajectoryServiceImpl extends ServiceImpl<TrajectoryMapper, Traject
      * @return 轨迹数据
      */
     @Override
-    public List<Map<String, String>> getByDate(String date) {
+    public List<Map<String, String>> getByDate(String date ) {
         return trajectoryMapper.getByDate(date);
     }
 
@@ -151,7 +151,7 @@ public class TrajectoryServiceImpl extends ServiceImpl<TrajectoryMapper, Traject
      * @return 轨迹数据
      */
     @Override
-    public List<String> getPlacesByDate(String date) {
-        return trajectoryMapper.getPlacesByDate(date);
+    public List<String> getPlacesByDateAndTaskId(String date,String taskId) {
+        return trajectoryMapper.getPlacesByDateAndTaskId(date,taskId);
     }
 }

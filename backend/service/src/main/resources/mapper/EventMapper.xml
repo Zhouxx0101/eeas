@@ -85,9 +85,9 @@
         </foreach>
     </delete>
 
-    <select id="getByDate" parameterType="String" resultType="String">
+    <select id="getByDateAndTaskId" parameterType="String" resultType="String">
         select place from eeas_event_sealed
-        where time = #{date}
+        where time = #{date} and task_id=#{taskId}
     </select>
 
     <select id="getPredictionDataByDate" parameterType="String" resultType="String">

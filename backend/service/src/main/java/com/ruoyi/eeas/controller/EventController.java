@@ -115,11 +115,11 @@ public class EventController extends BaseController {
      * 根据日期查询封控/患者经过/both列表
      */
     @PreAuthorize("@ss.hasPermi('data:event:list')")
-    @GetMapping("/getByDate/{date}")
-    public AjaxResult getByDate(@PathVariable("date") String date)
+    @GetMapping("/getByDate/{date}/{taskId}")
+    public AjaxResult getByDate(@PathVariable("date") String date, @PathVariable("taskId") String taskId)
     {
-        String places = eventService.getByDate(date);
-        List<String> listTrajectoryPlaces = trajectoryService.getPlacesByDate(date);
+        String places = eventService.getByDateAndTaskId(date, taskId);
+        List<String> listTrajectoryPlaces = trajectoryService.getPlacesByDateAndTaskId(date,taskId);
         Map<String, List<Map<String, String>>> map = new HashMap<>();
         if (places == null && listTrajectoryPlaces.size() == 0) {
             map.put("sealedAndTrajectoryList", new ArrayList<>());

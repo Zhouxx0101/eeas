@@ -83,7 +83,7 @@
     </div>
     </template>
     <script >
-    import { getByDate, getTimeList, getPredictionDataByDate } from "@/api/data/event";
+    import { getByDateAndTaskId } from "@/api/data/event";
     import {getTask} from "@/api/data/task";
     import {getPredictionDataByDateAndTaskId} from "@/api/data/predictionData";
     import { Timeline } from "@/components/TimeLine/index";
@@ -241,8 +241,8 @@
           
         },
         async getPoints(date){
-          await getByDate(date).then(response => {
-              console.log("getByDate called")
+          await getByDateAndTaskId(date,this.task.taskID).then(response => {
+              console.log("getByDateAndTaskId called")
               console.log("date:"+date)
               console.log(response)
               if (response.code===200){
