@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ruoyi.eeas.domain.Trajectory;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 轨迹数据Mapper接口
@@ -103,5 +104,5 @@ public interface TrajectoryMapper extends BaseMapper<Trajectory>
      *
      * @return 轨迹数据
      */
-    List<String> getPlacesByDate(String date);
+    List<String> getPlacesByDateAndTaskId(@Param("date") String date, @Param("taskId") String taskId);
 }

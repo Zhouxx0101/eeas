@@ -51,10 +51,10 @@ export function delEvent(id) {
   })
 }
 
-// 根据日期查询封控/患者经过/both列表
-export function getByDate(date) {
+// 根据日期以及任务ID查询封控/患者经过/both列表
+export function getByDateAndTaskId(date,taskId) {
   return request({
-    url: '/data/event/getByDate/' + date,
+    url: '/data/event/getByDate/' + date +"/" + taskId,
     method: 'get',
   })
 }

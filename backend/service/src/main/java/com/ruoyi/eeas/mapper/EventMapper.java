@@ -2,7 +2,7 @@ package com.ruoyi.eeas.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ruoyi.eeas.domain.Event;
-import io.lettuce.core.dynamic.annotation.Param;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -71,11 +71,11 @@ public interface EventMapper extends BaseMapper<Event> {
     int deleteEventByIds(Long[] ids);
 
     /**
-     * 根据日期查询封控数据
+     * 根据日期以及任务ID查询封控数据
      *
      * @return 轨迹数据
      */
-    String getByDate(String date);
+    String getByDateAndTaskId(@Param("date") String date, @Param("taskId") String taskId);
 
     /**
      * 根据日期查询封控小区预测数据
