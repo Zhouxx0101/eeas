@@ -119,25 +119,46 @@ public class EventController extends BaseController {
     public AjaxResult getByDate(@PathVariable("date") String date)
     {
         String places = eventService.getByDate(date);
-        System.out.println(date);
-        System.out.println(places);
-        places = places.replace('{', '[').replace('}', ']');
-        List<String> listSealedPlaces = JSONArray.parseArray(places, String.class);
         List<String> listTrajectoryPlaces = trajectoryService.getPlacesByDate(date);
-        //取交集
-        List<String> sealedAndTrajectory = listSealedPlaces.stream().filter(item -> listTrajectoryPlaces.contains(item)).collect(toList());
-        //取差集
-        List<String> OnlySealed = listSealedPlaces.stream().filter(item -> !listTrajectoryPlaces.contains(item)).collect(toList());
-        List<String> OnlyTrajectory = listTrajectoryPlaces.stream().filter(item -> !listSealedPlaces.contains(item)).collect(toList());
-        //根据地名获取经纬度
         Map<String, List<Map<String, String>>> map = new HashMap<>();
-        List<Map<String, String>> sealedAndTrajectoryList = getLongitudeAndLatitudeByPlaces(sealedAndTrajectory);
-        List<Map<String, String>> OnlySealedList = getLongitudeAndLatitudeByPlaces(OnlySealed);
-        List<Map<String, String>> OnlyTrajectoryList = getLongitudeAndLatitudeByPlaces(OnlyTrajectory);
-        map.put("sealedAndTrajectoryList", sealedAndTrajectoryList);
-        map.put("onlySealedList", OnlySealedList);
-        map.put("onlyTrajectoryList", OnlyTrajectoryList);
-        return AjaxResult.success(map);
+        if (places == null && listTrajectoryPlaces.size() == 0) {
+            map.put("sealedAndTrajectoryList", new ArrayList<>());
+            map.put("onlySealedList", new ArrayList<>());
+            map.put("onlyTrajectoryList", new ArrayList<>());
+            return AjaxResult.error("地点为空！");
+        }
+        if (places == null) {
+            map.put("sealedAndTrajectoryList", getLongitudeAndLatitudeByPlaces(listTrajectoryPlaces));
+            map.put("onlySealedList", new ArrayList<>());
+            map.put("onlyTrajectoryList", getLongitudeAndLatitudeByPlaces(listTrajectoryPlaces));
+            return AjaxResult.success(map);
+        }
+        if (listTrajectoryPlaces.size() == 0) {
+            places = places.replace('{', '[').replace('}', ']');
+            List<String> listSealedPlaces = JSONArray.parseArray(places, String.class);
+            map.put("sealedAndTrajectoryList", getLongitudeAndLatitudeByPlaces(listSealedPlaces));
+            map.put("onlySealedList", new ArrayList<>());
+            map.put("onlyTrajectoryList", getLongitudeAndLatitudeByPlaces(listSealedPlaces));
+            return AjaxResult.success(map);
+        }
+        if (places != null && listTrajectoryPlaces.size() > 0) {
+            places = places.replace('{', '[').replace('}', ']');
+            List<String> listSealedPlaces = JSONArray.parseArray(places, String.class);
+            //取交集
+            List<String> sealedAndTrajectory = listSealedPlaces.stream().filter(item -> listTrajectoryPlaces.contains(item)).collect(toList());
+            //取差集
+            List<String> OnlySealed = listSealedPlaces.stream().filter(item -> !listTrajectoryPlaces.contains(item)).collect(toList());
+            List<String> OnlyTrajectory = listTrajectoryPlaces.stream().filter(item -> !listSealedPlaces.contains(item)).collect(toList());
+            //根据地名获取经纬度
+            List<Map<String, String>> sealedAndTrajectoryList = getLongitudeAndLatitudeByPlaces(sealedAndTrajectory);
+            List<Map<String, String>> OnlySealedList = getLongitudeAndLatitudeByPlaces(OnlySealed);
+            List<Map<String, String>> OnlyTrajectoryList = getLongitudeAndLatitudeByPlaces(OnlyTrajectory);
+            map.put("sealedAndTrajectoryList", sealedAndTrajectoryList);
+            map.put("onlySealedList", OnlySealedList);
+            map.put("onlyTrajectoryList", OnlyTrajectoryList);
+            return AjaxResult.success(map);
+        }
+        return AjaxResult.error();
     }
 
     /**
@@ -147,8 +168,9 @@ public class EventController extends BaseController {
      @GetMapping("/getPredictionDataByDate/{date}")
      public AjaxResult getPredictionDataByDate(@PathVariable("date") String date){
         String places= eventService.getPredictionDataByDate(date);
-        System.out.println(date);
-        System.out.println(places);
+        if (places == null) {
+            return AjaxResult.error("预测数据为空！");
+        }
         places = places.replace('{', '[').replace('}', ']');
         List<String> sealedPredictionPlaces = JSONArray.parseArray(places, String.class);
         List<Map<String, String>> sealedPredictionPlacesWithLongitudeAndLatitude = getLongitudeAndLatitudeByPlaces(sealedPredictionPlaces);
