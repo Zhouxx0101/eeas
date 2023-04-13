@@ -25,6 +25,14 @@ export function getPredictionDataByDateAndTaskId(date,taskId) {
   })
 }
 
+// 根据日期以及任务ID查询预测页所需数据，分别是真实数据，预测命中数据以及预测未命中数据
+export function getPredictionPageDataByDateAndTaskId(date,taskId) {
+  return request({
+    url: '/event/predictionData/queryPageData/' + date +'/'+taskId,
+    method: 'get'
+  })
+}
+
 // 新增封控小区预测数据
 export function addPredictionData(data) {
   return request({

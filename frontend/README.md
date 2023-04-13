@@ -1,4 +1,4 @@
-## 开发
+## 项目运行
 
 ```bash
 # 克隆项目
@@ -27,4 +27,15 @@ npm run build:stage
 
 # 构建生产环境
 npm run build:prod
+
 ```
+## 前端页面记录：
+/fronted/src/views/下：
+diagram:时序交互图（真实数据）
+prediction:预测时序交互图
+heatmap:热力图
+
+## TODO：
+在时序交互图界面已经有了任务信息，后续页面切换时都不需要再去后端拿，只需要前端页面传递就行
+梳理预测页面数据显示逻辑
+热力图页面编写
