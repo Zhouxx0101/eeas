@@ -16,36 +16,6 @@
           </el-tooltip>
         </div>
       </div>
-      <!--<el-row>
-        <div>
-      <el-checkbox v-model="checked1" label="备选项1" border></el-checkbox>
-      <el-checkbox v-model="checked2" label="备选项2" border></el-checkbox>
-      <el-checkbox v-model="checked2" label="备选项3" border></el-checkbox>
-    </div>
-      </el-row>-->
-      <!--<el-row>
-        <el-col>
-          <div>
-            <input type="checkbox" id="realData" name="realData" checked onclick="checkRealData(this.checked)">
-            <label for="realData">真实数据展示</label>
-          </div>
-        </el-col>
-  
-        <el-col>
-          <div>
-            <input type="checkbox" id="predictionData" name="predictionData" onclick="checkPredictionData(this.checked)">
-            <label for="predictionData">预测数据展示</label>
-          </div>
-        </el-col>
-  
-        <el-col>
-          <div>
-            <input type="checkbox" id="heatMap" name="heatMap" onclick="checkHeatMap(this.checked)">
-            <label for="heatMap">热力图展示</label>
-          </div>
-        </el-col>
-  
-      </el-row>-->
       <el-row >
         <el-col >
           <div class="BaiDuMap">
@@ -62,76 +32,18 @@
               @zoomend="syncCenterAndZoom"
             >
   
-              <bm-control anchor="BMAP_ANCHOR_BOTTOM_RIGHT">
-                <el-card class="box-card" shadow="always">
-                  <div>
-                    <!-- <el-checkbox v-model="checked1" label="" ></el-checkbox> -->
-                    <p class="mapLegend" style="background-color:red"/>
-                    <span style="color:black">仅封控</span>
-                  </div>
-                  <div>
-                    <!-- <el-checkbox v-model="checked1" label="" ></el-checkbox> -->
-                    <p class="mapLegend" style="background-color:orange"/>
-                    <span style="color:black">仅有患者经过</span>
-                  </div>
-                  <div>
-                    <!-- <el-checkbox v-model="checked1" label="" ></el-checkbox> -->
-                    <p class="mapLegend" style="background-color:blue"/>
-                    <span style="color:black">封控且有患者经过</span>
-                  </div>
-                  <!-- <div>
-                    <el-checkbox v-model="checked1" label="" ></el-checkbox>
-                    <p class="mapLegend" style="background-color:yellow"/>
-                    <span style="color:black">封控预测数据</span>
-                  </div>
-                  <div>
-                  <el-checkbox v-model="checked1" label="" ></el-checkbox> 
-                    <p class="mapLegend" style="background-color:brown"/>
-                    <span style="color:black">封控预测数据</span>
-                  </div> -->
-  
-  
-                  <!-- <div>
-                    <p class="mapLegend" style="background-color:purple"/>
-                    <span style="color:purple">仅封控</span>
-                  </div>
-                  <div>
-                    <p class="mapLegend" style="background-color:green"/>
-                    <span style="color:green">仅有患者经过</span>
-                  </div>
-                  <div>
-                    <p class="mapLegend" style="background-color:red"/>
-                    <span style="color:red">封控且有患者经过</span>
-                  </div> -->
-              </el-card>
-              </bm-control>
-     
               <!-- 必须给容器指高度，不然地图将显示在一个高度为0的容器中，看不到 -->
               <!--bm-navigation表示缩放控件 anchor为停靠位置-->
               <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
               <!--bm-geolocation表示地图定位控件 autoLocation表示用户点击控件时是否显示定位，需要获得用户的许可-->
               <!--bm-city-list 城市选择控件-->
               <bm-city-list anchor="BMAP_ANCHOR_TOP_LEFT"></bm-city-list>
-  
-              <!-- <bm-marker :position="{lng: 116.404, lat: 39.915}" :dragging="false"></bm-marker> -->
-  
-              <bm-marker v-for="(item, i) in onlyTrajectoryPoints" :key="i" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_org.png'), size: {width: 32, height: 32}}"></bm-marker>
-              <bm-marker v-for="(item, i) in onlySealedPoints" :key="i+onlyTrajectoryPoints.length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_red.png'), size: {width: 32, height: 32}}"></bm-marker>
-              <bm-marker v-for="(item, i) in sealedAndTrajectoryPoints" :key="i+onlyTrajectoryPoints.length+onlySealedPoints.length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_blue.png'), size: {width: 32, height: 32}}"></bm-marker>
-              <bm-marker v-for="(item, i) in sealedPredictionPoints" :key="i+onlyTrajectoryPoints.length+onlySealedPoints.length+sealedAndTrajectoryPoints.length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_yellow.png'), size: {width: 32, height: 32}}"></bm-marker>
-              <!--海量点绘制-->
-              <!--仅有患者经过-->
-              <!-- <bm-point-collection :points="onlyTrajectoryPoints" shape="BMAP_POINT_SHAPE_STAR" color="green" size="BMAP_POINT_SIZE_SMALL" @click="clickHandler"></bm-point-collection> -->
-              <!--仅封控-->
-              <!-- <bm-point-collection :points="onlySealedPoints" shape="BMAP_POINT_SHAPE_STAR" color="purple" size="BMAP_POINT_SIZE_SMALL" @click="clickHandler"></bm-point-collection> -->
-              <!--封控 & 有患者经过-->
-              <!-- <bm-point-collection :points="sealedAndTrajectoryPoints" shape="BMAP_POINT_SHAPE_STAR" color="red" size="BMAP_POINT_SIZE_SMALL" @click="clickHandler"></bm-point-collection> -->
-              
+                
+              <bml-heatmap :data="data" :max="1" :radius="20">
+              </bml-heatmap>
+
             </baidu-map>
           </div>
-          <!-- <ul>
-   <li v-for="(item,i) in sealedAndTrajectoryPoints">索引：{{i}}---lng：{{item.lng}}---lat：{{item.lat}}---len:{{ sealedAndTrajectoryPoints.length }}</li>
-   </ul> -->
         </el-col>
       </el-row>
        <Timeline :timelineList="timeLineArr" @refresh="refresh" id="timeline" />
@@ -143,11 +55,16 @@
       <script >
       import { getByDateAndTaskId } from "@/api/data/event";
       import {getTask} from "@/api/data/task";
+      import {getScore} from "@/api/data/score";
       import {getPredictionDataByDateAndTaskId} from "@/api/data/predictionData";
       import { Timeline } from "@/components/TimeLine/index";
+      import {BmlHeatmap} from 'vue-baidu-map'
     
         
       export default {
+        components: {
+          BmlHeatmap
+        },
         data() {
           return {
               // 地址信息
@@ -160,18 +77,7 @@
               show: false,
               point: null,
               points:[],
-        
-              // 封控 & 有患者经过
-              sealedAndTrajectoryPoints:[],
-              // 仅封控
-              onlySealedPoints:[],
-              // 仅有患者经过
-              onlyTrajectoryPoints:[],
-              // 封控小区预测数据
-              sealedPredictionPoints:[],
-              
-              place1: ["中辛庄公交站", "高庄子小学"],
-  
+          
               timeLineArr:[],
   
               task: {
@@ -193,6 +99,7 @@
         checked1:true,
         checked2:false,
       
+        data: [],
           };
         },
         methods: {
@@ -237,49 +144,19 @@
             console.log("isChecked:"+isChecked)
           },
        async handler({ BMap, map }) {
-            // this.center.lng = 116.404;
-            // this.center.lat = 39.915;
             this.taskID=localStorage.getItem("taskid");
             console.log("taskID:"+this.taskID);
             // 获取任务配置信息
             await this.getTaskInfo(this.taskID);
-            this.setStartPredictionFirstDay()
-            // this.center.lng = 117.35267834853804;
-            // this.center.lat = 38.99494446989348;
             this.center=this.task.place;
             this.zoom = this.zoom;
-      
-            // 海量点绘制点集合初始化
-            //this.addPoints(this.points1)
-            //this.addPoints(this.points2)
-            //this.addPoints(this.points3)
-            //this.addPoints(this.points4)
-      
-      
-            //this.initTimeLineArr();
+            
              // 根据任务配置来初始化时间轴
             this.initTimeLineArrByTask()
           
             // 根据任务配置来取第一天的真实数据
-            this.getPoints(this.task.startTime);
-           
+            this.getScore(this.task.startTime);
             
-          },
-          setStartPredictionFirstDay(){
-            var dayStr=this.task.startTime;
-            for(var i=0;i<this.task.timeInterval-1;i++){
-              var day=new Date(dayStr);
-              // 获取后一天日期
-              day.setDate(day.getDate() + 1);
-              var y = day.getFullYear();
-              var m = day.getMonth() + 1 < 10 ? "0" + (day.getMonth() + 1) : day.getMonth() + 1;
-              var d = day.getDate() < 10 ? "0" + day.getDate() : day.getDate();
-              dayStr=y+"-"+m+"-"+d;
-              console.log(dayStr)
-            }
-            this.startPredictionFirstDay=dayStr;
-            console.log("startPredictionFirstDay:"+this.startPredictionFirstDay);
-  
           },
           async getTaskInfo(id){
             await getTask(id).then(response =>{
@@ -339,60 +216,21 @@
                 // date = ["20220108"]
             },
   
-          addPoints (p) {
-            for (var i = 0; i < 100; i++) {
-              const position = {lng: Math.random() * 40 + 85, lat: Math.random() * 30 + 21}
-              p.push(position)
-            }
-            
-          },
-          async getPoints(date){
-            await getByDateAndTaskId(date,this.task.taskID).then(response => {
-                console.log("getByDateAndTaskId called")
-                console.log("date:"+date)
-                console.log(response)
-                if (response.code===200){
-                    console.log("1")
-                    console.log(response.data.sealedAndTrajectoryList)
-                    this.sealedAndTrajectoryPoints = []
-                    for (let i = 0; i < response.data.sealedAndTrajectoryList.length; i++) {
-                        const position = {lng: response.data.sealedAndTrajectoryList[i].longitude, lat: response.data.sealedAndTrajectoryList[i].latitude}
-                        this.sealedAndTrajectoryPoints.push(position)
-                    }
-                    console.log(response.data.onlyTrajectoryList)
-                    this.onlyTrajectoryPoints = []
-                    for (let i = 0; i < response.data.onlyTrajectoryList.length; i++) {
-                        const position = {lng: response.data.onlyTrajectoryList[i].longitude, lat: response.data.onlyTrajectoryList[i].latitude}
-                        this.onlyTrajectoryPoints.push(position)
-                    }
-                    console.log(response.data.onlySealedList)
-                    this.onlySealedPoints = []
-                    for (let i = 0; i < response.data.onlySealedList.length; i++) {
-                        const position = {lng: response.data.onlySealedList[i].longitude, lat: response.data.onlySealedList[i].latitude}
-                        this.onlySealedPoints.push(position)
-                    }
-                    console.log(this.sealedAndTrajectoryPoints)
-                } 
-            });
-            
-          },
-          async getPredictionPoints(date){
-            await getPredictionDataByDateAndTaskId(date,this.task.taskID).then(response => {
-                console.log("getPredictionDataByDate called")
-                console.log("pppppp:"+date)
-                console.log(response)
-                if (response.code===200){
-                    console.log("getPredictionDataByDate success!")
-                    console.log(response.data.sealedPredictionList)
-                    this.sealedPredictionPoints = []
-                    for (let i = 0; i < response.data.sealedPredictionList.length; i++) {
-                        const position = {lng: response.data.sealedPredictionList[i].longitude, lat: response.data.sealedPredictionList[i].latitude}
-                        this.sealedPredictionPoints.push(position)
-                    }
-                    console.log(response.data.sealedPredictionList)
-                } 
-            });
-            
+          async getScore(date) {
+            await getScore(date, this.task.taskID).then(response => {
+              console.log("getScore called")
+              console.log("date:"+date)
+              console.log(response)
+              if (response.code === 200) {
+                console.log("1")
+                this.data = []
+                for (let i = 0; i < response.data.length; i++) {
+                  const position = {lng: response.data[i].longitude, lat: response.data[i].latitude, count: response.data[i].score}
+                  this.data.push(position)
+                }
+              }
+            })
+            console.log(this.data)
           },
           addPic(map){
             console.log("addPic called")
@@ -489,22 +327,22 @@
           async refresh(date) {
             console.log("refresh called")
             console.log(date)
-            this.getPoints(date);
+            this.getScore(date);
             // 拿预测数据时进行限制，开始日期：2022-01-08，只有在距开始日期task.TimeInterVal后才有预测数据
             // 例如：需要7天数据才能预测
             // 那么只有在已知20220108-20220114的数据时才知道20220115那一天的预测数据
             // 在20220114画这个预测数据
-            var dateStr=date.substr(0,4)+date.substr(5,2)+date.substr(8,2)
-            var predictionDayStr=this.startPredictionFirstDay.substr(0,4)+this.startPredictionFirstDay.substr(5,2)+this.startPredictionFirstDay.substr(8,2)
-            if (dateStr>=predictionDayStr){
-              console.log("可以拿到预测数据")
-              var nextday=this.getNextDayStr(date)
-              console.log(nextday)
-              //this.getPredictionPoints(nextday);
-            }else{
-              console.log("没有预测数据")
-              this.sealedPredictionPoints=[]
-            }  
+            // var dateStr=date.substr(0,4)+date.substr(5,2)+date.substr(8,2)
+            // var predictionDayStr=this.startPredictionFirstDay.substr(0,4)+this.startPredictionFirstDay.substr(5,2)+this.startPredictionFirstDay.substr(8,2)
+            // if (dateStr>=predictionDayStr){
+            //   console.log("可以拿到预测数据")
+            //   var nextday=this.getNextDayStr(date)
+            //   console.log(nextday)
+            //   //this.getPredictionPoints(nextday);
+            // }else{
+            //   console.log("没有预测数据")
+            //   this.sealedPredictionPoints=[]
+            // }  
          
             },
             getNextDayStr(date){
