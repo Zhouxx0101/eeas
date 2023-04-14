@@ -1,6 +1,51 @@
 <template>
 
   <div>
+    <div class="navHome">
+      <div class="nav">
+        <el-tooltip class="item" effect="dark" content="真实数据展示" placement="top-start">
+          <div ref="nav0" class="navbox0" @click="goToRealData()" v-on:mouseover="changeActive0($event)" v-on:mouseout="removeActive0($event)"></div>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" content="预测数据展示" placement="top-start">
+          <div ref="nav1" class="navbox1" @click="goToPredictionData()" v-on:mouseover="changeActive1($event)" v-on:mouseout="removeActive1($event)"></div>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" content="热力图展示" placement="top-start">
+          <div ref="nav2" class="navbox2" @click="goToHeatMap()" v-on:mouseover="changeActive2($event)" v-on:mouseout="removeActive2($event)"></div>
+        </el-tooltip>
+      </div>
+    </div>
+    <!--<el-row>
+      <div>
+    <el-checkbox v-model="checked1" label="备选项1" border></el-checkbox>
+    <el-checkbox v-model="checked2" label="备选项2" border></el-checkbox>
+    <el-checkbox v-model="checked2" label="备选项3" border></el-checkbox>
+  </div>
+    </el-row>-->
+    <!--<el-row>
+      <el-col>
+        <div>
+          <input type="checkbox" id="realData" name="realData" checked onclick="checkRealData(this.checked)">
+          <label for="realData">真实数据展示</label>
+        </div>
+      </el-col>
+
+      <el-col>
+        <div>
+          <input type="checkbox" id="predictionData" name="predictionData" onclick="checkPredictionData(this.checked)">
+          <label for="predictionData">预测数据展示</label>
+        </div>
+      </el-col>
+
+      <el-col>
+        <div>
+          <input type="checkbox" id="heatMap" name="heatMap" onclick="checkHeatMap(this.checked)">
+          <label for="heatMap">热力图展示</label>
+        </div>
+      </el-col>
+
+    </el-row>-->
     <el-row >
       <el-col >
         <div class="BaiDuMap">
@@ -20,21 +65,32 @@
             <bm-control anchor="BMAP_ANCHOR_BOTTOM_RIGHT">
               <el-card class="box-card" shadow="always">
                 <div>
+                  <!-- <el-checkbox v-model="checked1" label="" ></el-checkbox> -->
                   <p class="mapLegend" style="background-color:red"/>
-                  <span style="color:black">仅封控</span>
+                  <span style="color:black">真实数据</span>
                 </div>
                 <div>
+                  <!-- <el-checkbox v-model="checked1" label="" ></el-checkbox> -->
                   <p class="mapLegend" style="background-color:orange"/>
-                  <span style="color:black">仅有患者经过</span>
+                  <span style="color:black">预测命中数据</span>
                 </div>
                 <div>
+                  <!-- <el-checkbox v-model="checked1" label="" ></el-checkbox> -->
                   <p class="mapLegend" style="background-color:blue"/>
-                  <span style="color:black">封控且有患者经过</span>
+                  <span style="color:black">预测未命中数据</span>
                 </div>
-                <div>
+                <!-- <div>
+                  <el-checkbox v-model="checked1" label="" ></el-checkbox>
                   <p class="mapLegend" style="background-color:yellow"/>
                   <span style="color:black">封控预测数据</span>
                 </div>
+                <div>
+                <el-checkbox v-model="checked1" label="" ></el-checkbox> 
+                  <p class="mapLegend" style="background-color:brown"/>
+                  <span style="color:black">封控预测数据</span>
+                </div> -->
+
+
                 <!-- <div>
                   <p class="mapLegend" style="background-color:purple"/>
                   <span style="color:purple">仅封控</span>
@@ -59,10 +115,10 @@
 
             <!-- <bm-marker :position="{lng: 116.404, lat: 39.915}" :dragging="false"></bm-marker> -->
 
-            <bm-marker v-for="(item, i) in onlyTrajectoryPoints" :key="i" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_org.png'), size: {width: 32, height: 32}}"></bm-marker>
-            <bm-marker v-for="(item, i) in onlySealedPoints" :key="i+onlyTrajectoryPoints.length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_red.png'), size: {width: 32, height: 32}}"></bm-marker>
-            <bm-marker v-for="(item, i) in sealedAndTrajectoryPoints" :key="i+onlyTrajectoryPoints.length+onlySealedPoints.length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_blue.png'), size: {width: 32, height: 32}}"></bm-marker>
-            <bm-marker v-for="(item, i) in sealedPredictionPoints" :key="i+onlyTrajectoryPoints.length+onlySealedPoints.length+sealedAndTrajectoryPoints.length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_yellow.png'), size: {width: 32, height: 32}}"></bm-marker>
+            <bm-marker v-for="(item, i) in realData" :key="i" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_red.png'), size: {width: 32, height: 32}}"></bm-marker>
+            <bm-marker v-for="(item, i) in preHitData" :key="i+realData.length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_org.png'), size: {width: 32, height: 32}}"></bm-marker>
+            <bm-marker v-for="(item, i) in preUnhitData" :key="i+preHitData.length+realData.length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_blue.png'), size: {width: 32, height: 32}}"></bm-marker>
+            <!-- <bm-marker v-for="(item, i) in sealedPredictionPoints" :key="i+onlyTrajectoryPoints.length+onlySealedPoints.length+sealedAndTrajectoryPoints.length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_yellow.png'), size: {width: 32, height: 32}}"></bm-marker> -->
             <!--海量点绘制-->
             <!--仅有患者经过-->
             <!-- <bm-point-collection :points="onlyTrajectoryPoints" shape="BMAP_POINT_SHAPE_STAR" color="green" size="BMAP_POINT_SIZE_SMALL" @click="clickHandler"></bm-point-collection> -->
@@ -79,13 +135,15 @@
       </el-col>
     </el-row>
      <Timeline :timelineList="timeLineArr" @refresh="refresh" id="timeline" />
-    <div id="container"></div>
-    </div>
+    
+
+  </div>
+
     </template>
     <script >
     import { getByDateAndTaskId } from "@/api/data/event";
     import {getTask} from "@/api/data/task";
-    import {getPredictionDataByDateAndTaskId} from "@/api/data/predictionData";
+    import {getPredictionDataByDateAndTaskId,getPredictionPageDataByDateAndTaskId} from "@/api/data/predictionData";
     import { Timeline } from "@/components/TimeLine/index";
   
       
@@ -101,7 +159,7 @@
             zoom: 11,
             show: false,
             point: null,
-           points:[],
+            points:[],
       
             // 封控 & 有患者经过
             sealedAndTrajectoryPoints:[],
@@ -126,10 +184,65 @@
               dataSource: null
       },
       startPredictionFirstDay:null,
+
+      // 展示什么数据
+      showRealData:true,
+      showPredictionData:false,
+      showHeatMap:false,
+
+      checked1:true,
+      checked2:false,
+
+      // 真实数据
+      realData:[],
+      // 预测命中数据
+      preHitData:[],
+      // 预测未命中数据
+      preUnhitData:[],
     
         };
       },
       methods: {
+        goToRealData(){
+          this.$router.push("/diagram")
+          //localStorage.setItem("taskid",item.id);
+        },
+        goToPredictionData(){
+          this.$router.push("/prediction")
+
+        },
+        goToHeatMap(){
+          this.$router.push("/heatmap")
+
+        },
+        changeActive0 ($event) {
+      $event.target.className = 'navbox0change'
+    },
+    removeActive0 ($event) {
+      $event.target.className = 'navbox0'
+    },
+    changeActive1 ($event) {
+      $event.target.className = 'navbox1change'
+    },
+    removeActive1 ($event) {
+      $event.target.className = 'navbox1'
+    },
+    changeActive2 ($event) {
+      $event.target.className = 'navbox2change'
+    },
+    removeActive2 ($event) {
+      $event.target.className = 'navbox2'
+    },
+        checkRealData(isChecked){
+          console.log("isChecked:"+isChecked)
+
+        },
+        checkPredictionData(isChecked){
+          console.log("isChecked:"+isChecked)
+        },
+        checkHeatMap(isChecked){
+          console.log("isChecked:"+isChecked)
+        },
      async handler({ BMap, map }) {
           // this.center.lng = 116.404;
           // this.center.lat = 39.915;
@@ -155,13 +268,13 @@
           this.initTimeLineArrByTask()
         
           // 根据任务配置来取第一天的真实数据
-          this.getPoints(this.task.startTime);
+          this.getPoints(this.startPredictionFirstDay);
          
           
         },
         setStartPredictionFirstDay(){
           var dayStr=this.task.startTime;
-          for(var i=0;i<this.task.timeInterval-1;i++){
+          for(var i=0;i<this.task.timeInterval;i++){
             var day=new Date(dayStr);
             // 获取后一天日期
             day.setDate(day.getDate() + 1);
@@ -199,7 +312,9 @@
           if (this.task.endTime!=="0"){
             console.log("任务有截止时间");
             // 转换成为日期数据类型
-          var dayStr=this.task.startTime
+          console.log(this.task.startTime)
+          console.log(this.startPredictionFirstDay)
+          var dayStr=this.startPredictionFirstDay
           const timeNode = {date: dayStr, content: dayStr, isShow: true};
           this.timeLineArr.push(timeNode);
           while(dayStr!==this.task.endTime){
@@ -210,6 +325,7 @@
             var m = day.getMonth() + 1 < 10 ? "0" + (day.getMonth() + 1) : day.getMonth() + 1;
             var d = day.getDate() < 10 ? "0" + day.getDate() : day.getDate();
             dayStr=y+"-"+m+"-"+d
+            console.log(dayStr)
             const timeNode = {date: dayStr, content: dayStr, isShow: true};
             this.timeLineArr.push(timeNode);
           }
@@ -241,31 +357,31 @@
           
         },
         async getPoints(date){
-          await getByDateAndTaskId(date,this.task.taskID).then(response => {
-              console.log("getByDateAndTaskId called")
+          await getPredictionPageDataByDateAndTaskId(date,this.task.taskID).then(response => {
+              console.log("getPredictionPageDataByDateAndTaskId called")
               console.log("date:"+date)
               console.log(response)
               if (response.code===200){
                   console.log("1")
                   console.log(response.data.sealedAndTrajectoryList)
-                  this.sealedAndTrajectoryPoints = []
-                  for (let i = 0; i < response.data.sealedAndTrajectoryList.length; i++) {
-                      const position = {lng: response.data.sealedAndTrajectoryList[i].longitude, lat: response.data.sealedAndTrajectoryList[i].latitude}
-                      this.sealedAndTrajectoryPoints.push(position)
+                  this.realData = []
+                  for (let i = 0; i < response.data.realData.length; i++) {
+                      const position = {lng: response.data.realData[i].longitude, lat: response.data.realData[i].latitude}
+                      this.realData.push(position)
                   }
-                  console.log(response.data.onlyTrajectoryList)
-                  this.onlyTrajectoryPoints = []
-                  for (let i = 0; i < response.data.onlyTrajectoryList.length; i++) {
-                      const position = {lng: response.data.onlyTrajectoryList[i].longitude, lat: response.data.onlyTrajectoryList[i].latitude}
-                      this.onlyTrajectoryPoints.push(position)
+                  console.log(response.data.realData)
+                  this.preHitData = []
+                  for (let i = 0; i < response.data.preHitData.length; i++) {
+                      const position = {lng: response.data.preHitData[i].longitude, lat: response.data.preHitData[i].latitude}
+                      this.preHitData.push(position)
                   }
-                  console.log(response.data.onlySealedList)
-                  this.onlySealedPoints = []
-                  for (let i = 0; i < response.data.onlySealedList.length; i++) {
-                      const position = {lng: response.data.onlySealedList[i].longitude, lat: response.data.onlySealedList[i].latitude}
-                      this.onlySealedPoints.push(position)
+                  console.log(response.data.preHitData)
+                  this.preUnhitData = []
+                  for (let i = 0; i < response.data.preUnhitData.length; i++) {
+                      const position = {lng: response.data.preUnhitData[i].longitude, lat: response.data.preUnhitData[i].latitude}
+                      this.preUnhitData.push(position)
                   }
-                  console.log(this.sealedAndTrajectoryPoints)
+                  console.log(this.preUnhitData)
               } 
           });
           
@@ -287,6 +403,31 @@
               } 
           });
           
+        },
+      
+        getClickInfo(e) {
+          // 创建地理编码实例
+          const myGeo = new BMap.Geocoder();
+          // 根据坐标逆解析地址
+          myGeo.getLocation(new BMap.Point(e.point.lng, e.point.lat), (result) => {
+            console.log(result, "result-->>>>");
+            if (result) {
+              this.address = result.address;
+            }
+          });
+          this.center.lng = e.point.lng;
+          this.center.lat = e.point.lat;
+        },
+        syncCenterAndZoom(e) {
+          // console.log(e.target, 'e.target-->>>>')
+          const { lng, lat } = e.target.getCenter();
+          this.zoom = e.target.getZoom();
+        },
+        infoWindowClose () {
+          this.show = false
+        },
+        infoWindowOpen () {
+          this.show = true
         },
         addPic(map){
           console.log("addPic called")
@@ -351,30 +492,6 @@
             var legendCtrl = new LegendControl();
             map.addControl(legendCtrl);
         },
-        getClickInfo(e) {
-          // 创建地理编码实例
-          const myGeo = new BMap.Geocoder();
-          // 根据坐标逆解析地址
-          myGeo.getLocation(new BMap.Point(e.point.lng, e.point.lat), (result) => {
-            console.log(result, "result-->>>>");
-            if (result) {
-              this.address = result.address;
-            }
-          });
-          this.center.lng = e.point.lng;
-          this.center.lat = e.point.lat;
-        },
-        syncCenterAndZoom(e) {
-          // console.log(e.target, 'e.target-->>>>')
-          const { lng, lat } = e.target.getCenter();
-          this.zoom = e.target.getZoom();
-        },
-        infoWindowClose () {
-          this.show = false
-        },
-        infoWindowOpen () {
-          this.show = true
-        },
         // 海量点绘制出来后，单击某点所触发的事件
         clickHandler (e) {
           alert(`单击点的坐标为：${e.point.lng}, ${e.point.lat}`);
@@ -388,29 +505,29 @@
           // 例如：需要7天数据才能预测
           // 那么只有在已知20220108-20220114的数据时才知道20220115那一天的预测数据
           // 在20220114画这个预测数据
-          var dateStr=date.substr(0,4)+date.substr(5,2)+date.substr(8,2)
-          var predictionDayStr=this.startPredictionFirstDay.substr(0,4)+this.startPredictionFirstDay.substr(5,2)+this.startPredictionFirstDay.substr(8,2)
-          if (dateStr>=predictionDayStr){
-            console.log("可以拿到预测数据")
-            var nextday=this.getNextDayStr(date)
-            console.log(nextday)
-            this.getPredictionPoints(nextday);
-          }else{
-            console.log("没有预测数据")
-            this.sealedPredictionPoints=[]
-          }  
+          // var dateStr=date.substr(0,4)+date.substr(5,2)+date.substr(8,2)
+          // var predictionDayStr=this.startPredictionFirstDay.substr(0,4)+this.startPredictionFirstDay.substr(5,2)+this.startPredictionFirstDay.substr(8,2)
+          // if (dateStr>=predictionDayStr){
+          //   console.log("可以拿到预测数据")
+          //   var nextday=this.getNextDayStr(date)
+          //   console.log(nextday)
+          //   //this.getPredictionPoints(nextday);
+          // }else{
+          //   console.log("没有预测数据")
+          //   this.sealedPredictionPoints=[]
+          // }  
        
           },
           getNextDayStr(date){
-          console.log("getNextDayStr called")
-          // 转换成为日期数据类型
-          var day=new Date(date)
-          // 获取后一天日期
-          day.setDate(day.getDate() + 1);
-          var y = day.getFullYear();
-          var m = day.getMonth() + 1 < 10 ? "0" + (day.getMonth() + 1) : day.getMonth() + 1;
-          var d = day.getDate() < 10 ? "0" + day.getDate() : day.getDate();
-          return y+"-" + m +"-"+ d;
+              console.log("getNextDayStr called")
+              // 转换成为日期数据类型
+              var day=new Date(date)
+              // 获取后一天日期
+              day.setDate(day.getDate() + 1);
+              var y = day.getFullYear();
+              var m = day.getMonth() + 1 < 10 ? "0" + (day.getMonth() + 1) : day.getMonth() + 1;
+              var d = day.getDate() < 10 ? "0" + day.getDate() : day.getDate();
+              return y+"-" + m +"-"+ d;
         },
       },
     };
@@ -498,7 +615,7 @@
       .box-card {
         /* min-height: 100%;
         height: 100%; */
-        height: 130px;
+        height: 100px;
         width: 200px;
         /* height: 50px;
         width: 400px; */
@@ -512,5 +629,82 @@
         width:12px;
         border-radius:6px
       }
+
+      .navHome{
+    width: 100%;
+    display: flex;
+    position: fixed;
+    justify-content: center;
+    z-index: 999;
+  }
+  .nav{
+    width:270px;
+    height: 100px;
+    /* background-color: white; */
+    position: fixed;
+    bottom: 0px;
+    z-index: 999;
+    display: flex;
+    flex-direction: row;
+  }
+  .navbox0{
+    width:70px;
+    height: 70px;
+    margin: 10px;
+    /* background-color: red; */
+    transition-duration: 0.3s;
+    background-image: url("../../assets/img/nav_chart.png");
+    background-size: 90% 90%;
+    background-position:center ;
+    background-repeat: no-repeat;
+  }
+  .navbox0change{
+    width:80px;
+    height: 80px;
+    margin: 5px;
+    /* background-color: green; */
+    transition-duration: 0.3s;
+    background-image: url("../../assets/img/nav_chart.png");
+    background-size: 90% 90%;
+    background-position:center ;
+    background-repeat: no-repeat;
+  }
+  .navbox1{
+    width:70px;
+    height: 70px;
+    margin: 10px;
+    /* background-color: red; */
+    transition-duration: 0.3s;
+    background-image: url("../../assets/img/nav_upchain.png");
+    background-size: 100% 100%;
+  }
+  .navbox1change{
+    width:80px;
+    height: 80px;
+    margin: 5px;
+    /* background-color: green; */
+    transition-duration: 0.3s;
+    background-image: url("../../assets/img/nav_upchain.png");
+    background-size: 100% 100%;
+  }
+  .navbox2{
+    width:70px;
+    height: 70px;
+    margin: 10px;
+    /* background-color: red; */
+    transition-duration: 0.3s;
+    background-image: url("../../assets/img/nav_mng.png");
+    background-size: 100% 100%;
+  }
+  .navbox2change{
+    width:80px;
+    height: 80px;
+    margin: 5px;
+    /* background-color: green; */
+    transition-duration: 0.3s;
+    background-image: url("../../assets/img/nav_mng.png");
+    background-size: 100% 100%;
+  }
+      
     
     </style>
