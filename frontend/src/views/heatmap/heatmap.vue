@@ -463,13 +463,15 @@
       position: fixed;
       justify-content: center;
       z-index: 999;
+      left: 0px;
     }
     .nav{
       width:270px;
       height: 100px;
       /* background-color: white; */
-      position: fixed;
-      bottom: 0px;
+      /* position: fixed; */
+      /* bottom: 0px; */
+      /* top: 0px; */
       z-index: 999;
       display: flex;
       flex-direction: row;
