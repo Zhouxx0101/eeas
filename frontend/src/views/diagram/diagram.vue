@@ -200,34 +200,44 @@
         goToRealData(){
           this.$router.push("/diagram")
           localStorage.setItem("taskid",item.id);
+         
         },
         goToPredictionData(){
           this.$router.push("/prediction")
           localStorage.setItem("taskid",item.id);
+      
 
         },
         goToHeatMap(){
           this.$router.push("/heatmap")
           localStorage.setItem("taskid",item.id);
+    
 
         },
         changeActive0 ($event) {
       $event.target.className = 'navbox0change'
     },
     removeActive0 ($event) {
-      $event.target.className = 'navbox0'
+      
+        $event.target.className = 'navbox0'
+    
+     
     },
     changeActive1 ($event) {
       $event.target.className = 'navbox1change'
     },
     removeActive1 ($event) {
-      $event.target.className = 'navbox1'
+     
+        $event.target.className = 'navbox1'
+      
     },
     changeActive2 ($event) {
       $event.target.className = 'navbox2change'
     },
     removeActive2 ($event) {
-      $event.target.className = 'navbox2'
+     
+        $event.target.className = 'navbox2'
+     
     },
         checkRealData(isChecked){
           console.log("isChecked:"+isChecked)
@@ -645,7 +655,7 @@
     width:70px;
     height: 70px;
     margin: 10px;
-    /* background-color: red; */
+    /* background-color: gray; */
     transition-duration: 0.3s;
     background-image: url("../../assets/img/nav_chart.png");
     background-size: 90% 90%;
@@ -669,7 +679,7 @@
     margin: 10px;
     /* background-color: red; */
     transition-duration: 0.3s;
-    background-image: url("../../assets/img/nav_upchain.png");
+    background-image: url("../../assets/img/nav_upchain_gray.png");
     background-size: 100% 100%;
   }
   .navbox1change{
@@ -678,7 +688,7 @@
     margin: 5px;
     /* background-color: green; */
     transition-duration: 0.3s;
-    background-image: url("../../assets/img/nav_upchain.png");
+    background-image: url("../../assets/img/nav_upchain_gray.png");
     background-size: 100% 100%;
   }
   .navbox2{
@@ -687,7 +697,7 @@
     margin: 10px;
     /* background-color: red; */
     transition-duration: 0.3s;
-    background-image: url("../../assets/img/nav_mng.png");
+    background-image: url("../../assets/img/nav_mng_gray.png");
     background-size: 100% 100%;
   }
   .navbox2change{
@@ -696,7 +706,7 @@
     margin: 5px;
     /* background-color: green; */
     transition-duration: 0.3s;
-    background-image: url("../../assets/img/nav_mng.png");
+    background-image: url("../../assets/img/nav_mng_gray.png");
     background-size: 100% 100%;
   }
       
