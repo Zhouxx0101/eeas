@@ -482,7 +482,7 @@
       margin: 10px;
       /* background-color: red; */
       transition-duration: 0.3s;
-      background-image: url("../../assets/img/nav_chart.png");
+      background-image: url("../../assets/img/nav_chart_gray.png");
       background-size: 90% 90%;
       background-position:center ;
       background-repeat: no-repeat;
@@ -493,7 +493,7 @@
       margin: 5px;
       /* background-color: green; */
       transition-duration: 0.3s;
-      background-image: url("../../assets/img/nav_chart.png");
+      background-image: url("../../assets/img/nav_chart_gray.png");
       background-size: 90% 90%;
       background-position:center ;
       background-repeat: no-repeat;
@@ -504,7 +504,7 @@
       margin: 10px;
       /* background-color: red; */
       transition-duration: 0.3s;
-      background-image: url("../../assets/img/nav_upchain.png");
+      background-image: url("../../assets/img/nav_upchain_gray.png");
       background-size: 100% 100%;
     }
     .navbox1change{
@@ -513,7 +513,7 @@
       margin: 5px;
       /* background-color: green; */
       transition-duration: 0.3s;
-      background-image: url("../../assets/img/nav_upchain.png");
+      background-image: url("../../assets/img/nav_upchain_gray.png");
       background-size: 100% 100%;
     }
     .navbox2{
@@ -525,6 +525,7 @@
       background-image: url("../../assets/img/nav_mng.png");
       background-size: 100% 100%;
     }
+ 
     .navbox2change{
       width:80px;
       height: 80px;
