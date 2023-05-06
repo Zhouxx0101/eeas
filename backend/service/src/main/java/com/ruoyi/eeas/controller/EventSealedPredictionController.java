@@ -142,7 +142,7 @@ public class EventSealedPredictionController extends BaseController
      * 根据时间以及任务id获取预测页数据详细信息
      * 分别有真实数据、预测命中数据以及预测未命中数据
      */
-    @PreAuthorize("@ss.hasPermi('event:predictionData:query')")
+    @PreAuthorize("@ss.hasPermi('data:prediction:list')")
     @GetMapping(value = "/queryPageData/{date}/{taskId}")
     public AjaxResult getPrePageInfo(@PathVariable("date") String date,@PathVariable("taskId") String taskId)
     {

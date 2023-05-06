@@ -67,17 +67,17 @@
                 <div>
                   <!-- <el-checkbox v-model="checked1" label="" ></el-checkbox> -->
                   <p class="mapLegend" style="background-color:red"/>
-                  <span style="color:black">真实数据</span>
+                  <span style="color:black">未被预测到的真实数据({{ realData.length }}例)</span>
                 </div>
                 <div>
                   <!-- <el-checkbox v-model="checked1" label="" ></el-checkbox> -->
                   <p class="mapLegend" style="background-color:orange"/>
-                  <span style="color:black">预测命中数据</span>
+                  <span style="color:black">预测命中数据({{ preHitData.length }}例)</span>
                 </div>
                 <div>
                   <!-- <el-checkbox v-model="checked1" label="" ></el-checkbox> -->
                   <p class="mapLegend" style="background-color:blue"/>
-                  <span style="color:black">预测未命中数据</span>
+                  <span style="color:black">预测未命中数据({{ preUnhitData.length }}例)</span>
                 </div>
                 <!-- <div>
                   <el-checkbox v-model="checked1" label="" ></el-checkbox>
@@ -616,7 +616,7 @@
         /* min-height: 100%;
         height: 100%; */
         height: 100px;
-        width: 200px;
+        width: 280px;
         /* height: 50px;
         width: 400px; */
       }

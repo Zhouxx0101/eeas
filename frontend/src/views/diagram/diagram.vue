@@ -67,17 +67,17 @@
                 <div>
                   <!-- <el-checkbox v-model="checked1" label="" ></el-checkbox> -->
                   <p class="mapLegend" style="background-color:red"/>
-                  <span style="color:black">仅封控</span>
+                  <span style="color:black">仅封控({{ onlySealedPoints.length }}例)</span>
                 </div>
                 <div>
                   <!-- <el-checkbox v-model="checked1" label="" ></el-checkbox> -->
                   <p class="mapLegend" style="background-color:orange"/>
-                  <span style="color:black">仅有患者经过</span>
+                  <span style="color:black">仅有患者经过({{ onlyTrajectoryPoints.length }}例)</span>
                 </div>
                 <div>
                   <!-- <el-checkbox v-model="checked1" label="" ></el-checkbox> -->
                   <p class="mapLegend" style="background-color:blue"/>
-                  <span style="color:black">封控且有患者经过</span>
+                  <span style="color:black">封控且有患者经过({{ sealedAndTrajectoryPoints.length }}例)</span>
                 </div>
                 <!-- <div>
                   <el-checkbox v-model="checked1" label="" ></el-checkbox>
@@ -608,7 +608,7 @@
         /* min-height: 100%;
         height: 100%; */
         height: 100px;
-        width: 200px;
+        width: 240px;
         /* height: 50px;
         width: 400px; */
       }
