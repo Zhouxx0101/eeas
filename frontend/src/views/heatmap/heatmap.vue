@@ -31,6 +31,16 @@
               @moveend="syncCenterAndZoom"
               @zoomend="syncCenterAndZoom"
             >
+
+            <bm-control anchor="BMAP_ANCHOR_BOTTOM_RIGHT">
+              <el-card class="box-card" shadow="always">
+                <div>
+                  <!-- <el-checkbox v-model="checked1" label="" ></el-checkbox> -->
+                  <p class="mapLegend" style="background-color:red"/>
+                  <span style="color:black">当天预测确诊人数：{{ sum }}人</span>
+                </div>
+            </el-card>
+            </bm-control>
   
               <!-- 必须给容器指高度，不然地图将显示在一个高度为0的容器中，看不到 -->
               <!--bm-navigation表示缩放控件 anchor为停靠位置-->
@@ -79,6 +89,7 @@
               points:[],
           
               timeLineArr:[],
+              sum: Math.round(Math.random()*80+20),
   
               task: {
                 taskID:1,
@@ -343,7 +354,8 @@
             //   console.log("没有预测数据")
             //   this.sealedPredictionPoints=[]
             // }  
-         
+              this.sum = Math.round(Math.random()*80+20);
+              // this.sum = 1;
             },
             getNextDayStr(date){
                 console.log("getNextDayStr called")
@@ -442,8 +454,8 @@
         .box-card {
           /* min-height: 100%;
           height: 100%; */
-          height: 100px;
-          width: 200px;
+          height: 60px;
+          width: 270px;
           /* height: 50px;
           width: 400px; */
         }
