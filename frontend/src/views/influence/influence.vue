@@ -568,7 +568,7 @@
     margin: 13px;
     /* background-color: red; */
     transition-duration: 0.3s;
-    background-image: url("../../assets/img/circle-plus-outline.png");
+    background-image: url("../../assets/img/circle-plus-outline_gray.png");
     background-size:100% 100%;
   }
   .navbox2change{
@@ -577,7 +577,7 @@
     margin: 5px;
     /* background-color: green; */
     transition-duration: 0.3s;
-    background-image: url("../../assets/img/circle-plus-outline.png");
+    background-image: url("../../assets/img/circle-plus-outline_gray.png");
     background-size: 100% 100%;
   }
 
@@ -609,7 +609,7 @@
     margin: 16px;
     /* background-color: red; */
     transition-duration: 0.3s;
-    background-image: url("../../assets/img/icon-kfckfc_gray.png");
+    background-image: url("../../assets/img/icon-kfckfc.png");
     background-size: 100% 100%;
   }
   .navbox4change{
@@ -618,7 +618,7 @@
     margin: 5px;
     /* background-color: green; */
     transition-duration: 0.3s;
-    background-image: url("../../assets/img/icon-kfckfc_gray.png");
+    background-image: url("../../assets/img/icon-kfckfc.png");
     background-size: 100% 100%;
   }
     

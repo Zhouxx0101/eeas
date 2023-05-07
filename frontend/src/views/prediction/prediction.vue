@@ -14,6 +14,14 @@
         <el-tooltip class="item" effect="dark" content="热力图展示" placement="top-start">
           <div ref="nav2" class="navbox2" @click="goToHeatMap()" v-on:mouseover="changeActive2($event)" v-on:mouseout="removeActive2($event)"></div>
         </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" content="集群交互展示" placement="top-start">
+          <div ref="nav1" class="navbox3" @click="goToCluster()" v-on:mouseover="changeActive3($event)" v-on:mouseout="removeActive3($event)"></div>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" content="集群影响力展示" placement="top-start">
+          <div ref="nav2" class="navbox4" @click="goToClusterInfluence()" v-on:mouseover="changeActive4($event)" v-on:mouseout="removeActive4($event)"></div>
+        </el-tooltip>
       </div>
     </div>
     <!--<el-row>
@@ -218,6 +226,16 @@
        
 
         },
+        goToCluster(){
+          this.$router.push("/cluster")
+          localStorage.setItem("taskid",item.id);
+         
+        },
+        goToClusterInfluence(){
+          this.$router.push("/influence")
+          localStorage.setItem("taskid",item.id);
+         
+        },
         changeActive0 ($event) {
       $event.target.className = 'navbox0change'
     },
@@ -240,6 +258,22 @@
     removeActive2 ($event) {
      
         $event.target.className = 'navbox2'
+     
+    },
+    changeActive3 ($event) {
+      $event.target.className = 'navbox3change'
+    },
+    removeActive3 ($event) {
+     
+        $event.target.className = 'navbox3'
+      
+    },
+    changeActive4 ($event) {
+      $event.target.className = 'navbox4change'
+    },
+    removeActive4 ($event) {
+     
+        $event.target.className = 'navbox4'
      
     },
         checkRealData(isChecked){
@@ -648,7 +682,7 @@
     left: 0px;
   }
   .nav{
-    width:270px;
+    width:420px;
     height: 100px;
     /* background-color: white; */
     /* position: fixed; */
@@ -659,66 +693,103 @@
     flex-direction: row;
   }
   .navbox0{
-    width:70px;
-    height: 70px;
-    margin: 10px;
-    /* background-color: red; */
+    width:65px;
+    height: 65px;
+    margin: 12px;
+    /* background-color: gray; */
     transition-duration: 0.3s;
-    background-image: url("../../assets/img/nav_chart_gray.png");
+    background-image: url("../../assets/img/discover_gray.png");
     background-size: 90% 90%;
     background-position:center ;
     background-repeat: no-repeat;
   }
- 
   .navbox0change{
-    width:80px;
-    height: 80px;
-    margin: 5px;
+    width:90px;
+    height: 90px;
+    margin: 3px;
     /* background-color: green; */
     transition-duration: 0.3s;
-    background-image: url("../../assets/img/nav_chart_gray.png");
+    background-image: url("../../assets/img/discover_gray.png");
     background-size: 90% 90%;
     background-position:center ;
     background-repeat: no-repeat;
   }
   .navbox1{
-    width:70px;
-    height: 70px;
-    margin: 10px;
+    width:60px;
+    height: 60px;
+    margin: 13px;
     /* background-color: red; */
     transition-duration: 0.3s;
-    background-image: url("../../assets/img/nav_upchain.png");
+    background-image: url("../../assets/img/bangzhu.png");
     background-size: 100% 100%;
   }
-
   .navbox1change{
     width:80px;
     height: 80px;
     margin: 5px;
     /* background-color: green; */
     transition-duration: 0.3s;
-    background-image: url("../../assets/img/nav_upchain.png");
+    background-image: url("../../assets/img/bangzhu.png");
     background-size: 100% 100%;
   }
   .navbox2{
-    width:70px;
-    height: 70px;
-    margin: 10px;
+    width:60px;
+    height: 60px;
+    margin: 13px;
     /* background-color: red; */
     transition-duration: 0.3s;
-    background-image: url("../../assets/img/nav_mng_gray.png");
-    background-size: 100% 100%;
+    background-image: url("../../assets/img/circle-plus-outline_gray.png");
+    background-size:100% 100%;
   }
-
   .navbox2change{
     width:80px;
     height: 80px;
     margin: 5px;
     /* background-color: green; */
     transition-duration: 0.3s;
-    background-image: url("../../assets/img/nav_mng_gray.png");
+    background-image: url("../../assets/img/circle-plus-outline_gray.png");
     background-size: 100% 100%;
   }
-      
+
+  .navbox3{
+    width:65px;
+    height: 65px;
+    margin: 12px;
+    /* background-color: gray; */
+    transition-duration: 0.3s;
+    background-image: url("../../assets/img/stopwatch_gray.png");
+    background-size: 90% 90%;
+    background-position:center ;
+    background-repeat: no-repeat;
+  }
+  .navbox3change{
+    width:90px;
+    height: 90px;
+    margin: 3px;
+    /* background-color: green; */
+    transition-duration: 0.3s;
+    background-image: url("../../assets/img/stopwatch_gray.png");
+    background-size: 90% 90%;
+    background-position:center ;
+    background-repeat: no-repeat;
+  }
+  .navbox4{
+    width:55px;
+    height: 55px;
+    margin: 16px;
+    /* background-color: red; */
+    transition-duration: 0.3s;
+    background-image: url("../../assets/img/icon-kfckfc_gray.png");
+    background-size: 100% 100%;
+  }
+  .navbox4change{
+    width:80px;
+    height: 80px;
+    margin: 5px;
+    /* background-color: green; */
+    transition-duration: 0.3s;
+    background-image: url("../../assets/img/icon-kfckfc_gray.png");
+    background-size: 100% 100%;
+  }
     
     </style>

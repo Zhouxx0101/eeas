@@ -24,36 +24,6 @@
         </el-tooltip>
       </div>
     </div>
-    <!--<el-row>
-      <div>
-    <el-checkbox v-model="checked1" label="备选项1" border></el-checkbox>
-    <el-checkbox v-model="checked2" label="备选项2" border></el-checkbox>
-    <el-checkbox v-model="checked2" label="备选项3" border></el-checkbox>
-  </div>
-    </el-row>-->
-    <!--<el-row>
-      <el-col>
-        <div>
-          <input type="checkbox" id="realData" name="realData" checked onclick="checkRealData(this.checked)">
-          <label for="realData">真实数据展示</label>
-        </div>
-      </el-col>
-
-      <el-col>
-        <div>
-          <input type="checkbox" id="predictionData" name="predictionData" onclick="checkPredictionData(this.checked)">
-          <label for="predictionData">预测数据展示</label>
-        </div>
-      </el-col>
-
-      <el-col>
-        <div>
-          <input type="checkbox" id="heatMap" name="heatMap" onclick="checkHeatMap(this.checked)">
-          <label for="heatMap">热力图展示</label>
-        </div>
-      </el-col>
-
-    </el-row>-->
     <el-row >
       <el-col >
         <div class="BaiDuMap">
@@ -70,47 +40,28 @@
             @zoomend="syncCenterAndZoom"
           >
 
-            <bm-control anchor="BMAP_ANCHOR_BOTTOM_RIGHT">
+            <bm-control anchor="BMAP_ANCHOR_BOTTOM_RIGHT" v-if="showCluster">
               <el-card class="box-card" shadow="always">
                 <div>
-                  <!-- <el-checkbox v-model="checked1" label="" ></el-checkbox> -->
-                  <p class="mapLegend" style="background-color:red"/>
-                  <span style="color:black">仅封控({{ onlySealedPoints.length }}例)</span>
-                </div>
-                <div>
-                  <!-- <el-checkbox v-model="checked1" label="" ></el-checkbox> -->
                   <p class="mapLegend" style="background-color:orange"/>
-                  <span style="color:black">仅有患者经过({{ onlyTrajectoryPoints.length }}例)</span>
+                  <span style="color:black">集群1({{this.cluster[0].length }}个地点)</span>
                 </div>
                 <div>
-                  <!-- <el-checkbox v-model="checked1" label="" ></el-checkbox> -->
+                  <p class="mapLegend" style="background-color:red"/>
+                  <span style="color:black">集群2({{this.cluster[1].length }}个地点)</span>
+                </div>
+                <div>
                   <p class="mapLegend" style="background-color:blue"/>
-                  <span style="color:black">封控且有患者经过({{ sealedAndTrajectoryPoints.length }}例)</span>
-                </div>
-                <!-- <div>
-                  <el-checkbox v-model="checked1" label="" ></el-checkbox>
-                  <p class="mapLegend" style="background-color:yellow"/>
-                  <span style="color:black">封控预测数据</span>
-                </div>
-                <div>
-                <el-checkbox v-model="checked1" label="" ></el-checkbox> 
-                  <p class="mapLegend" style="background-color:brown"/>
-                  <span style="color:black">封控预测数据</span>
-                </div> -->
-
-
-                <!-- <div>
-                  <p class="mapLegend" style="background-color:purple"/>
-                  <span style="color:purple">仅封控</span>
+                  <span style="color:black">集群3({{this.cluster[2].length }}个地点)</span>
                 </div>
                 <div>
                   <p class="mapLegend" style="background-color:green"/>
-                  <span style="color:green">仅有患者经过</span>
+                  <span style="color:black">集群4({{this.cluster[3].length }}个地点)</span>
                 </div>
                 <div>
-                  <p class="mapLegend" style="background-color:red"/>
-                  <span style="color:red">封控且有患者经过</span>
-                </div> -->
+                  <p class="mapLegend" style="background-color:brown"/>
+                  <span style="color:black">集群5({{this.cluster[4].length }}个地点)</span>
+                </div>
             </el-card>
             </bm-control>
    
@@ -123,23 +74,14 @@
 
             <!-- <bm-marker :position="{lng: 116.404, lat: 39.915}" :dragging="false"></bm-marker> -->
 
-            <bm-marker v-for="(item, i) in onlyTrajectoryPoints" :key="i" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_org.png'), size: {width: 32, height: 32}}"></bm-marker>
-            <bm-marker v-for="(item, i) in onlySealedPoints" :key="i+onlyTrajectoryPoints.length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_red.png'), size: {width: 32, height: 32}}"></bm-marker>
-            <bm-marker v-for="(item, i) in sealedAndTrajectoryPoints" :key="i+onlyTrajectoryPoints.length+onlySealedPoints.length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_blue.png'), size: {width: 32, height: 32}}"></bm-marker>
-            <!-- <bm-marker v-for="(item, i) in sealedPredictionPoints" :key="i+onlyTrajectoryPoints.length+onlySealedPoints.length+sealedAndTrajectoryPoints.length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_yellow.png'), size: {width: 32, height: 32}}"></bm-marker> -->
-            <!--海量点绘制-->
-            <!--仅有患者经过-->
-            <!-- <bm-point-collection :points="onlyTrajectoryPoints" shape="BMAP_POINT_SHAPE_STAR" color="green" size="BMAP_POINT_SIZE_SMALL" @click="clickHandler"></bm-point-collection> -->
-            <!--仅封控-->
-            <!-- <bm-point-collection :points="onlySealedPoints" shape="BMAP_POINT_SHAPE_STAR" color="purple" size="BMAP_POINT_SIZE_SMALL" @click="clickHandler"></bm-point-collection> -->
-            <!--封控 & 有患者经过-->
-            <!-- <bm-point-collection :points="sealedAndTrajectoryPoints" shape="BMAP_POINT_SHAPE_STAR" color="red" size="BMAP_POINT_SIZE_SMALL" @click="clickHandler"></bm-point-collection> -->
+            <bm-marker v-if="showCluster" v-for="(item, i) in cluster[0]" :key="i" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_org.png'), size: {width: 32, height: 32}}"></bm-marker>
+            <bm-marker v-if="showCluster" v-for="(item, i) in cluster[1]" :key="i+cluster[0].length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_red.png'), size: {width: 32, height: 32}}"></bm-marker>
+            <bm-marker v-if="showCluster" v-for="(item, i) in cluster[2]" :key="i+cluster[0].length+cluster[1].length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_blue.png'), size: {width: 32, height: 32}}"></bm-marker>
+            <bm-marker v-if="showCluster" v-for="(item, i) in cluster[3]" :key="i+cluster[0].length+cluster[1].length+cluster[2].length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_green.png'), size: {width: 32, height: 32}}"></bm-marker>
+            <bm-marker v-if="showCluster" v-for="(item, i) in cluster[4]" :key="i+cluster[0].length+cluster[1].length+cluster[2].length+cluster[3].length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_brown.png'), size: {width: 32, height: 32}}"></bm-marker>
             
           </baidu-map>
         </div>
-        <!-- <ul>
- <li v-for="(item,i) in sealedAndTrajectoryPoints">索引：{{i}}---lng：{{item.lng}}---lat：{{item.lat}}---len:{{ sealedAndTrajectoryPoints.length }}</li>
- </ul> -->
       </el-col>
     </el-row>
      <Timeline :timelineList="timeLineArr" @refresh="refresh" id="timeline" />
@@ -149,7 +91,7 @@
 
     </template>
     <script >
-    import { getByDateAndTaskId } from "@/api/data/event";
+    import { getClusterByDateAndTaskId } from "@/api/data/event";
     import {getTask} from "@/api/data/task";
     import {getPredictionDataByDateAndTaskId} from "@/api/data/predictionData";
     import { Timeline } from "@/components/TimeLine/index";
@@ -178,8 +120,6 @@
             // 封控小区预测数据
             sealedPredictionPoints:[],
             
-            place1: ["中辛庄公交站", "高庄子小学"],
-
             timeLineArr:[],
 
             task: {
@@ -193,13 +133,16 @@
       },
       startPredictionFirstDay:null,
 
-      // 展示什么数据
-      showRealData:true,
-      showPredictionData:false,
-      showHeatMap:false,
+      // 集群列表
+      clusterNum:5,
+      // 二维数组声明
+      //cluster:new Array(5).fill(new Array(20)),
+      cluster:[],
+      // 使用showCluster变量来控制，只有在拿到对应数据之后才进行对应控件的显示
+      // 避免读到未定义的属性
+      showCluster:false,
+      
 
-      checked1:true,
-      checked2:false,
     
         };
       },
@@ -271,44 +214,25 @@
         $event.target.className = 'navbox4'
      
     },
-        checkRealData(isChecked){
-          console.log("isChecked:"+isChecked)
-
-        },
-        checkPredictionData(isChecked){
-          console.log("isChecked:"+isChecked)
-        },
-        checkHeatMap(isChecked){
-          console.log("isChecked:"+isChecked)
-        },
      async handler({ BMap, map }) {
           // this.center.lng = 116.404;
           // this.center.lat = 39.915;
+          this.cluster=new Array(this.clusterNum);
           this.taskID=localStorage.getItem("taskid");
           console.log("taskID:"+this.taskID);
           // 获取任务配置信息
           await this.getTaskInfo(this.taskID);
           this.setStartPredictionFirstDay()
-          // this.center.lng = 117.35267834853804;
-          // this.center.lat = 38.99494446989348;
           this.center=this.task.place;
           this.zoom = this.zoom;
-    
-          // 海量点绘制点集合初始化
-          //this.addPoints(this.points1)
-          //this.addPoints(this.points2)
-          //this.addPoints(this.points3)
-          //this.addPoints(this.points4)
-    
     
           //this.initTimeLineArr();
            // 根据任务配置来初始化时间轴
           this.initTimeLineArrByTask()
         
           // 根据任务配置来取第一天的真实数据
-          this.getPoints(this.task.startTime);
-         
-          
+          await this.getPoints(this.task.startTime);
+ 
         },
         setStartPredictionFirstDay(){
           var dayStr=this.task.startTime;
@@ -383,40 +307,26 @@
             })
               // date = ["20220108"]
           },
-
-        addPoints (p) {
-          for (var i = 0; i < 100; i++) {
-            const position = {lng: Math.random() * 40 + 85, lat: Math.random() * 30 + 21}
-            p.push(position)
-          }
-          
-        },
         async getPoints(date){
-          await getByDateAndTaskId(date,this.task.taskID).then(response => {
-              console.log("getByDateAndTaskId called")
+          await getClusterByDateAndTaskId(date,this.task.taskID).then(response => {
+              console.log("getClusterByDateAndTaskId called")
               console.log("date:"+date)
               console.log(response)
               if (response.code===200){
-                  console.log("1")
-                  console.log(response.data.sealedAndTrajectoryList)
-                  this.sealedAndTrajectoryPoints = []
-                  for (let i = 0; i < response.data.sealedAndTrajectoryList.length; i++) {
-                      const position = {lng: response.data.sealedAndTrajectoryList[i].longitude, lat: response.data.sealedAndTrajectoryList[i].latitude}
-                      this.sealedAndTrajectoryPoints.push(position)
+                  console.log("getClusterByDateAndTaskId success!")
+                  console.log(response.data.cluster)
+                  this.cluster=new Array(this.clusterNum);
+                  for (let i = 0; i < response.data.cluster.length; i++) {
+                    this.cluster[i]=new Array();
+                    for(let j=0;j<response.data.cluster[i].length;j++){
+                      const position = {lng: response.data.cluster[i][j].longitude, lat: response.data.cluster[i][j].latitude}
+                      this.cluster[i].push(position)
+                    }
+                      
                   }
-                  console.log(response.data.onlyTrajectoryList)
-                  this.onlyTrajectoryPoints = []
-                  for (let i = 0; i < response.data.onlyTrajectoryList.length; i++) {
-                      const position = {lng: response.data.onlyTrajectoryList[i].longitude, lat: response.data.onlyTrajectoryList[i].latitude}
-                      this.onlyTrajectoryPoints.push(position)
-                  }
-                  console.log(response.data.onlySealedList)
-                  this.onlySealedPoints = []
-                  for (let i = 0; i < response.data.onlySealedList.length; i++) {
-                      const position = {lng: response.data.onlySealedList[i].longitude, lat: response.data.onlySealedList[i].latitude}
-                      this.onlySealedPoints.push(position)
-                  }
-                  console.log(this.sealedAndTrajectoryPoints)
+                  this.showCluster=true;
+                  console.log("cluster:"+this.cluster);
+                 
               } 
           });
           
@@ -438,69 +348,6 @@
               } 
           });
           
-        },
-        addPic(map){
-          console.log("addPic called")
-          var point = new BMap.Point(this.center.lng, this.center.lat);
-          map.centerAndZoom(point, this.zoom);
-    
-            //定义一个控件类
-            function ZoomControl() {
-                this.defaultAnchor = BMAP_ANCHOR_BOTTOM_RIGHT;
-                this.defaultOffset = new BMap.Size(20, 20)
-            }
-            //通过JavaScript的prototype属性继承于BMap.Control
-            ZoomControl.prototype = new BMap.Control();
-    
-            //自定义控件必须实现自己的initialize方法，并且将控件的DOM元素返回
-            //在本方法中创建个div元素作为控件的容器，并将其添加到地图容器中
-            ZoomControl.prototype.initialize = function(map) {
-                  //创建一个dom元素
-                var div = document.createElement('div');
-                  //添加文字说明
-                div.appendChild(document.createTextNode('放大2级'));
-                // div.appendChild(le)
-                  // 设置样式
-                div.style.cursor = "pointer";
-                div.style.padding = "7px 10px";
-                div.style.boxShadow = "0 2px 6px 0 rgba(27, 142, 236, 0.5)";
-                div.style.borderRadius = "5px";
-                div.style.backgroundColor = "white";
-                // 添加DOM元素到地图中
-                map.getContainer().appendChild(div);
-                // 将DOM元素返回
-                return div;
-            }
-            //创建控件元素
-            var myZoomCtrl = new ZoomControl();
-            //添加到地图中
-            map.addControl(myZoomCtrl);
-    
-        },
-        addPic2(map){
-          //自定义图标
-          var icon = new BMap.Icon('./example.png', new BMap.Size(32, 32));
-          var points = new BMap.Point(120.092508,30.236078);//创建坐标点
-          var markers = new BMap.Marker(points);
-          markers.setIcon(icon);
-          map.addOverlay(markers);
-    
-        },
-        addPic3(map,html){
-          var LegendControl = function () {
-                this.defaultAnchor = BMAP_ANCHOR_TOP_LEFT;
-                this.defaultOffset = new BMap.Size(10, 10);
-            }
-    
-            LegendControl.prototype = new BMap.Control();
-            LegendControl.prototype.initialize = function (map) {
-                var le = $(html)[0];
-                map.getContainer().appendChild(le);
-                return le;
-            };
-    
-            var legendCtrl = new LegendControl();
-            map.addControl(legendCtrl);
         },
         getClickInfo(e) {
           // 创建地理编码实例
@@ -573,46 +420,6 @@
       width: 100%;
       height: 781px;
     }
-    
-    .star {
-        width:10px;
-        height:10px;
-        margin: 200px auto 0;
-        position: relative;
-        width: 0px;
-        height: 0px;
-        border-color: red transparent transparent transparent;
-        border-width: 41.41px 57.06px;
-        border-style: solid;
-      }
-    
-      .star::before {
-        content: '';
-        display: block;
-        position: absolute;
-        left: -57.06px;
-        top: -41.41px;
-        border-color: red transparent transparent transparent;
-        border-width: 41.41px 57.06px;
-        border-style: solid;
-        transform: rotate(72deg);
-        transform-origin: 50% 22.5%;
-      }
-    
-    
-      .star::after {
-        content: '';
-        display: block;
-        position: absolute;
-        left: -25px;
-        top: -25px;
-        border-color: red transparent transparent transparent;
-        border-width: 35px 25px;
-        border-style: solid;
-        transform: rotate(-72deg);
-        transform-origin: 50% 22.5%;
-      }
-    
       .circle1 {
         width:35px;
         height:35px;
@@ -649,7 +456,7 @@
       .box-card {
         /* min-height: 100%;
         height: 100%; */
-        height: 100px;
+        height: 165px;
         width: 240px;
         /* height: 50px;
         width: 400px; */
@@ -689,7 +496,7 @@
     margin: 12px;
     /* background-color: gray; */
     transition-duration: 0.3s;
-    background-image: url("../../assets/img/discover.png");
+    background-image: url("../../assets/img/discover_gray.png");
     background-size: 90% 90%;
     background-position:center ;
     background-repeat: no-repeat;
@@ -700,7 +507,7 @@
     margin: 3px;
     /* background-color: green; */
     transition-duration: 0.3s;
-    background-image: url("../../assets/img/discover.png");
+    background-image: url("../../assets/img/discover_gray.png");
     background-size: 90% 90%;
     background-position:center ;
     background-repeat: no-repeat;
@@ -748,7 +555,7 @@
     margin: 12px;
     /* background-color: gray; */
     transition-duration: 0.3s;
-    background-image: url("../../assets/img/stopwatch_gray.png");
+    background-image: url("../../assets/img/stopwatch.png");
     background-size: 90% 90%;
     background-position:center ;
     background-repeat: no-repeat;
@@ -759,7 +566,7 @@
     margin: 3px;
     /* background-color: green; */
     transition-duration: 0.3s;
-    background-image: url("../../assets/img/stopwatch_gray.png");
+    background-image: url("../../assets/img/stopwatch.png");
     background-size: 90% 90%;
     background-position:center ;
     background-repeat: no-repeat;
@@ -782,5 +589,7 @@
     background-image: url("../../assets/img/icon-kfckfc_gray.png");
     background-size: 100% 100%;
   }
+    
+      
     
     </style>

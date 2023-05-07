@@ -59,6 +59,14 @@ export function getByDateAndTaskId(date,taskId) {
   })
 }
 
+// 根据日期以及任务ID查询不同集群下的地区列表，具有相同聚类值的地点为同一个集群
+export function getClusterByDateAndTaskId(date,taskId) {
+  return request({
+    url: '/data/event/getClusterByDate/' + date +"/" + taskId,
+    method: 'get',
+  })
+}
+
 // 根据日期查询封控小区预测数据
 export function getPredictionDataByDate(date) {
   return request({
