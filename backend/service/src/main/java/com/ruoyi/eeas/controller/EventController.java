@@ -17,6 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -256,6 +257,7 @@ public class EventController extends BaseController {
                 String[] point = val.toString().split(",");
                 map.put("longitude", point[0]);
                 map.put("latitude", point[1]);
+                map.put("place", place);
                 list.add(map);
 //                System.out.println("redis");
 //                System.out.println("val: " + val);
@@ -267,6 +269,7 @@ public class EventController extends BaseController {
                 if(res.size() > 0) {
 //                    System.out.println("11");
                     Map<String, String> map = res.get(0);
+                    map.put("place", place);
                     list.add(map);
                     redisCache.setCacheObject(RedisKeyUtil.REDIS_PLACE_LONGITUDE_LATITUDE+place, map.get("longitude")+','+map.get("latitude"), RedisKeyUtil.REDIS_PLACE_LONGITUDE_LATITUDE_EXPIRATION, TimeUnit.DAYS);
 //                    System.out.println("map: " + map);
@@ -286,5 +289,39 @@ public class EventController extends BaseController {
     public AjaxResult timeList() {
         List<String> list = eventService.selectTimeList();
         return AjaxResult.success(list);
+    }
+
+    /**
+     * 根据日期和地点获取具体信息（弹窗）
+     * @param date 日期
+     * @param place 地点
+     * @return
+     */
+    @PreAuthorize("@ss.hasPermi('data:event:list')")
+    @GetMapping("/getPlaceInfo/{date}/{place}/{taskId}")
+    public AjaxResult getPlaceInfo(@PathVariable("date") String date, @PathVariable("place") String place, @PathVariable("taskId") String taskId) throws UnsupportedEncodingException {
+        // 返回：场所名称、场所类型、如果是小区类型就显示居民、封控状态、当天患者经过数、历史患者经过数
+        // 场所类型、小区户数
+        Map<String, Object> map = eventService.getTypeAndHouseholds(place);
+        // 封控状态
+        String sealedPlaces = eventService.getByDateAndTaskId(date, taskId);
+        if(sealedPlaces != null) {
+            sealedPlaces = sealedPlaces.replace('{', '[').replace('}', ']');
+            List<String> listSealedPlaces = JSONArray.parseArray(sealedPlaces, String.class);
+            if(listSealedPlaces.contains(place)) {
+                map.put("sealed", 1);
+            } else {
+                map.put("sealed", 0);
+            }
+        } else {
+            map.put("sealed", 0);
+        }
+        // 当天患者经过数
+        Integer appear = eventService.getAppear(date, place, taskId);
+        map.put("appear", appear);
+        // 历史患者经过数
+        Integer history = eventService.getHistory(date, place, taskId);
+        map.put("history", history);
+        return AjaxResult.success(map);
     }
 }

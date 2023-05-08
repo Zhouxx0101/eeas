@@ -67,6 +67,8 @@ Vue.component('FileUpload', FileUpload)
 Vue.component('ImageUpload', ImageUpload)
 Vue.component('ImagePreview', ImagePreview)
 
+// Vue.forceUpdate()
+
 Vue.use(directive)
 Vue.use(plugins)
 Vue.use(VueMeta)

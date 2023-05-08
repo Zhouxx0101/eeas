@@ -103,4 +103,19 @@
     <select id="selectTimeList" resultType="String">
         select time from eeas_event_sealed order by time asc
     </select>
+
+    <select id="getTypeAndHouseholds" parameterType="String" resultType="java.util.Map">
+        select type, households from eeas_place
+        where place = #{place}
+    </select>
+
+    <select id="getAppear" parameterType="String" resultType="java.lang.Integer">
+        select count(*) from eeas_trajectory
+        where place  = #{place} and start_time = #{date} and task_id = #{taskId}
+    </select>
+
+    <select id="getHistory" resultType="java.lang.Integer">
+        select count(*) from eeas_trajectory
+        where place  = #{place} and start_time <![CDATA[<=]]> #{date} and task_id = #{taskId}
+    </select>
 </mapper>

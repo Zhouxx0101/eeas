@@ -123,9 +123,33 @@
 
             <!-- <bm-marker :position="{lng: 116.404, lat: 39.915}" :dragging="false"></bm-marker> -->
 
-            <bm-marker v-for="(item, i) in onlyTrajectoryPoints" :key="i" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_org.png'), size: {width: 32, height: 32}}"></bm-marker>
-            <bm-marker v-for="(item, i) in onlySealedPoints" :key="i+onlyTrajectoryPoints.length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_red.png'), size: {width: 32, height: 32}}"></bm-marker>
-            <bm-marker v-for="(item, i) in sealedAndTrajectoryPoints" :key="i+onlyTrajectoryPoints.length+onlySealedPoints.length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_blue.png'), size: {width: 32, height: 32}}"></bm-marker>
+            <bm-info-window
+              class="info"
+              :show="showFlag"
+              :position="clickPoint"
+            >
+              <div class="window">
+                <div v-if="placeInfo.name">场所名称：<span>{{this.placeInfo.name}}</span></div>
+                <div v-if="placeInfo.type">场所类型：<span>{{this.placeInfo.type}}</span></div>
+                <div v-if="placeInfo.type == '小区'">居民数：<span>{{this.placeInfo.households * 3}}</span></div>
+                <div v-if="placeInfo.type == '小区'">封控状态：<span>{{this.placeInfo.sealedStatus == 1 ? '封控' : '未封控'}}</span></div>
+                <div v-if="placeInfo.type == '小区'">当天患者经过数：<span>{{this.placeInfo.appear}}</span></div>
+                <div v-if="placeInfo.type == '小区'">历史患者经过数：<span>{{this.placeInfo.history}}</span></div>
+              </div>
+            </bm-info-window>
+
+            <!-- <bm-marker v-for="(item, i) in onlyTrajectoryPoints" :key="i" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_org.png'), size: {width: 32, height: 32}}" @click="clickHandler(item)"></bm-marker>
+            <bm-marker v-for="(item, i) in onlySealedPoints" :key="i+onlyTrajectoryPoints.length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_red.png'), size: {width: 32, height: 32}}" @click="clickHandler(item)"></bm-marker>
+            <bm-marker v-for="(item, i) in sealedAndTrajectoryPoints" :key="i+onlyTrajectoryPoints.length+onlySealedPoints.length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_blue.png'), size: {width: 32, height: 32}}" @click="clickHandler(item)"></bm-marker> -->
+            
+            <bm-marker v-for="(item, i) in onlyTrajectoryPoints" :key="curDate + 'onlyTrajectoryPoints' + i" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_org.png'), size: {width: 32, height: 32}}" @click="clickHandler(i, 0)"></bm-marker>
+            <bm-marker v-for="(item, i) in onlySealedPoints" :key="curDate + 'onlySealedPoints' + i" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_red.png'), size: {width: 32, height: 32}}" @click="clickHandler(i, 1)"></bm-marker>
+            <bm-marker v-for="(item, i) in sealedAndTrajectoryPoints" :key="curDate + 'sealedAndTrajectoryPoints' + i" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_blue.png'), size: {width: 32, height: 32}}" @click="clickHandler(i, 2)"></bm-marker>
+            
+            <!-- <bm-marker v-for="(item, i) in onlyTrajectoryPoints" :key="i" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_org.png'), size: {width: 32, height: 32}}" @click="clickHandler(i, 0)"></bm-marker>
+            <bm-marker v-for="(item2, i2) in onlySealedPoints" :key="i2+onlyTrajectoryPoints.length" :position="{lng: item2.lng, lat: item2.lat}" :icon="{url:require('./img/markers_red.png'), size: {width: 32, height: 32}}" @click="clickHandler(i2, 1)"></bm-marker>
+            <bm-marker v-for="(item3, i3) in sealedAndTrajectoryPoints" :key="i3+onlyTrajectoryPoints.length+onlySealedPoints.length" :position="{lng: item3.lng, lat: item3.lat}" :icon="{url:require('./img/markers_blue.png'), size: {width: 32, height: 32}}" @click="clickHandler(i3, 2)"></bm-marker> -->
+
             <!-- <bm-marker v-for="(item, i) in sealedPredictionPoints" :key="i+onlyTrajectoryPoints.length+onlySealedPoints.length+sealedAndTrajectoryPoints.length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_yellow.png'), size: {width: 32, height: 32}}"></bm-marker> -->
             <!--海量点绘制-->
             <!--仅有患者经过-->
@@ -149,7 +173,7 @@
 
     </template>
     <script >
-    import { getByDateAndTaskId } from "@/api/data/event";
+    import { getByDateAndTaskId, getPlaceInfo } from "@/api/data/event";
     import {getTask} from "@/api/data/task";
     import {getPredictionDataByDateAndTaskId} from "@/api/data/predictionData";
     import { Timeline } from "@/components/TimeLine/index";
@@ -162,6 +186,7 @@
             address: null,
             // center通过经纬度或城市名均可?
             center: { lng: 0, lat: 0 },
+            clickPoint: { lng: 0, lat: 0 },
             // center: "北京",
             //地图展示级别
             zoom: 11,
@@ -177,10 +202,13 @@
             onlyTrajectoryPoints:[],
             // 封控小区预测数据
             sealedPredictionPoints:[],
+
+            placeInfo:{name: null, type: null, households: 0, sealedStatus: 0, appear: 0, history: 0},
             
             place1: ["中辛庄公交站", "高庄子小学"],
 
             timeLineArr:[],
+            curDate: "",
 
             task: {
               taskID:1,
@@ -192,6 +220,8 @@
               dataSource: null
       },
       startPredictionFirstDay:null,
+      
+      showFlag: false,
 
       // 展示什么数据
       showRealData:true,
@@ -307,7 +337,7 @@
         
           // 根据任务配置来取第一天的真实数据
           this.getPoints(this.task.startTime);
-         
+          this.curDate = this.task.startTime;
           
         },
         setStartPredictionFirstDay(){
@@ -350,20 +380,20 @@
           if (this.task.endTime!=="0"){
             console.log("任务有截止时间");
             // 转换成为日期数据类型
-          var dayStr=this.task.startTime
-          const timeNode = {date: dayStr, content: dayStr, isShow: true};
-          this.timeLineArr.push(timeNode);
-          while(dayStr!==this.task.endTime){
-            var day=new Date(dayStr)
-            // 获取后一天日期
-            day.setDate(day.getDate() + 1);
-            var y = day.getFullYear();
-            var m = day.getMonth() + 1 < 10 ? "0" + (day.getMonth() + 1) : day.getMonth() + 1;
-            var d = day.getDate() < 10 ? "0" + day.getDate() : day.getDate();
-            dayStr=y+"-"+m+"-"+d
+            var dayStr=this.task.startTime
             const timeNode = {date: dayStr, content: dayStr, isShow: true};
             this.timeLineArr.push(timeNode);
-          }
+            while(dayStr!==this.task.endTime){
+              var day=new Date(dayStr)
+              // 获取后一天日期
+              day.setDate(day.getDate() + 1);
+              var y = day.getFullYear();
+              var m = day.getMonth() + 1 < 10 ? "0" + (day.getMonth() + 1) : day.getMonth() + 1;
+              var d = day.getDate() < 10 ? "0" + day.getDate() : day.getDate();
+              dayStr=y+"-"+m+"-"+d
+              const timeNode = {date: dayStr, content: dayStr, isShow: true};
+              this.timeLineArr.push(timeNode);
+            }
           }
         },
           initTimeLineArr() {
@@ -401,25 +431,25 @@
                   console.log(response.data.sealedAndTrajectoryList)
                   this.sealedAndTrajectoryPoints = []
                   for (let i = 0; i < response.data.sealedAndTrajectoryList.length; i++) {
-                      const position = {lng: response.data.sealedAndTrajectoryList[i].longitude, lat: response.data.sealedAndTrajectoryList[i].latitude}
+                      const position = {lng: response.data.sealedAndTrajectoryList[i].longitude, lat: response.data.sealedAndTrajectoryList[i].latitude, place: response.data.sealedAndTrajectoryList[i].place}
                       this.sealedAndTrajectoryPoints.push(position)
                   }
                   console.log(response.data.onlyTrajectoryList)
                   this.onlyTrajectoryPoints = []
                   for (let i = 0; i < response.data.onlyTrajectoryList.length; i++) {
-                      const position = {lng: response.data.onlyTrajectoryList[i].longitude, lat: response.data.onlyTrajectoryList[i].latitude}
+                      const position = {lng: response.data.onlyTrajectoryList[i].longitude, lat: response.data.onlyTrajectoryList[i].latitude, place: response.data.onlyTrajectoryList[i].place}
                       this.onlyTrajectoryPoints.push(position)
                   }
                   console.log(response.data.onlySealedList)
                   this.onlySealedPoints = []
                   for (let i = 0; i < response.data.onlySealedList.length; i++) {
-                      const position = {lng: response.data.onlySealedList[i].longitude, lat: response.data.onlySealedList[i].latitude}
+                      const position = {lng: response.data.onlySealedList[i].longitude, lat: response.data.onlySealedList[i].latitude, place: response.data.onlySealedList[i].place}
                       this.onlySealedPoints.push(position)
                   }
                   console.log(this.sealedAndTrajectoryPoints)
               } 
           });
-          
+          this.$forceUpdate();
         },
         async getPredictionPoints(date){
           await getPredictionDataByDateAndTaskId(date,this.task.taskID).then(response => {
@@ -512,8 +542,8 @@
               this.address = result.address;
             }
           });
-          this.center.lng = e.point.lng;
-          this.center.lat = e.point.lat;
+          // this.clickPoint.lng = e.point.lng;
+          // this.clickPoint.lat = e.point.lat;
         },
         syncCenterAndZoom(e) {
           // console.log(e.target, 'e.target-->>>>')
@@ -527,13 +557,59 @@
           this.show = true
         },
         // 海量点绘制出来后，单击某点所触发的事件
-        clickHandler (e) {
-          alert(`单击点的坐标为：${e.point.lng}, ${e.point.lat}`);
+        async clickHandler (i, type) {
+          console.log("i")
+          console.log(i)
+          console.log("type")
+          console.log(type)
+          var item
+          if (type == 0) {
+            console.log(this.onlyTrajectoryPoints)
+            item = this.onlyTrajectoryPoints[i]
+          } else if (type == 1) {
+            console.log(this.onlySealedPoints)
+            // console.log(i - this.onlyTrajectoryPoints.length)
+            // item = this.onlySealedPoints[i - this.onlyTrajectoryPoints.length]
+            item = this.onlySealedPoints[i]
+          }else {
+            console.log(this.sealedAndTrajectoryPoints)
+            // console.log(i - this.onlyTrajectoryPoints.length - this.onlySealedPoints.length)
+            // item = this.sealedAndTrajectoryPoints[i - this.onlyTrajectoryPoints.length - this.onlySealedPoints.length]
+            item = this.sealedAndTrajectoryPoints[i]
+          }
+          
+          // alert(`单击点的坐标为：${e.point.lng}, ${e.point.lat}`);
+          console.log("item")
+          console.log(item)
+          console.log("place")
+          console.log(item.place)
+          this.showFlag = false
+          this.clickPoint.lng = item.lng;
+          this.clickPoint.lat = item.lat;
+          this.showFlag = true
+          // console.log(e.point)
+          await getPlaceInfo(this.curDate, item.place, this.task.taskID).then(response => {
+            console.log("getPlaceInfo called")
+            console.log(response)
+            if (response.code===200){
+              console.log("2")
+              this.placeInfo.name = item.place;
+              this.placeInfo.type = response.data.type;
+              this.placeInfo.households = response.data.households;
+              this.placeInfo.sealedStatus = response.data.sealed;
+              this.placeInfo.appear = response.data.appear;
+              this.placeInfo.history = response.data.history;
+              console.log(this.placeInfo)
+              console.log("3")
+            } 
+          });  
         },
         //时间轴更新地图
         async refresh(date) {
           console.log("refresh called")
           console.log(date)
+          this.showFlag = false
+          this.curDate = date;
           this.getPoints(date);
           // 拿预测数据时进行限制，开始日期：2022-01-08，只有在距开始日期task.TimeInterVal后才有预测数据
           // 例如：需要7天数据才能预测

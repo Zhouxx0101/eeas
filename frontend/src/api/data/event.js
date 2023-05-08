@@ -82,3 +82,11 @@ export function getTimeList() {
     method: 'get',
   })
 }
+
+// 根据日期，地点及任务ID查询地点信息
+export function getPlaceInfo(date, place, taskId) {
+  return request({
+    url: '/data/event/getPlaceInfo/' + date +"/" + place +"/" + taskId,
+    method: 'get',
+  })
+}
