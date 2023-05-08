@@ -96,4 +96,29 @@ public interface EventMapper extends BaseMapper<Event> {
      * @return 时间列表
      */
     List<String> selectTimeList();
+
+    /**
+     * 获取场所类型和小区户数
+     * @param place 地名
+     * @return
+     */
+    Map<String, Object> getTypeAndHouseholds(String place);
+
+    /**
+     * 获取当天患者经过数
+     * @param date 日期
+     * @param place 地点
+     * @param taskId 任务id
+     * @return 当天患者经过数
+     */
+    Integer getAppear(@Param("date") String date, @Param("place") String place, @Param("taskId") String taskId);
+
+    /**
+     * 获取历史患者经过数
+     * @param date 日期
+     * @param place 地点
+     * @param taskId 任务id
+     * @return 历史患者经过数
+     */
+    Integer getHistory(@Param("date") String date, @Param("place") String place, @Param("taskId") String taskId);
 }

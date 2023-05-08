@@ -138,4 +138,38 @@ public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements
     public List<String> selectTimeList() {
         return eventMapper.selectTimeList();
     }
+
+    /**
+     * 获取场所类型和小区户数
+     * @param place 地名
+     * @return
+     */
+    @Override
+    public Map<String, Object> getTypeAndHouseholds(String place) {
+        return eventMapper.getTypeAndHouseholds(place);
+    }
+
+    /**
+     * 获取当天患者经过数
+     * @param date 日期
+     * @param place 地点
+     * @param taskId 任务id
+     * @return 当天患者经过数
+     */
+    @Override
+    public Integer getAppear(String date, String place, String taskId) {
+        return eventMapper.getAppear(date, place, taskId);
+    }
+
+    /**
+     * 获取历史患者经过数
+     * @param date 日期
+     * @param place 地点
+     * @param taskId 任务id
+     * @return 历史患者经过数
+     */
+    @Override
+    public Integer getHistory(String date, String place, String taskId) {
+        return eventMapper.getHistory(date, place, taskId);
+    }
 }
