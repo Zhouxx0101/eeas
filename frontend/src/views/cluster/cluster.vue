@@ -24,36 +24,6 @@
         </el-tooltip>
       </div>
     </div>
-    <!--<el-row>
-      <div>
-    <el-checkbox v-model="checked1" label="备选项1" border></el-checkbox>
-    <el-checkbox v-model="checked2" label="备选项2" border></el-checkbox>
-    <el-checkbox v-model="checked2" label="备选项3" border></el-checkbox>
-  </div>
-    </el-row>-->
-    <!--<el-row>
-      <el-col>
-        <div>
-          <input type="checkbox" id="realData" name="realData" checked onclick="checkRealData(this.checked)">
-          <label for="realData">真实数据展示</label>
-        </div>
-      </el-col>
-
-      <el-col>
-        <div>
-          <input type="checkbox" id="predictionData" name="predictionData" onclick="checkPredictionData(this.checked)">
-          <label for="predictionData">预测数据展示</label>
-        </div>
-      </el-col>
-
-      <el-col>
-        <div>
-          <input type="checkbox" id="heatMap" name="heatMap" onclick="checkHeatMap(this.checked)">
-          <label for="heatMap">热力图展示</label>
-        </div>
-      </el-col>
-
-    </el-row>-->
     <el-row >
       <el-col >
         <div class="BaiDuMap">
@@ -70,47 +40,28 @@
             @zoomend="syncCenterAndZoom"
           >
 
-            <bm-control anchor="BMAP_ANCHOR_BOTTOM_RIGHT">
+            <bm-control anchor="BMAP_ANCHOR_BOTTOM_RIGHT" v-if="showCluster">
               <el-card class="box-card" shadow="always">
                 <div>
-                  <!-- <el-checkbox v-model="checked1" label="" ></el-checkbox> -->
-                  <p class="mapLegend" style="background-color:red"/>
-                  <span style="color:black">未被预测到的真实数据({{ realData.length }}例)</span>
-                </div>
-                <div>
-                  <!-- <el-checkbox v-model="checked1" label="" ></el-checkbox> -->
                   <p class="mapLegend" style="background-color:orange"/>
-                  <span style="color:black">预测命中数据({{ preHitData.length }}例)</span>
+                  <span style="color:black">集群1({{this.cluster[0].length }}个地点)</span>
                 </div>
                 <div>
-                  <!-- <el-checkbox v-model="checked1" label="" ></el-checkbox> -->
+                  <p class="mapLegend" style="background-color:red"/>
+                  <span style="color:black">集群2({{this.cluster[1].length }}个地点)</span>
+                </div>
+                <div>
                   <p class="mapLegend" style="background-color:blue"/>
-                  <span style="color:black">预测未命中数据({{ preUnhitData.length }}例)</span>
-                </div>
-                <!-- <div>
-                  <el-checkbox v-model="checked1" label="" ></el-checkbox>
-                  <p class="mapLegend" style="background-color:yellow"/>
-                  <span style="color:black">封控预测数据</span>
-                </div>
-                <div>
-                <el-checkbox v-model="checked1" label="" ></el-checkbox> 
-                  <p class="mapLegend" style="background-color:brown"/>
-                  <span style="color:black">封控预测数据</span>
-                </div> -->
-
-
-                <!-- <div>
-                  <p class="mapLegend" style="background-color:purple"/>
-                  <span style="color:purple">仅封控</span>
+                  <span style="color:black">集群3({{this.cluster[2].length }}个地点)</span>
                 </div>
                 <div>
                   <p class="mapLegend" style="background-color:green"/>
-                  <span style="color:green">仅有患者经过</span>
+                  <span style="color:black">集群4({{this.cluster[3].length }}个地点)</span>
                 </div>
                 <div>
-                  <p class="mapLegend" style="background-color:red"/>
-                  <span style="color:red">封控且有患者经过</span>
-                </div> -->
+                  <p class="mapLegend" style="background-color:brown"/>
+                  <span style="color:black">集群5({{this.cluster[4].length }}个地点)</span>
+                </div>
             </el-card>
             </bm-control>
    
@@ -123,23 +74,14 @@
 
             <!-- <bm-marker :position="{lng: 116.404, lat: 39.915}" :dragging="false"></bm-marker> -->
 
-            <bm-marker v-for="(item, i) in realData" :key="i" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_red.png'), size: {width: 32, height: 32}}"></bm-marker>
-            <bm-marker v-for="(item, i) in preHitData" :key="i+realData.length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_org.png'), size: {width: 32, height: 32}}"></bm-marker>
-            <bm-marker v-for="(item, i) in preUnhitData" :key="i+preHitData.length+realData.length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_blue.png'), size: {width: 32, height: 32}}"></bm-marker>
-            <!-- <bm-marker v-for="(item, i) in sealedPredictionPoints" :key="i+onlyTrajectoryPoints.length+onlySealedPoints.length+sealedAndTrajectoryPoints.length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_yellow.png'), size: {width: 32, height: 32}}"></bm-marker> -->
-            <!--海量点绘制-->
-            <!--仅有患者经过-->
-            <!-- <bm-point-collection :points="onlyTrajectoryPoints" shape="BMAP_POINT_SHAPE_STAR" color="green" size="BMAP_POINT_SIZE_SMALL" @click="clickHandler"></bm-point-collection> -->
-            <!--仅封控-->
-            <!-- <bm-point-collection :points="onlySealedPoints" shape="BMAP_POINT_SHAPE_STAR" color="purple" size="BMAP_POINT_SIZE_SMALL" @click="clickHandler"></bm-point-collection> -->
-            <!--封控 & 有患者经过-->
-            <!-- <bm-point-collection :points="sealedAndTrajectoryPoints" shape="BMAP_POINT_SHAPE_STAR" color="red" size="BMAP_POINT_SIZE_SMALL" @click="clickHandler"></bm-point-collection> -->
+            <bm-marker v-if="showCluster" v-for="(item, i) in cluster[0]" :key="i" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_org.png'), size: {width: 32, height: 32}}"></bm-marker>
+            <bm-marker v-if="showCluster" v-for="(item, i) in cluster[1]" :key="i+cluster[0].length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_red.png'), size: {width: 32, height: 32}}"></bm-marker>
+            <bm-marker v-if="showCluster" v-for="(item, i) in cluster[2]" :key="i+cluster[0].length+cluster[1].length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_blue.png'), size: {width: 32, height: 32}}"></bm-marker>
+            <bm-marker v-if="showCluster" v-for="(item, i) in cluster[3]" :key="i+cluster[0].length+cluster[1].length+cluster[2].length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_green.png'), size: {width: 32, height: 32}}"></bm-marker>
+            <bm-marker v-if="showCluster" v-for="(item, i) in cluster[4]" :key="i+cluster[0].length+cluster[1].length+cluster[2].length+cluster[3].length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_brown.png'), size: {width: 32, height: 32}}"></bm-marker>
             
           </baidu-map>
         </div>
-        <!-- <ul>
- <li v-for="(item,i) in sealedAndTrajectoryPoints">索引：{{i}}---lng：{{item.lng}}---lat：{{item.lat}}---len:{{ sealedAndTrajectoryPoints.length }}</li>
- </ul> -->
       </el-col>
     </el-row>
      <Timeline :timelineList="timeLineArr" @refresh="refresh" id="timeline" />
@@ -149,9 +91,9 @@
 
     </template>
     <script >
-    import { getByDateAndTaskId } from "@/api/data/event";
+    import { getClusterByDateAndTaskId } from "@/api/data/event";
     import {getTask} from "@/api/data/task";
-    import {getPredictionDataByDateAndTaskId,getPredictionPageDataByDateAndTaskId} from "@/api/data/predictionData";
+    import {getPredictionDataByDateAndTaskId} from "@/api/data/predictionData";
     import { Timeline } from "@/components/TimeLine/index";
   
       
@@ -178,8 +120,6 @@
             // 封控小区预测数据
             sealedPredictionPoints:[],
             
-            place1: ["中辛庄公交站", "高庄子小学"],
-
             timeLineArr:[],
 
             task: {
@@ -193,38 +133,35 @@
       },
       startPredictionFirstDay:null,
 
-      // 展示什么数据
-      showRealData:true,
-      showPredictionData:false,
-      showHeatMap:false,
+      // 集群列表
+      clusterNum:5,
+      // 二维数组声明
+      //cluster:new Array(5).fill(new Array(20)),
+      cluster:[],
+      // 使用showCluster变量来控制，只有在拿到对应数据之后才进行对应控件的显示
+      // 避免读到未定义的属性
+      showCluster:false,
+      
 
-      checked1:true,
-      checked2:false,
-
-      // 真实数据
-      realData:[],
-      // 预测命中数据
-      preHitData:[],
-      // 预测未命中数据
-      preUnhitData:[],
     
         };
       },
       methods: {
+        // TODO:在时序交互图界面已经有了任务信息，后续页面都不需要再去后端拿，只需要前端页面传递就行
         goToRealData(){
-          this.$router.push("/diagram");
-          //localStorage.setItem("taskid",item.id);
+          this.$router.push("/diagram")
+          localStorage.setItem("taskid",item.id);
          
         },
         goToPredictionData(){
-          this.$router.push("/prediction");
-         
+          this.$router.push("/prediction")
+          localStorage.setItem("taskid",item.id);
+      
 
         },
         goToHeatMap(){
-          this.$router.push("/heatmap");
-       
-
+          this.$router.push("/heatmap")
+          localStorage.setItem("taskid",item.id);
         },
         goToCluster(){
           this.$router.push("/cluster")
@@ -240,9 +177,10 @@
       $event.target.className = 'navbox0change'
     },
     removeActive0 ($event) {
-     
-        $event.target.className = 'navbox0'
       
+        $event.target.className = 'navbox0'
+    
+     
     },
     changeActive1 ($event) {
       $event.target.className = 'navbox1change'
@@ -276,48 +214,29 @@
         $event.target.className = 'navbox4'
      
     },
-        checkRealData(isChecked){
-          console.log("isChecked:"+isChecked)
-
-        },
-        checkPredictionData(isChecked){
-          console.log("isChecked:"+isChecked)
-        },
-        checkHeatMap(isChecked){
-          console.log("isChecked:"+isChecked)
-        },
      async handler({ BMap, map }) {
           // this.center.lng = 116.404;
           // this.center.lat = 39.915;
+          this.cluster=new Array(this.clusterNum);
           this.taskID=localStorage.getItem("taskid");
           console.log("taskID:"+this.taskID);
           // 获取任务配置信息
           await this.getTaskInfo(this.taskID);
           this.setStartPredictionFirstDay()
-          // this.center.lng = 117.35267834853804;
-          // this.center.lat = 38.99494446989348;
           this.center=this.task.place;
           this.zoom = this.zoom;
-    
-          // 海量点绘制点集合初始化
-          //this.addPoints(this.points1)
-          //this.addPoints(this.points2)
-          //this.addPoints(this.points3)
-          //this.addPoints(this.points4)
-    
     
           //this.initTimeLineArr();
            // 根据任务配置来初始化时间轴
           this.initTimeLineArrByTask()
         
           // 根据任务配置来取第一天的真实数据
-          this.getPoints(this.startPredictionFirstDay);
-         
-          
+          await this.getPoints(this.task.startTime);
+ 
         },
         setStartPredictionFirstDay(){
           var dayStr=this.task.startTime;
-          for(var i=0;i<this.task.timeInterval;i++){
+          for(var i=0;i<this.task.timeInterval-1;i++){
             var day=new Date(dayStr);
             // 获取后一天日期
             day.setDate(day.getDate() + 1);
@@ -355,9 +274,7 @@
           if (this.task.endTime!=="0"){
             console.log("任务有截止时间");
             // 转换成为日期数据类型
-          console.log(this.task.startTime)
-          console.log(this.startPredictionFirstDay)
-          var dayStr=this.startPredictionFirstDay
+          var dayStr=this.task.startTime
           const timeNode = {date: dayStr, content: dayStr, isShow: true};
           this.timeLineArr.push(timeNode);
           while(dayStr!==this.task.endTime){
@@ -368,7 +285,6 @@
             var m = day.getMonth() + 1 < 10 ? "0" + (day.getMonth() + 1) : day.getMonth() + 1;
             var d = day.getDate() < 10 ? "0" + day.getDate() : day.getDate();
             dayStr=y+"-"+m+"-"+d
-            console.log(dayStr)
             const timeNode = {date: dayStr, content: dayStr, isShow: true};
             this.timeLineArr.push(timeNode);
           }
@@ -391,40 +307,26 @@
             })
               // date = ["20220108"]
           },
-
-        addPoints (p) {
-          for (var i = 0; i < 100; i++) {
-            const position = {lng: Math.random() * 40 + 85, lat: Math.random() * 30 + 21}
-            p.push(position)
-          }
-          
-        },
         async getPoints(date){
-          await getPredictionPageDataByDateAndTaskId(date,this.task.taskID).then(response => {
-              console.log("getPredictionPageDataByDateAndTaskId called")
+          await getClusterByDateAndTaskId(date,this.task.taskID).then(response => {
+              console.log("getClusterByDateAndTaskId called")
               console.log("date:"+date)
               console.log(response)
               if (response.code===200){
-                  console.log("1")
-                  console.log(response.data.sealedAndTrajectoryList)
-                  this.realData = []
-                  for (let i = 0; i < response.data.realData.length; i++) {
-                      const position = {lng: response.data.realData[i].longitude, lat: response.data.realData[i].latitude}
-                      this.realData.push(position)
+                  console.log("getClusterByDateAndTaskId success!")
+                  console.log(response.data.cluster)
+                  this.cluster=new Array(this.clusterNum);
+                  for (let i = 0; i < response.data.cluster.length; i++) {
+                    this.cluster[i]=new Array();
+                    for(let j=0;j<response.data.cluster[i].length;j++){
+                      const position = {lng: response.data.cluster[i][j].longitude, lat: response.data.cluster[i][j].latitude}
+                      this.cluster[i].push(position)
+                    }
+                      
                   }
-                  console.log(response.data.realData)
-                  this.preHitData = []
-                  for (let i = 0; i < response.data.preHitData.length; i++) {
-                      const position = {lng: response.data.preHitData[i].longitude, lat: response.data.preHitData[i].latitude}
-                      this.preHitData.push(position)
-                  }
-                  console.log(response.data.preHitData)
-                  this.preUnhitData = []
-                  for (let i = 0; i < response.data.preUnhitData.length; i++) {
-                      const position = {lng: response.data.preUnhitData[i].longitude, lat: response.data.preUnhitData[i].latitude}
-                      this.preUnhitData.push(position)
-                  }
-                  console.log(this.preUnhitData)
+                  this.showCluster=true;
+                  console.log("cluster:"+this.cluster);
+                 
               } 
           });
           
@@ -447,7 +349,6 @@
           });
           
         },
-      
         getClickInfo(e) {
           // 创建地理编码实例
           const myGeo = new BMap.Geocoder();
@@ -472,69 +373,6 @@
         infoWindowOpen () {
           this.show = true
         },
-        addPic(map){
-          console.log("addPic called")
-          var point = new BMap.Point(this.center.lng, this.center.lat);
-          map.centerAndZoom(point, this.zoom);
-    
-            //定义一个控件类
-            function ZoomControl() {
-                this.defaultAnchor = BMAP_ANCHOR_BOTTOM_RIGHT;
-                this.defaultOffset = new BMap.Size(20, 20)
-            }
-            //通过JavaScript的prototype属性继承于BMap.Control
-            ZoomControl.prototype = new BMap.Control();
-    
-            //自定义控件必须实现自己的initialize方法，并且将控件的DOM元素返回
-            //在本方法中创建个div元素作为控件的容器，并将其添加到地图容器中
-            ZoomControl.prototype.initialize = function(map) {
-                  //创建一个dom元素
-                var div = document.createElement('div');
-                  //添加文字说明
-                div.appendChild(document.createTextNode('放大2级'));
-                // div.appendChild(le)
-                  // 设置样式
-                div.style.cursor = "pointer";
-                div.style.padding = "7px 10px";
-                div.style.boxShadow = "0 2px 6px 0 rgba(27, 142, 236, 0.5)";
-                div.style.borderRadius = "5px";
-                div.style.backgroundColor = "white";
-                // 添加DOM元素到地图中
-                map.getContainer().appendChild(div);
-                // 将DOM元素返回
-                return div;
-            }
-            //创建控件元素
-            var myZoomCtrl = new ZoomControl();
-            //添加到地图中
-            map.addControl(myZoomCtrl);
-    
-        },
-        addPic2(map){
-          //自定义图标
-          var icon = new BMap.Icon('./example.png', new BMap.Size(32, 32));
-          var points = new BMap.Point(120.092508,30.236078);//创建坐标点
-          var markers = new BMap.Marker(points);
-          markers.setIcon(icon);
-          map.addOverlay(markers);
-    
-        },
-        addPic3(map,html){
-          var LegendControl = function () {
-                this.defaultAnchor = BMAP_ANCHOR_TOP_LEFT;
-                this.defaultOffset = new BMap.Size(10, 10);
-            }
-    
-            LegendControl.prototype = new BMap.Control();
-            LegendControl.prototype.initialize = function (map) {
-                var le = $(html)[0];
-                map.getContainer().appendChild(le);
-                return le;
-            };
-    
-            var legendCtrl = new LegendControl();
-            map.addControl(legendCtrl);
-        },
         // 海量点绘制出来后，单击某点所触发的事件
         clickHandler (e) {
           alert(`单击点的坐标为：${e.point.lng}, ${e.point.lat}`);
@@ -548,17 +386,17 @@
           // 例如：需要7天数据才能预测
           // 那么只有在已知20220108-20220114的数据时才知道20220115那一天的预测数据
           // 在20220114画这个预测数据
-          // var dateStr=date.substr(0,4)+date.substr(5,2)+date.substr(8,2)
-          // var predictionDayStr=this.startPredictionFirstDay.substr(0,4)+this.startPredictionFirstDay.substr(5,2)+this.startPredictionFirstDay.substr(8,2)
-          // if (dateStr>=predictionDayStr){
-          //   console.log("可以拿到预测数据")
-          //   var nextday=this.getNextDayStr(date)
-          //   console.log(nextday)
-          //   //this.getPredictionPoints(nextday);
-          // }else{
-          //   console.log("没有预测数据")
-          //   this.sealedPredictionPoints=[]
-          // }  
+          var dateStr=date.substr(0,4)+date.substr(5,2)+date.substr(8,2)
+          var predictionDayStr=this.startPredictionFirstDay.substr(0,4)+this.startPredictionFirstDay.substr(5,2)+this.startPredictionFirstDay.substr(8,2)
+          if (dateStr>=predictionDayStr){
+            console.log("可以拿到预测数据")
+            var nextday=this.getNextDayStr(date)
+            console.log(nextday)
+            //this.getPredictionPoints(nextday);
+          }else{
+            console.log("没有预测数据")
+            this.sealedPredictionPoints=[]
+          }  
        
           },
           getNextDayStr(date){
@@ -582,46 +420,6 @@
       width: 100%;
       height: 781px;
     }
-    
-    .star {
-        width:10px;
-        height:10px;
-        margin: 200px auto 0;
-        position: relative;
-        width: 0px;
-        height: 0px;
-        border-color: red transparent transparent transparent;
-        border-width: 41.41px 57.06px;
-        border-style: solid;
-      }
-    
-      .star::before {
-        content: '';
-        display: block;
-        position: absolute;
-        left: -57.06px;
-        top: -41.41px;
-        border-color: red transparent transparent transparent;
-        border-width: 41.41px 57.06px;
-        border-style: solid;
-        transform: rotate(72deg);
-        transform-origin: 50% 22.5%;
-      }
-    
-    
-      .star::after {
-        content: '';
-        display: block;
-        position: absolute;
-        left: -25px;
-        top: -25px;
-        border-color: red transparent transparent transparent;
-        border-width: 35px 25px;
-        border-style: solid;
-        transform: rotate(-72deg);
-        transform-origin: 50% 22.5%;
-      }
-    
       .circle1 {
         width:35px;
         height:35px;
@@ -658,8 +456,8 @@
       .box-card {
         /* min-height: 100%;
         height: 100%; */
-        height: 100px;
-        width: 280px;
+        height: 165px;
+        width: 240px;
         /* height: 50px;
         width: 400px; */
       }
@@ -720,7 +518,7 @@
     margin: 13px;
     /* background-color: red; */
     transition-duration: 0.3s;
-    background-image: url("../../assets/img/bangzhu.png");
+    background-image: url("../../assets/img/bangzhu_gray.png");
     background-size: 100% 100%;
   }
   .navbox1change{
@@ -729,7 +527,7 @@
     margin: 5px;
     /* background-color: green; */
     transition-duration: 0.3s;
-    background-image: url("../../assets/img/bangzhu.png");
+    background-image: url("../../assets/img/bangzhu_gray.png");
     background-size: 100% 100%;
   }
   .navbox2{
@@ -757,7 +555,7 @@
     margin: 12px;
     /* background-color: gray; */
     transition-duration: 0.3s;
-    background-image: url("../../assets/img/stopwatch_gray.png");
+    background-image: url("../../assets/img/stopwatch.png");
     background-size: 90% 90%;
     background-position:center ;
     background-repeat: no-repeat;
@@ -768,7 +566,7 @@
     margin: 3px;
     /* background-color: green; */
     transition-duration: 0.3s;
-    background-image: url("../../assets/img/stopwatch_gray.png");
+    background-image: url("../../assets/img/stopwatch.png");
     background-size: 90% 90%;
     background-position:center ;
     background-repeat: no-repeat;
@@ -791,5 +589,7 @@
     background-image: url("../../assets/img/icon-kfckfc_gray.png");
     background-size: 100% 100%;
   }
+    
+      
     
     </style>

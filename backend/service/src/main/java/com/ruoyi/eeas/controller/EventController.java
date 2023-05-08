@@ -20,6 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 
@@ -160,6 +162,66 @@ public class EventController extends BaseController {
             return AjaxResult.success(map);
         }
         return AjaxResult.error();
+    }
+
+    // 集群数量
+    public int clusterNum=5;
+    /**
+     * 根据日期以及任务ID返回集群对应下的地区列表
+     * 目前集群暂定为5个
+     * 集群根据地区聚类值进行划分
+     * 但是目前各个地区的聚类值是随机的
+     * @param date
+     * @param taskId
+     * @return
+     */
+    @PreAuthorize("@ss.hasPermi('data:event:list')")
+    @GetMapping("/getClusterByDate/{date}/{taskId}")
+    public AjaxResult getClusterByDate(@PathVariable("date") String date, @PathVariable("taskId") String taskId)
+    {
+        String eventPlaces = eventService.getByDateAndTaskId(date, taskId);
+        List<String> listTrajectoryPlaces = trajectoryService.getPlacesByDateAndTaskId(date,taskId);
+        Map<String, List<List<Map<String, String>>>> map = new HashMap<>();
+        if (eventPlaces == null && listTrajectoryPlaces.size() == 0) {
+            map.put("cluster", new ArrayList<>());
+            return AjaxResult.error("集群地点为空！");
+        }
+        List<String> listSealedPlaces=new ArrayList<>();
+        if (eventPlaces != null) {
+            eventPlaces = eventPlaces.replace('{', '[').replace('}', ']');
+            listSealedPlaces = JSONArray.parseArray(eventPlaces, String.class);
+        }
+        // 求封控地点以及轨迹地点并集
+        List<String> listAllPlaces =new ArrayList<>();
+        if (listSealedPlaces.size()!=0 && listTrajectoryPlaces.size()==0){
+            listAllPlaces=listSealedPlaces;
+        }
+        if (listSealedPlaces.size()==0 && listTrajectoryPlaces.size()!=0){
+            listAllPlaces=listTrajectoryPlaces;
+        }
+        if (listSealedPlaces.size()!=0 && listTrajectoryPlaces.size()!=0){
+            listAllPlaces= Stream.of(listSealedPlaces, listTrajectoryPlaces)
+                    .flatMap(Collection::stream)
+                    .distinct()
+                    .collect(Collectors.toList());
+        }
+        // 遍历所有地点，给他们随机加入数组中,即代表给地点随机赋值聚类值
+        Random r=new Random();
+        List<List<String>> places=new ArrayList<>(clusterNum);
+        for(int i=0;i<clusterNum;i++){
+            places.add(new ArrayList<>());
+        }
+        for(int i=0;i<listAllPlaces.size();i++){
+            int j=r.nextInt(clusterNum);
+            places.get(r.nextInt(clusterNum)).add(listAllPlaces.get(i));
+        }
+        List<List<Map<String, String>>> cluster=new ArrayList<>(clusterNum);
+        for(int i=0;i<clusterNum;i++){
+            cluster.add(getLongitudeAndLatitudeByPlaces(places.get(i)));
+        }
+        map.put("cluster",cluster);
+        return AjaxResult.success(map);
+
     }
 
     /**
