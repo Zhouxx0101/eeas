@@ -120,4 +120,5 @@ public interface IEventService extends IService<Event>
      * @return 历史患者经过数
      */
     Integer getHistory(String date, String place, String taskId);
+
 }

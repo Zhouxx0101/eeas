@@ -59,3 +59,11 @@ export function delPredictionData(id) {
     method: 'delete'
   })
 }
+
+// 根据日期，地点及任务ID查询预测地点信息
+export function getPredictionPlaceInfo(date, place, taskId) {
+  return request({
+    url: '/event/predictionData/getPredictionPlaceInfo/' + date +"/" + place +"/" + taskId,
+    method: 'get',
+  })
+}

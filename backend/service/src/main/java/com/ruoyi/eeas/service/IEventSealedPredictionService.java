@@ -1,6 +1,8 @@
 package com.ruoyi.eeas.service;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.eeas.domain.EventSealedPrediction;
 
 /**
@@ -60,4 +62,14 @@ public interface IEventSealedPredictionService
     public int deleteEventSealedPredictionById(Long id);
 
     public String getPlacesByDateAndTaskId(String date,String taskId);
+
+    /**
+     * 根据日期和地点获取对该预测地点产生最高影响的5个场所名称及影响力（弹窗）
+     * @param date 日期
+     * @param place 地点
+     * @param taskId 任务id
+     * @param num 个数
+     * @return 场所名称及影响力
+     */
+    List<Map<String, Object>> getPredictionPlaceInfo(String date, String place, String taskId, Integer num);
 }

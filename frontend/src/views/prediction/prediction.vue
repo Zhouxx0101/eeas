@@ -123,9 +123,19 @@
 
             <!-- <bm-marker :position="{lng: 116.404, lat: 39.915}" :dragging="false"></bm-marker> -->
 
-            <bm-marker v-for="(item, i) in realData" :key="i" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_red.png'), size: {width: 32, height: 32}}"></bm-marker>
-            <bm-marker v-for="(item, i) in preHitData" :key="i+realData.length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_org.png'), size: {width: 32, height: 32}}"></bm-marker>
-            <bm-marker v-for="(item, i) in preUnhitData" :key="i+preHitData.length+realData.length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_blue.png'), size: {width: 32, height: 32}}"></bm-marker>
+            <bm-info-window
+              class="info"
+              :show="showFlag"
+              :position="clickPoint"
+            >
+              <div class="window">
+                <div v-for="(item, i) in influencePlaces" :key="curDate + i">{{ item.influence_place }}（{{ item.influence_score }}）</div>
+              </div>
+            </bm-info-window>
+            
+            <bm-marker v-for="(item, i) in realData" :key="curDate + 'realData' + i" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_red.png'), size: {width: 32, height: 32}}"></bm-marker>
+            <bm-marker v-for="(item, i) in preHitData" :key="curDate + 'preHitData' + i" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_org.png'), size: {width: 32, height: 32}}" @click="clickHandler(i, 1)"></bm-marker>
+            <bm-marker v-for="(item, i) in preUnhitData" :key="curDate + 'preUnhitData' + i" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_blue.png'), size: {width: 32, height: 32}}" @click="clickHandler(i, 2)"></bm-marker>
             <!-- <bm-marker v-for="(item, i) in sealedPredictionPoints" :key="i+onlyTrajectoryPoints.length+onlySealedPoints.length+sealedAndTrajectoryPoints.length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_yellow.png'), size: {width: 32, height: 32}}"></bm-marker> -->
             <!--海量点绘制-->
             <!--仅有患者经过-->
@@ -151,7 +161,7 @@
     <script >
     import { getByDateAndTaskId } from "@/api/data/event";
     import {getTask} from "@/api/data/task";
-    import {getPredictionDataByDateAndTaskId,getPredictionPageDataByDateAndTaskId} from "@/api/data/predictionData";
+    import {getPredictionDataByDateAndTaskId,getPredictionPageDataByDateAndTaskId, getPredictionPlaceInfo } from "@/api/data/predictionData";
     import { Timeline } from "@/components/TimeLine/index";
   
       
@@ -162,6 +172,7 @@
             address: null,
             // center通过经纬度或城市名均可?
             center: { lng: 0, lat: 0 },
+            clickPoint: { lng: 0, lat: 0 },
             // center: "北京",
             //地图展示级别
             zoom: 11,
@@ -177,10 +188,13 @@
             onlyTrajectoryPoints:[],
             // 封控小区预测数据
             sealedPredictionPoints:[],
+
+            influencePlaces:[],
             
             place1: ["中辛庄公交站", "高庄子小学"],
 
             timeLineArr:[],
+            curDate: "",
 
             task: {
               taskID:1,
@@ -192,6 +206,7 @@
               dataSource: null
       },
       startPredictionFirstDay:null,
+      showFlag: false,
 
       // 展示什么数据
       showRealData:true,
@@ -312,7 +327,7 @@
         
           // 根据任务配置来取第一天的真实数据
           this.getPoints(this.startPredictionFirstDay);
-         
+          this.curDate = this.startPredictionFirstDay;
           
         },
         setStartPredictionFirstDay(){
@@ -406,22 +421,22 @@
               console.log(response)
               if (response.code===200){
                   console.log("1")
-                  console.log(response.data.sealedAndTrajectoryList)
+                  // console.log(response.data.sealedAndTrajectoryList)
                   this.realData = []
                   for (let i = 0; i < response.data.realData.length; i++) {
-                      const position = {lng: response.data.realData[i].longitude, lat: response.data.realData[i].latitude}
+                      const position = {lng: response.data.realData[i].longitude, lat: response.data.realData[i].latitude, place: response.data.realData[i].place}
                       this.realData.push(position)
                   }
                   console.log(response.data.realData)
                   this.preHitData = []
                   for (let i = 0; i < response.data.preHitData.length; i++) {
-                      const position = {lng: response.data.preHitData[i].longitude, lat: response.data.preHitData[i].latitude}
+                      const position = {lng: response.data.preHitData[i].longitude, lat: response.data.preHitData[i].latitude, place: response.data.preHitData[i].place}
                       this.preHitData.push(position)
                   }
                   console.log(response.data.preHitData)
                   this.preUnhitData = []
                   for (let i = 0; i < response.data.preUnhitData.length; i++) {
-                      const position = {lng: response.data.preUnhitData[i].longitude, lat: response.data.preUnhitData[i].latitude}
+                      const position = {lng: response.data.preUnhitData[i].longitude, lat: response.data.preUnhitData[i].latitude, place: response.data.preUnhitData[i].place}
                       this.preUnhitData.push(position)
                   }
                   console.log(this.preUnhitData)
@@ -458,8 +473,8 @@
               this.address = result.address;
             }
           });
-          this.center.lng = e.point.lng;
-          this.center.lat = e.point.lat;
+          // this.center.lng = e.point.lng;
+          // this.center.lat = e.point.lat;
         },
         syncCenterAndZoom(e) {
           // console.log(e.target, 'e.target-->>>>')
@@ -536,13 +551,36 @@
             map.addControl(legendCtrl);
         },
         // 海量点绘制出来后，单击某点所触发的事件
-        clickHandler (e) {
-          alert(`单击点的坐标为：${e.point.lng}, ${e.point.lat}`);
+        async clickHandler (i, type) {
+          // alert(`单击点的坐标为：${e.point.lng}, ${e.point.lat}`);
+          var item
+          if (type == 1) {
+            item = this.preHitData[i]
+          }else {
+            item = this.preUnhitData[i]
+          }
+          this.showFlag = false
+          this.clickPoint.lng = item.lng;
+          this.clickPoint.lat = item.lat;
+          await getPredictionPlaceInfo(this.curDate, item.place, this.task.taskID).then(response => {
+            console.log("getPredictionPlaceInfo called")
+            console.log(item.place)
+            console.log(response)
+            if (response.code===200){
+              console.log("2")
+              this.influencePlaces = response.data
+              console.log(this.influencePlaces)
+              console.log("3")
+            } 
+          });  
+          this.showFlag = true
         },
         //时间轴更新地图
         async refresh(date) {
           console.log("refresh called")
           console.log(date)
+          this.showFlag = false
+          this.curDate = date;
           this.getPoints(date);
           // 拿预测数据时进行限制，开始日期：2022-01-08，只有在距开始日期task.TimeInterVal后才有预测数据
           // 例如：需要7天数据才能预测
