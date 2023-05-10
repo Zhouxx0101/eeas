@@ -225,6 +225,41 @@ public class EventController extends BaseController {
     }
 
     /**
+     * 根据日期以及任务ID查询预测地点集合，查询eeas_prediction_influence_place表
+     * @param date
+     * @param taskId
+     * @return
+     */
+    @PreAuthorize("@ss.hasPermi('data:event:list')")
+    @GetMapping("/getPredictionPlace/{date}/{taskId}")
+    public AjaxResult getPredictionPlace(@PathVariable("date") String date, @PathVariable("taskId") String taskId)
+    {
+        List<String> places=eventService.getPredictionPlace(date,taskId);
+        Map<String,List<String>> map=new HashMap<>();
+        map.put("predictionPlace",places);
+        return AjaxResult.success(map);
+
+    }
+
+    public int influencePlace=5;
+    /**
+     * 根据日期以及任务ID查询对于某个预测地点有影响力的地点，查询eeas_prediction_influence_place
+     * 暂定是5个
+     * @param date
+     * @param taskId
+     * @return
+     */
+    @PreAuthorize("@ss.hasPermi('data:event:list')")
+    @GetMapping("/getInfluencePlace/{date}/{taskId}/{place}")
+    public AjaxResult getInfluencePlace(@PathVariable("date") String date, @PathVariable("taskId") String taskId,@PathVariable("place") String place)
+    {
+        List<Map<String,Object>> placesAndScore=eventService.getInfluencePlace(date,taskId,place,influencePlace);
+        System.out.println("placesAndScore："+placesAndScore);
+        return AjaxResult.success(placesAndScore);
+
+    }
+
+    /**
      * 根据日期查询封控小区预测数据
      */
      @PreAuthorize("@ss.hasPermi('data:event:list')")

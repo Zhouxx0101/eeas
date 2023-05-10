@@ -67,6 +67,23 @@ export function getClusterByDateAndTaskId(date,taskId) {
   })
 }
 
+// 根据日期以及任务ID查询预测地点
+export function getPredictionPlace(date,taskId) {
+  return request({
+    url: '/data/event/getPredictionPlace/' + date +"/" + taskId,
+    method: 'get',
+  })
+}
+
+// 根据日期以及任务ID查询对于某个预测地点有影响力的地点
+export function getInfluencePlace(date,taskId,place) {
+  return request({
+    url: '/data/event/getInfluencePlace/' + date +"/" + taskId+"/"+place,
+    method: 'get',
+  })
+}
+
+
 // 根据日期查询封控小区预测数据
 export function getPredictionDataByDate(date) {
   return request({

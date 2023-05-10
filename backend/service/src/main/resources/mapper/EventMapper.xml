@@ -95,6 +95,16 @@
         where time = #{date}
     </select>
 
+    <select id="getPredictionPlace" parameterType="String" resultType="String">
+        select place from eeas_prediction_influence_place
+        where time = #{date} and task_id=#{taskId}
+    </select>
+
+    <select id="getInfluencePlace"  resultType="java.util.Map">
+        select longitude, latitude, influence_score
+        from (select influence_place, influence_score from eeas_prediction_influence_place where time=#{date} and task_id=#{taskId} and place=#{place} order by influence_score desc limit #{num}) as a join eeas_place as b on a.influence_place = b.place;
+    </select>
+
     <select id="selectLongitudeAndLatitudeByPlace" parameterType="String" resultType="Map">
         select longitude, latitude from eeas_place
         where place = #{place}

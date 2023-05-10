@@ -77,6 +77,10 @@ public interface EventMapper extends BaseMapper<Event> {
      */
     String getByDateAndTaskId(@Param("date") String date, @Param("taskId") String taskId);
 
+    List<String> getPredictionPlace(@Param("date") String date, @Param("taskId") String taskId);
+
+    List<Map<String,Object>>  getInfluencePlace(@Param("date") String date, @Param("taskId") String taskId,@Param("place") String place,@Param("num") Integer num);
+
     /**
      * 根据日期查询封控小区预测数据
      *
