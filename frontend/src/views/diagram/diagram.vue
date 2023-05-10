@@ -586,7 +586,6 @@
           this.showFlag = false
           this.clickPoint.lng = item.lng;
           this.clickPoint.lat = item.lat;
-          this.showFlag = true
           // console.log(e.point)
           await getPlaceInfo(this.curDate, item.place, this.task.taskID).then(response => {
             console.log("getPlaceInfo called")
@@ -603,6 +602,7 @@
               console.log("3")
             } 
           });  
+          this.showFlag = true
         },
         //时间轴更新地图
         async refresh(date) {

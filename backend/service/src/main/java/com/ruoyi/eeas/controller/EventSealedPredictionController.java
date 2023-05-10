@@ -218,6 +218,21 @@ public class EventSealedPredictionController extends BaseController
         }
         return AjaxResult.success(map);
     }
+
+    /**
+     * 根据日期和地点获取对该预测地点产生最高影响的5个场所名称及影响力（弹窗）
+     * @param date 日期
+     * @param place 地点
+     * @param taskId 任务id
+     * @return 场所名称及影响力
+     */
+    @PreAuthorize("@ss.hasPermi('data:prediction:list')")
+    @GetMapping("/getPredictionPlaceInfo/{date}/{place}/{taskId}")
+    public AjaxResult getPredictionPlaceInfo(@PathVariable("date") String date, @PathVariable("place") String place, @PathVariable("taskId") String taskId) {
+        Integer num = 5;
+        List<Map<String, Object>> influencePlaces = eventSealedPredictionService.getPredictionPlaceInfo(date, place, taskId, num);
+        return AjaxResult.success(influencePlaces);
+    }
 }
 
 

@@ -324,4 +324,5 @@ public class EventController extends BaseController {
         map.put("history", history);
         return AjaxResult.success(map);
     }
+
 }

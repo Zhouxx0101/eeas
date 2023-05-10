@@ -1,6 +1,8 @@
 package com.ruoyi.eeas.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.eeas.domain.EventSealedPrediction;
 import org.apache.ibatis.annotations.Param;
 
@@ -68,4 +70,14 @@ public interface EventSealedPredictionMapper
      * @return 结果
      */
     public int deleteEventSealedPredictionByIds(Long[] ids);
+
+    /**
+     * 根据日期和地点获取对该预测地点产生最高影响的5个场所名称及影响力（弹窗）
+     * @param date 日期
+     * @param place 地点
+     * @param taskId 任务id
+     * @param num 个数
+     * @return 场所名称及影响力
+     */
+    List<Map<String, Object>> getPredictionPlaceInfo(@Param("date") String date, @Param("place") String place, @Param("taskId") String taskId, @Param("num") Integer num);
 }

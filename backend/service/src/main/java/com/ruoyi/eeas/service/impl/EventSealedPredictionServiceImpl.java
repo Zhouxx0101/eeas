@@ -1,6 +1,8 @@
 package com.ruoyi.eeas.service.impl;
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.eeas.mapper.EventSealedPredictionMapper;
@@ -95,5 +97,18 @@ public class EventSealedPredictionServiceImpl implements IEventSealedPredictionS
     public String getPlacesByDateAndTaskId(String date,String taskId){
         EventSealedPrediction eventSealedPrediction=this.eventSealedPredictionMapper.selectEventSealedPredictionByDateAndTaskId(date,taskId);
         return eventSealedPrediction.getPlace();
+    }
+
+    /**
+     * 根据日期和地点获取对该预测地点产生最高影响的5个场所名称及影响力（弹窗）
+     * @param date 日期
+     * @param place 地点
+     * @param taskId 任务id
+     * @param num 个数
+     * @return 场所名称及影响力
+     */
+    @Override
+    public List<Map<String, Object>> getPredictionPlaceInfo(String date, String place, String taskId, Integer num) {
+        return eventSealedPredictionMapper.getPredictionPlaceInfo(date, place, taskId, num);
     }
 }

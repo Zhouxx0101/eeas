@@ -33,7 +33,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectEventSealedPredictionVo"/>
         where time = #{date} and task_id=#{taskId}
     </select>
-        
+
+    <select id="getPredictionPlaceInfo" resultType="java.util.Map">
+        select influence_place, influence_score from eeas_prediction_influence_place where time = #{date} and place = #{place} and task_id = #{taskId} order by influence_score desc limit #{num}
+    </select>
+
     <insert id="insertEventSealedPrediction" parameterType="EventSealedPrediction" useGeneratedKeys="true" keyProperty="id">
         insert into eeas_event_sealed_prediction
         <trim prefix="(" suffix=")" suffixOverrides=",">
