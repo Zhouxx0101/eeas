@@ -110,6 +110,15 @@ public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements
         return eventMapper.getByDateAndTaskId(date,taskId);
     }
 
+    @Override
+    public List<String> getPredictionPlace(String date,String taskID){
+        return eventMapper.getPredictionPlace(date,taskID);
+    }
+
+    @Override
+    public List<Map<String,Object>>  getInfluencePlace(String date,String taskID,String place,Integer num){
+        return eventMapper.getInfluencePlace(date,taskID,place,num);
+    }
     /**
      * 根据日期查询封控预测数据
      *

@@ -40,15 +40,14 @@
               @zoomend="syncCenterAndZoom"
             >
 
-            <bm-control anchor="BMAP_ANCHOR_BOTTOM_RIGHT">
+            <!-- <bm-control anchor="BMAP_ANCHOR_BOTTOM_RIGHT">
               <el-card class="box-card" shadow="always">
                 <div>
-                  <!-- <el-checkbox v-model="checked1" label="" ></el-checkbox> -->
                   <p class="mapLegend" style="background-color:red"/>
                   <span style="color:black">当天预测确诊人数：{{ sum }}人</span>
                 </div>
             </el-card>
-            </bm-control>
+            </bm-control> -->
   
               <!-- 必须给容器指高度，不然地图将显示在一个高度为0的容器中，看不到 -->
               <!--bm-navigation表示缩放控件 anchor为停靠位置-->
@@ -71,7 +70,7 @@
   
       </template>
       <script >
-      import { getByDateAndTaskId } from "@/api/data/event";
+      import { getClusterByDateAndTaskId } from "@/api/data/event";
       import {getTask} from "@/api/data/task";
       import {getScore} from "@/api/data/score";
       import {getPredictionDataByDateAndTaskId} from "@/api/data/predictionData";
@@ -200,7 +199,7 @@
             this.initTimeLineArrByTask()
           
             // 根据任务配置来取第一天的真实数据
-            this.getScore(this.task.startTime);
+            this.getInfluenceScore(this.task.startTime);
             
           },
           async getTaskInfo(id){
@@ -261,84 +260,25 @@
                 // date = ["20220108"]
             },
   
-          async getScore(date) {
-            await getScore(date, this.task.taskID).then(response => {
-              console.log("getScore called")
+          async getInfluenceScore(date) {
+            await getClusterByDateAndTaskId(date, this.task.taskID).then(response => {
+              console.log("getClusterByDateAndTaskId called")
               console.log("date:"+date)
               console.log(response)
               if (response.code === 200) {
-                console.log("1")
-                this.data = []
-                for (let i = 0; i < response.data.length; i++) {
-                  const position = {lng: response.data[i].longitude, lat: response.data[i].latitude, count: response.data[i].score}
-                  this.data.push(position)
-                }
+                console.log("getClusterByDateAndTaskId success!")
+                  console.log(response.data.cluster)
+                  for (let i = 0; i < response.data.cluster.length; i++) {
+                    for(let j=0;j<response.data.cluster[i].length;j++){
+                      const position = {lng: response.data.cluster[i][j].longitude, lat: response.data.cluster[i][j].latitude,count:i}
+                      this.data.push(position)
+                    }
+                      
+                  }
+                
               }
             })
             console.log(this.data)
-          },
-          addPic(map){
-            console.log("addPic called")
-            var point = new BMap.Point(this.center.lng, this.center.lat);
-            map.centerAndZoom(point, this.zoom);
-      
-              //定义一个控件类
-              function ZoomControl() {
-                  this.defaultAnchor = BMAP_ANCHOR_BOTTOM_RIGHT;
-                  this.defaultOffset = new BMap.Size(20, 20)
-              }
-              //通过JavaScript的prototype属性继承于BMap.Control
-              ZoomControl.prototype = new BMap.Control();
-      
-              //自定义控件必须实现自己的initialize方法，并且将控件的DOM元素返回
-              //在本方法中创建个div元素作为控件的容器，并将其添加到地图容器中
-              ZoomControl.prototype.initialize = function(map) {
-                    //创建一个dom元素
-                  var div = document.createElement('div');
-                    //添加文字说明
-                  div.appendChild(document.createTextNode('放大2级'));
-                  // div.appendChild(le)
-                    // 设置样式
-                  div.style.cursor = "pointer";
-                  div.style.padding = "7px 10px";
-                  div.style.boxShadow = "0 2px 6px 0 rgba(27, 142, 236, 0.5)";
-                  div.style.borderRadius = "5px";
-                  div.style.backgroundColor = "white";
-                  // 添加DOM元素到地图中
-                  map.getContainer().appendChild(div);
-                  // 将DOM元素返回
-                  return div;
-              }
-              //创建控件元素
-              var myZoomCtrl = new ZoomControl();
-              //添加到地图中
-              map.addControl(myZoomCtrl);
-      
-          },
-          addPic2(map){
-            //自定义图标
-            var icon = new BMap.Icon('./example.png', new BMap.Size(32, 32));
-            var points = new BMap.Point(120.092508,30.236078);//创建坐标点
-            var markers = new BMap.Marker(points);
-            markers.setIcon(icon);
-            map.addOverlay(markers);
-      
-          },
-          addPic3(map,html){
-            var LegendControl = function () {
-                  this.defaultAnchor = BMAP_ANCHOR_TOP_LEFT;
-                  this.defaultOffset = new BMap.Size(10, 10);
-              }
-      
-              LegendControl.prototype = new BMap.Control();
-              LegendControl.prototype.initialize = function (map) {
-                  var le = $(html)[0];
-                  map.getContainer().appendChild(le);
-                  return le;
-              };
-      
-              var legendCtrl = new LegendControl();
-              map.addControl(legendCtrl);
           },
           getClickInfo(e) {
             // 创建地理编码实例
@@ -372,7 +312,7 @@
           async refresh(date) {
             console.log("refresh called")
             console.log(date)
-            this.getScore(date);
+            this.getInfluenceScore(date);
             // 拿预测数据时进行限制，开始日期：2022-01-08，只有在距开始日期task.TimeInterVal后才有预测数据
             // 例如：需要7天数据才能预测
             // 那么只有在已知20220108-20220114的数据时才知道20220115那一天的预测数据

@@ -77,6 +77,17 @@ public interface IEventService extends IService<Event>
     String getByDateAndTaskId(String date,String taskId);
 
     /**
+     * 根据日期以及任务ID查询eeas_prediction_influence_place表的预测地点数据
+     */
+    List<String> getPredictionPlace(String date,String taskID);
+
+    /**
+     *
+     * 根据日期以及任务ID查询eeas_prediction_influence_place表的某个预测地点的影响力地点
+     */
+    List<Map<String,Object>> getInfluencePlace(String date,String taskID,String place,Integer num);
+
+    /**
      * 根据日期查询封控预测数据
      *
      * @return 预测封控小区列表
