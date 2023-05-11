@@ -341,6 +341,8 @@
           console.log("refresh called")
           console.log(date)
           this.date=date
+          this.value=""
+          this.date=[]
           this.getPredictionPlace(date);
           // 拿预测数据时进行限制，开始日期：2022-01-08，只有在距开始日期task.TimeInterVal后才有预测数据
           // 例如：需要7天数据才能预测
@@ -380,7 +382,6 @@
       },
       async getHeatmapDataOfCertainPlace(place) {
           await getInfluencePlace(this.date, this.task.taskID,place).then(response => {
-            this.options=[]
             console.log("getInfluencePlace called")
             console.log(response)
             if (response.code === 200) {
