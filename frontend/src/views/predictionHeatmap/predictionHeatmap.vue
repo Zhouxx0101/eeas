@@ -23,6 +23,10 @@
       <el-tooltip class="item" effect="dark" content="集群影响力展示" placement="top-start">
         <div ref="nav2" class="navbox4" @click="goToClusterInfluence()" v-on:mouseover="changeActive4($event)" v-on:mouseout="removeActive4($event)"></div>
       </el-tooltip>
+
+      <el-tooltip class="item" effect="dark" content="预测地点影响力展示" placement="top-start">
+          <div ref="nav2" class="navbox5" @click="goToPredictionHeatmap()" v-on:mouseover="changeActive5($event)" v-on:mouseout="removeActive5($event)"></div>
+        </el-tooltip>
       </div>
     </div>
  
@@ -171,6 +175,11 @@
         localStorage.setItem("taskid",item.id);
        
       },
+      goToPredictionHeatmap(){
+          this.$router.push("/predictionHeatmap")
+          localStorage.setItem("taskid",item.id);
+         
+        },
         changeActive0 ($event) {
       $event.target.className = 'navbox0change'
     },
@@ -205,6 +214,14 @@
       $event.target.className = 'navbox4'
    
   },
+  changeActive5 ($event) {
+      $event.target.className = 'navbox5change'
+    },
+    removeActive5 ($event) {
+     
+        $event.target.className = 'navbox5'
+     
+    },
         checkRealData(isChecked){
           console.log("isChecked:"+isChecked)
 
@@ -342,7 +359,7 @@
           console.log(date)
           this.date=date
           this.value=""
-          this.date=[]
+          this.data=[]
           this.getPredictionPlace(date);
           // 拿预测数据时进行限制，开始日期：2022-01-08，只有在距开始日期task.TimeInterVal后才有预测数据
           // 例如：需要7天数据才能预测
@@ -433,7 +450,7 @@
     left: 670px;
   }
   .nav{
-  width:420px;
+  width:480px;
   height: 100px;
   /* background-color: white; */
   /* position: fixed; */
@@ -530,7 +547,7 @@
   margin: 16px;
   /* background-color: red; */
   transition-duration: 0.3s;
-  background-image: url("../../assets/img/icon-kfckfc.png");
+  background-image: url("../../assets/img/icon-kfckfc_gray.png");
   background-size: 100% 100%;
 }
 .navbox4change{
@@ -539,8 +556,27 @@
   margin: 5px;
   /* background-color: green; */
   transition-duration: 0.3s;
-  background-image: url("../../assets/img/icon-kfckfc.png");
+  background-image: url("../../assets/img/icon-kfckfc_gray.png");
   background-size: 100% 100%;
 }
+
+.navbox5{
+    width:55px;
+    height: 55px;
+    margin: 16px;
+    /* background-color: red; */
+    transition-duration: 0.3s;
+    background-image: url("../../assets/img/remove-outline.png");
+    background-size: 100% 100%;
+  }
+  .navbox5change{
+    width:80px;
+    height: 80px;
+    margin: 5px;
+    /* background-color: green; */
+    transition-duration: 0.3s;
+    background-image: url("../../assets/img/remove-outline.png");
+    background-size: 100% 100%;
+  }
   
     </style>
