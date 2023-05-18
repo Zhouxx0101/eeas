@@ -43,6 +43,8 @@ import BaiduMap from 'vue-baidu-map'
 import echarts from 'echarts'
 import { VueJsonp } from 'vue-jsonp'
 
+import $ from "jquery";
+
 
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
