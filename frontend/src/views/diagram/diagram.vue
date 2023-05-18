@@ -171,7 +171,6 @@
       </el-col>
     </el-row>
      <Timeline :timelineList="timeLineArr" @refresh="refresh" id="timeline" />
-    
 
   </div>
 
@@ -181,6 +180,8 @@
     import {getTask} from "@/api/data/task";
     import {getPredictionDataByDateAndTaskId} from "@/api/data/predictionData";
     import { Timeline } from "@/components/TimeLine/index";
+    import $ from 'jquery'
+    // import { timeline } from "@/components/TimeLine2/index";
   
       
     export default {
@@ -226,6 +227,7 @@
       startPredictionFirstDay:null,
       
       showFlag: false,
+      curButton: 0,
 
       // 展示什么数据
       showRealData:true,
@@ -234,6 +236,68 @@
 
       checked1:true,
       checked2:false,
+      option: {
+          itemWidth: 30,
+          itemHeight: 30,
+          useBgImg:true,
+          bgActive:'red',
+          bg:'yellow',
+          useBtnBgImg:true,
+          btnActiveBg:'red',
+          btnBg:'yellow',
+          fontSize:10,
+          color:'#00F1FB',
+          timelineWidth:20,
+          autoPlay:false,
+          loop:true,
+          goSpeed:1000,
+          txtLength:2,
+          btnWidth:85,
+          btnHeight:30,
+          showPlayBtn:false,
+        },
+        apiData:[
+          {
+            id: 1,
+            text: "2020-09-28",
+          },
+          {
+            id: 2,
+            text: "2020-09-30 12:00:002020-09-28 12:00:00",
+          },
+          {
+            id: 3,
+            text: "2020-10-2 ",
+          },
+          {
+            id: 4,
+            text: "2020-10-3",
+          },
+          {
+            id: 5,
+            text: "2020-10-4",
+          },
+          {
+            id: 6,
+            text: "2020-10-5",
+          },
+          {
+            id: 7,
+            text: "2020-10-6",
+          },
+          {
+            id: 8,
+            text: "2020-10-7",
+          },
+          {
+            id: 9,
+            text: "2020-10-8",
+          },
+          {
+            id: 10,
+            text: "2020-10-9",
+          },
+        ],
     
         };
       },
@@ -355,6 +419,16 @@
           // 根据任务配置来取第一天的真实数据
           this.getPoints(this.task.startTime);
           this.curDate = this.task.startTime;
+          let timer = setInterval(() => {
+            //需要定时执行的代码
+            // console.log("定时器")
+            console.log(this.curButton);
+            $($("button")[this.curButton]).addClass("is-plain");
+            this.curButton = this.curButton++ > ($("button").length-1) ? 1 : this.curButton;
+            $($("button")[this.curButton]).removeClass("is-plain");
+            this.refresh($("button")[this.curButton].innerText)
+          },2000)
+
           
         },
         setStartPredictionFirstDay(){
@@ -643,6 +717,7 @@
             console.log("没有预测数据")
             this.sealedPredictionPoints=[]
           }  
+          // console.log($("button"));
        
           },
           getNextDayStr(date){
