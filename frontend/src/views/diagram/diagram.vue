@@ -236,68 +236,6 @@
 
       checked1:true,
       checked2:false,
-      option: {
-          itemWidth: 30,
-          itemHeight: 30,
-          useBgImg:true,
-          bgActive:'red',
-          bg:'yellow',
-          useBtnBgImg:true,
-          btnActiveBg:'red',
-          btnBg:'yellow',
-          fontSize:10,
-          color:'#00F1FB',
-          timelineWidth:20,
-          autoPlay:false,
-          loop:true,
-          goSpeed:1000,
-          txtLength:2,
-          btnWidth:85,
-          btnHeight:30,
-          showPlayBtn:false,
-        },
-        apiData:[
-          {
-            id: 1,
-            text: "2020-09-28",
-          },
-          {
-            id: 2,
-            text: "2020-09-30 12:00:002020-09-28 12:00:00",
-          },
-          {
-            id: 3,
-            text: "2020-10-2 ",
-          },
-          {
-            id: 4,
-            text: "2020-10-3",
-          },
-          {
-            id: 5,
-            text: "2020-10-4",
-          },
-          {
-            id: 6,
-            text: "2020-10-5",
-          },
-          {
-            id: 7,
-            text: "2020-10-6",
-          },
-          {
-            id: 8,
-            text: "2020-10-7",
-          },
-          {
-            id: 9,
-            text: "2020-10-8",
-          },
-          {
-            id: 10,
-            text: "2020-10-9",
-          },
-        ],
     
         };
       },
