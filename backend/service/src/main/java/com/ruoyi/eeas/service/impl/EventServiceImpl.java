@@ -116,8 +116,8 @@ public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements
     }
 
     @Override
-    public List<Map<String,Object>>  getInfluencePlace(String date,String taskID,String place,Integer num){
-        return eventMapper.getInfluencePlace(date,taskID,place,num);
+    public String  getInfluencePlace(String date,String taskID,String place){
+        return eventMapper.getInfluencePlace(date,taskID,place);
     }
     /**
      * 根据日期查询封控预测数据

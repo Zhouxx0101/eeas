@@ -157,7 +157,8 @@ public class EventSealedPredictionController extends BaseController
         // 轨迹地点
         List<String> listTrajectoryPlaces = trajectoryService.getPlacesByDateAndTaskId(date,taskId);
 
-        // 封控预测地点
+        // 预测感染地点
+        // 感染：封控+有患者经过
         String sealedPlacesPre=eventSealedPredictionService.getPlacesByDateAndTaskId(date,taskId);
         List<String> listPreSealedPlaces=new ArrayList<>();
         if (sealedPlacesPre!=null){
@@ -184,34 +185,39 @@ public class EventSealedPredictionController extends BaseController
 
         // 接下来求真实结果与预测结果的交集与差集
         if(listRealPlaces.size()==0 &&listPreSealedPlaces.size()==0){
-            map.put("realData",new ArrayList<>());
+            map.put("realUnhitData",new ArrayList<>());
             map.put("preHitData",new ArrayList<>());
             map.put("preUnhitData",new ArrayList<>());
             return AjaxResult.success(map);
         }
 
         if(listRealPlaces.size()!=0 &&listPreSealedPlaces.size()==0){
-            map.put("realData",eventController.getLongitudeAndLatitudeByPlaces(listRealPlaces));
+            map.put("realUnhitData",eventController.getLongitudeAndLatitudeByPlaces(listRealPlaces));
             map.put("preHitData",new ArrayList<>());
             map.put("preUnhitData",new ArrayList<>());
             return AjaxResult.success(map);
         }
 
         if(listRealPlaces.size()==0 &&listPreSealedPlaces.size()!=0){
-            map.put("realData",new ArrayList<>());
+            map.put("realUnhitData",new ArrayList<>());
             map.put("preHitData",new ArrayList<>());
             map.put("preUnhitData",eventController.getLongitudeAndLatitudeByPlaces(listPreSealedPlaces));
             return AjaxResult.success(map);
         }
 
         if(listRealPlaces.size()!=0 &&listPreSealedPlaces.size()!=0){
-            map.put("realData",eventController.getLongitudeAndLatitudeByPlaces(listRealPlaces));
+
             //取预测数据与真实数据交集为预测命中
             List<String> finalListRealPlaces = listRealPlaces;
             List<String> preHitPlaces = listPreSealedPlaces.stream().filter(item -> finalListRealPlaces.contains(item)).collect(toList());
+
             //取预测数据-预测命中为预测未命中
             List<String> preUnhitPlaces = ListUtils.subtract(listPreSealedPlaces, preHitPlaces);
 
+            // 取真实数据-预测命中数据为真实数据未被预测命中
+            List<String> realUnhitPlaces=ListUtils.subtract(listRealPlaces,preHitPlaces);
+
+            map.put("realUnhitData",eventController.getLongitudeAndLatitudeByPlaces(realUnhitPlaces));
             map.put("preHitData",eventController.getLongitudeAndLatitudeByPlaces(preHitPlaces));
             map.put("preUnhitData",eventController.getLongitudeAndLatitudeByPlaces(preUnhitPlaces));
             return AjaxResult.success(map);

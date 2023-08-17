@@ -21,4 +21,13 @@ public interface ScoreMapper {
      * @return 注意力分数
      */
     List<Map<String, Object>> listScore(@Param("date") String date, @Param("taskId") Integer taskId);
+
+    String getHeatmapDataOfCertainPlace1(@Param("date") String date, @Param("taskId") Integer taskId,@Param("place") String place);
+
+    String getHeatmapDataOfCertainPlace2(@Param("date") String date, @Param("taskId") Integer taskId,@Param("place") String place);
+
+    String getHeatmapDataOfCertainPlace3(@Param("date") String date, @Param("taskId") Integer taskId,@Param("place") String place);
+
+    String getHeatmapDataOfCertainPlace4(@Param("date") String date, @Param("taskId") Integer taskId,@Param("place") String place);
+
 }

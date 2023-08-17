@@ -85,4 +85,8 @@
             #{id}
         </foreach>
     </delete>
+
+    <select id="getPredictionPatientNum" resultType="int">
+        select patient_num from eeas_patient_num_prediction where time = #{date} and task_id=#{taskId};
+    </select>
 </mapper>

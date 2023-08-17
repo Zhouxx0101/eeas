@@ -100,9 +100,8 @@
         where time = #{date} and task_id=#{taskId}
     </select>
 
-    <select id="getInfluencePlace"  resultType="java.util.Map">
-        select longitude, latitude, influence_score
-        from (select influence_place, influence_score from eeas_prediction_influence_place where time=#{date} and task_id=#{taskId} and place=#{place} order by influence_score desc limit #{num}) as a join eeas_place as b on a.influence_place = b.place;
+    <select id="getInfluencePlace"  resultType="String">
+        select score from eeas_score_for_node_prediction where time = #{date} and task_id=#{taskId} and place_id=(select id from eeas_place where place=#{place});
     </select>
 
     <select id="selectLongitudeAndLatitudeByPlace" parameterType="String" resultType="Map">

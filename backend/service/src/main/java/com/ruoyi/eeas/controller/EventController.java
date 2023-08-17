@@ -11,6 +11,7 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.eeas.config.RedisKeyUtil;
 import com.ruoyi.eeas.domain.Event;
 import com.ruoyi.eeas.service.IEventService;
+import com.ruoyi.eeas.service.IPlaceService;
 import com.ruoyi.eeas.service.ITrajectoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -40,6 +41,10 @@ public class EventController extends BaseController {
     private ITrajectoryService trajectoryService;
     @Autowired
     private RedisCache redisCache;
+
+    @Autowired
+    private IPlaceService placeService;
+
 
     /**
      * 查询事件数据列表
@@ -241,7 +246,7 @@ public class EventController extends BaseController {
 
     }
 
-    public int influencePlace=5;
+
     /**
      * 根据日期以及任务ID查询对于某个预测地点有影响力的地点，查询eeas_prediction_influence_place
      * 暂定是5个
@@ -251,12 +256,21 @@ public class EventController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('data:event:list')")
     @GetMapping("/getInfluencePlace/{date}/{taskId}/{place}")
-    public AjaxResult getInfluencePlace(@PathVariable("date") String date, @PathVariable("taskId") String taskId,@PathVariable("place") String place)
-    {
-        List<Map<String,Object>> placesAndScore=eventService.getInfluencePlace(date,taskId,place,influencePlace);
-        System.out.println("placesAndScore："+placesAndScore);
-        return AjaxResult.success(placesAndScore);
+    public AjaxResult getInfluencePlace(@PathVariable("date") String date, @PathVariable("taskId") String taskId,@PathVariable("place") String place) {
+        String score = eventService.getInfluencePlace(date, taskId, place);
+        List<String> scoreList = JSONArray.parseArray(score, String.class);
+        System.out.println("date = " + date + ", taskId = " + taskId + ", place = " + place);
+        System.out.println(scoreList);
+        // 获取所有地点经纬度
+        List<String> places = placeService.listPlace();
+        List<Map<String, String>> longitudeAndLatitudeByPlaces = getLongitudeAndLatitudeByPlaces(places);
+        //Map<String, List<Map<String, String>>> map = new HashMap<>();
+        for (int i = 0; i < scoreList.size(); i++) {
+            Map<String, String> stringStringMap = longitudeAndLatitudeByPlaces.get(i);
+            stringStringMap.put("score", scoreList.get(i));
+        }
 
+        return AjaxResult.success(longitudeAndLatitudeByPlaces);
     }
 
     /**

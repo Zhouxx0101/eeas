@@ -26,6 +26,9 @@
         <el-tooltip class="item" effect="dark" content="预测地点影响力展示" placement="top-start">
           <div ref="nav2" class="navbox5" @click="goToPredictionHeatmap()" v-on:mouseover="changeActive5($event)" v-on:mouseout="removeActive5($event)"></div>
         </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="特征向量展示" placement="top-start">
+          <div ref="nav2" class="navbox6" @click="goToVector()" v-on:mouseover="changeActive6($event)" v-on:mouseout="removeActive6($event)"></div>
+        </el-tooltip>
       </div>
     </div>
     <!--<el-row>
@@ -227,7 +230,9 @@
       startPredictionFirstDay:null,
       
       showFlag: false,
+
       curButton: 0,
+      timer:null,//定时器
 
       // 展示什么数据
       showRealData:true,
@@ -240,35 +245,53 @@
         };
       },
       methods: {
+       
         // TODO:在时序交互图界面已经有了任务信息，后续页面都不需要再去后端拿，只需要前端页面传递就行
         goToRealData(){
+          this.clearTimer();
           this.$router.push("/diagram")
           localStorage.setItem("taskid",item.id);
          
+         
+        },
+        goToVector(){
+          this.clearTimer();
+          this.$router.push("/vector")
+          localStorage.setItem("taskid",item.id);
+         
+         
         },
         goToPredictionData(){
+          this.clearTimer();
           this.$router.push("/prediction")
           localStorage.setItem("taskid",item.id);
-      
-
+         
         },
         goToHeatMap(){
+          this.clearTimer();
           this.$router.push("/heatmap")
           localStorage.setItem("taskid",item.id);
+          
         },
         goToCluster(){
+          this.clearTimer();
           this.$router.push("/cluster")
           localStorage.setItem("taskid",item.id);
+          
          
         },
         goToClusterInfluence(){
+          this.clearTimer();
           this.$router.push("/influence")
           localStorage.setItem("taskid",item.id);
+          
          
         },
         goToPredictionHeatmap(){
+          this.clearTimer();
           this.$router.push("/predictionHeatmap")
           localStorage.setItem("taskid",item.id);
+          
          
         },
         changeActive0 ($event) {
@@ -320,6 +343,14 @@
         $event.target.className = 'navbox5'
      
     },
+    changeActive6 ($event) {
+      $event.target.className = 'navbox6change'
+    },
+    removeActive6 ($event) {
+     
+        $event.target.className = 'navbox6'
+     
+    },
         checkRealData(isChecked){
           console.log("isChecked:"+isChecked)
 
@@ -357,17 +388,42 @@
           // 根据任务配置来取第一天的真实数据
           this.getPoints(this.task.startTime);
           this.curDate = this.task.startTime;
-          let timer = setInterval(() => {
+
+          this.setTimer();
+          
+        },
+         // 最后在beforeDestroy()生命周期内清除定时器：
+    beforeDestroy() {
+      if(this.timer!==null){
+        clearInterval(this.timer);        
+      }
+        this.timer = null;
+    },
+         //------------------------------------------设置定时器-------------------------------------------------------------------
+        setTimer(){
+          // // 先销毁之前的定时器
+          // if (this.timer!=null){
+          //     this.clearTimer();
+          //   }
+          this.timer = setInterval(() => {
             //需要定时执行的代码
             // console.log("定时器")
             console.log(this.curButton);
             $($("button")[this.curButton]).addClass("is-plain");
             this.curButton = this.curButton++ > ($("button").length-1) ? 1 : this.curButton;
             $($("button")[this.curButton]).removeClass("is-plain");
+            // 更新button内容，触发refresh函数
             this.refresh($("button")[this.curButton].innerText)
           },2000)
 
-          
+        },
+        // 清除定时器
+        clearTimer() {//清除定时器
+            console.log("-----------------clearTimer called!--------------------------------------")
+            if(this.timer!==null){
+                clearInterval(this.timer);        
+           }
+            this.timer = null;
         },
         setStartPredictionFirstDay(){
           var dayStr=this.task.startTime;
@@ -680,44 +736,6 @@
       height: 781px;
     }
     
-    .star {
-        width:10px;
-        height:10px;
-        margin: 200px auto 0;
-        position: relative;
-        width: 0px;
-        height: 0px;
-        border-color: red transparent transparent transparent;
-        border-width: 41.41px 57.06px;
-        border-style: solid;
-      }
-    
-      .star::before {
-        content: '';
-        display: block;
-        position: absolute;
-        left: -57.06px;
-        top: -41.41px;
-        border-color: red transparent transparent transparent;
-        border-width: 41.41px 57.06px;
-        border-style: solid;
-        transform: rotate(72deg);
-        transform-origin: 50% 22.5%;
-      }
-    
-    
-      .star::after {
-        content: '';
-        display: block;
-        position: absolute;
-        left: -25px;
-        top: -25px;
-        border-color: red transparent transparent transparent;
-        border-width: 35px 25px;
-        border-style: solid;
-        transform: rotate(-72deg);
-        transform-origin: 50% 22.5%;
-      }
     
       .circle1 {
         width:35px;
@@ -779,7 +797,7 @@
     left: 0px;
   }
   .nav{
-    width:480px;
+    width:520px;
     height: 100px;
     /* background-color: white; */
     /* position: fixed; */
@@ -904,6 +922,24 @@
     /* background-color: green; */
     transition-duration: 0.3s;
     background-image: url("../../assets/img/remove-outline_gray.png");
+    background-size: 100% 100%;
+  }
+  .navbox6{
+    width:55px;
+    height: 55px;
+    margin: 16px;
+    /* background-color: red; */
+    transition-duration: 0.3s;
+    background-image: url("../../assets/img/orange_gray.png");
+    background-size: 100% 100%;
+  }
+  .navbox6change{
+    width:80px;
+    height: 80px;
+    margin: 5px;
+    /* background-color: green; */
+    transition-duration: 0.3s;
+    background-image: url("../../assets/img/orange_gray.png");
     background-size: 100% 100%;
   }
     

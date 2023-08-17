@@ -80,6 +80,7 @@ ul.timeline-wrapper {
     padding-right: 20px;
     white-space: nowrap;
     overflow-x: auto;
+    z-index:999;
 }
 
 /* 时间线 */

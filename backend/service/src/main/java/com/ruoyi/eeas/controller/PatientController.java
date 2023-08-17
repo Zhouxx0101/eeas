@@ -1,7 +1,10 @@
 package com.ruoyi.eeas.controller;
 
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
+
+import com.alibaba.fastjson.JSONArray;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -100,5 +103,13 @@ public class PatientController extends BaseController
     public AjaxResult remove(@PathVariable Long[] ids)
     {
         return toAjax(patientService.deletePatientByIds(ids));
+    }
+
+    @PreAuthorize("@ss.hasPermi('data:patient:query')")
+    @GetMapping(value = "/getPatientNum/{date}/{taskId}")
+    public AjaxResult getPredictionPatientNum(@PathVariable("date") String date, @PathVariable("taskId") Integer taskId)
+    {
+        int num = patientService.getPredictionPatientNum(date,taskId);
+        return AjaxResult.success(num);
     }
 }

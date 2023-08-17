@@ -26,6 +26,10 @@
         <el-tooltip class="item" effect="dark" content="预测地点影响力展示" placement="top-start">
           <div ref="nav2" class="navbox5" @click="goToPredictionHeatmap()" v-on:mouseover="changeActive5($event)" v-on:mouseout="removeActive5($event)"></div>
         </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" content="特征向量展示" placement="top-start">
+          <div ref="nav2" class="navbox6" @click="goToVector()" v-on:mouseover="changeActive6($event)" v-on:mouseout="removeActive6($event)"></div>
+        </el-tooltip>
         </div>
       </div>
       <el-row >
@@ -53,14 +57,44 @@
                 </div>
             </el-card>
             </bm-control>
+
+            <!-- 展示注意力分数最高的前三十个场所地点 -->
+            <bm-control anchor="BMAP_ANCHOR_TOP_RIGHT">
+              <template>
+                <el-table
+      :data="TopXXPlaces"
+      style="width: 100%">
+      <el-table-column
+        prop="place"
+        label="地点名称"
+        width="180">
+      </el-table-column>
+    </el-table>
+  </template>
+            </bm-control>
   
               <!-- 必须给容器指高度，不然地图将显示在一个高度为0的容器中，看不到 -->
               <!--bm-navigation表示缩放控件 anchor为停靠位置-->
-              <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
+              <!-- <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation> -->
               <!--bm-geolocation表示地图定位控件 autoLocation表示用户点击控件时是否显示定位，需要获得用户的许可-->
               <!--bm-city-list 城市选择控件-->
-              <bm-city-list anchor="BMAP_ANCHOR_TOP_LEFT"></bm-city-list>
-                
+              <!-- <bm-city-list anchor="BMAP_ANCHOR_TOP_LEFT"></bm-city-list> -->
+              
+              <!-- 添加节点选择控件 -->
+              <bm-control>
+            <template>
+  <el-select v-model="value" placeholder="请选择注意力分数回溯地点" @change="handleChange">
+    <el-option
+      v-for="(item,index) in places"
+      :key="index"
+      :label="item.label"
+      :value="item.value"
+      >
+    </el-option>
+  </el-select>
+</template>
+          </bm-control>
+
               <bml-heatmap :data="data" :max="1" :radius="20">
               </bml-heatmap>
 
@@ -75,10 +109,10 @@
   
       </template>
       <script >
-      import { getByDateAndTaskId } from "@/api/data/event";
+      import { getPlace } from "@/api/data/place";
       import {getTask} from "@/api/data/task";
-      import {getScore} from "@/api/data/score";
-      import {getPredictionDataByDateAndTaskId} from "@/api/data/predictionData";
+      import {getHeatmapDataOfCertainPlace,getTopXXPlaces} from "@/api/data/score";
+      import {getPredictionPatientNum} from "@/api/data/patient";
       import { Timeline } from "@/components/TimeLine/index";
       import {BmlHeatmap} from 'vue-baidu-map'
     
@@ -101,7 +135,7 @@
               points:[],
           
               timeLineArr:[],
-              sum: Math.round(Math.random()*80+20),
+              sum:0,
   
               task: {
                 taskID:1,
@@ -122,34 +156,58 @@
         checked1:true,
         checked2:false,
       
+        // 节点地点数据
+        options:[],
+        // 节点所有的热力图分数数据
         data: [],
+
+        // 所有地点数据
+        places:[],
+
+        TopXXPlaces:[],
+
+        value:"",
+
+        curDate:"",
           };
         },
         methods: {
           goToRealData(){
+           // this.clearTimer();
             this.$router.push("/diagram")
             //localStorage.setItem("taskid",item.id);
           },
           goToPredictionData(){
+           // this.clearTimer();
             this.$router.push("/prediction")
   
           },
           goToHeatMap(){
+           // this.clearTimer();
             this.$router.push("/heatmap")
   
           },
           goToCluster(){
+        //  this.clearTimer();
           this.$router.push("/cluster")
           localStorage.setItem("taskid",item.id);
          
         },
         goToClusterInfluence(){
+//this.clearTimer();
           this.$router.push("/influence")
           localStorage.setItem("taskid",item.id);
          
         },
         goToPredictionHeatmap(){
+         // this.clearTimer();
           this.$router.push("/predictionHeatmap")
+          localStorage.setItem("taskid",item.id);
+         
+        },
+        goToVector(){
+          this.clearTimer();
+          this.$router.push("/vector")
           localStorage.setItem("taskid",item.id);
          
         },
@@ -195,6 +253,14 @@
         $event.target.className = 'navbox5'
      
     },
+    changeActive6 ($event) {
+      $event.target.className = 'navbox6change'
+    },
+    removeActive6 ($event) {
+     
+        $event.target.className = 'navbox6'
+     
+    },
           checkRealData(isChecked){
             console.log("isChecked:"+isChecked)
   
@@ -214,12 +280,122 @@
             this.zoom = this.zoom;
             
              // 根据任务配置来初始化时间轴
-            this.initTimeLineArrByTask()
+            this.initTimeLineArrByTask();
           
-            // 根据任务配置来取第一天的真实数据
-            this.getScore(this.task.startTime);
+            // 取所有地点显示在多选控件上
+            this.value="";
+            this.curDate=this.task.startTime;
+            this.getPlace();
+            this.getPatientNum(this.curDate);
+           // this.getScore();
+
+            // this.setTimer();
             
           },
+
+          //------------------------------获取预测的患者数量-----------------------
+          async getPatientNum(date) {
+            await getPredictionPatientNum(date,this.task.taskID).then(response => {
+              console.log("getPatientNum called")
+              console.log(date)
+              console.log(response)
+              if (response.code === 200) {
+                this.sum=response.data;
+                console.log(this.sum)
+              }
+            })
+           
+          },
+          handleChange(value) {
+        console.log("handleChange called!");
+        console.log(value);
+        this.getHeatmapDataOfCertainPlace(value);
+        this.getTopXXPlaces(value);
+
+
+          },
+          async getPlace() {
+            await getPlace().then(response => {
+              console.log("getPlace called")
+              console.log(response)
+              if (response.code === 200) {
+                this.places=[]
+                for (let i = 0; i < response.data.place.length; i++) {
+                    const place = {value: response.data.place[i], label: response.data.place[i]}
+                    this.places.push(place)
+           
+                }
+               // console.log(this.places)
+              }
+            })
+           
+          },
+          async getHeatmapDataOfCertainPlace(place) {
+            await getHeatmapDataOfCertainPlace(this.curDate,this.task.taskID,place,"1").then(response => {
+              console.log("getHeatmapDataOfCertainPlace called")
+              console.log(response)
+              this.data=[]
+              if (response.code === 200) {
+                for (let i = 0; i < response.data.length; i++) {
+                  const position = {lng: response.data[i].longitude, lat: response.data[i].latitude, count: Number(response.data[i].score)*100}
+                  this.data.push(position)
+                }
+                console.log("================data============================")
+               console.log(this.data)
+              }
+            })
+           
+          },
+
+          async getTopXXPlaces(place) {
+            await getTopXXPlaces(this.curDate,this.task.taskID,place,"1").then(response => {
+              console.log("getTopXXPlaces called")
+              console.log(response)
+             // this.data=[]
+              if (response.code === 200) {
+                this.TopXXPlaces=[]
+                for (let i = 0; i < response.data.length; i++) {
+                    const place = {place: response.data[i]}
+                    this.TopXXPlaces.push(place)
+           
+                }
+              }
+            })
+           
+          },
+      
+          beforeDestroy() {
+      if(this.timer!==null){
+        clearInterval(this.timer);        
+      }
+        this.timer = null;
+    },
+         //------------------------------------------设置定时器-------------------------------------------------------------------
+         setTimer(){
+          // 先销毁之前的定时器
+          if (this.timer!=null){
+              this.clearTimer();
+            }
+          this.timer = setInterval(() => {
+            //需要定时执行的代码
+            // console.log("定时器")
+            console.log(this.curButton);
+            $($("button")[this.curButton]).addClass("is-plain");
+            this.curButton = this.curButton++ > ($("button").length-1) ? 1 : this.curButton;
+            $($("button")[this.curButton]).removeClass("is-plain");
+            // 更新button内容，触发refresh函数
+            this.refresh($("button")[this.curButton].innerText)
+          },2000)
+
+        },
+        // 清除定时器
+        clearTimer() {//清除定时器
+            console.log("-----------------clearTimer called!--------------------------------------")
+            if(this.timer!==null){
+                clearInterval(this.timer);        
+           }
+            this.timer = null;
+        },
           async getTaskInfo(id){
             await getTask(id).then(response =>{
               console.log("getTask called")
@@ -294,69 +470,7 @@
             })
             console.log(this.data)
           },
-          addPic(map){
-            console.log("addPic called")
-            var point = new BMap.Point(this.center.lng, this.center.lat);
-            map.centerAndZoom(point, this.zoom);
-      
-              //定义一个控件类
-              function ZoomControl() {
-                  this.defaultAnchor = BMAP_ANCHOR_BOTTOM_RIGHT;
-                  this.defaultOffset = new BMap.Size(20, 20)
-              }
-              //通过JavaScript的prototype属性继承于BMap.Control
-              ZoomControl.prototype = new BMap.Control();
-      
-              //自定义控件必须实现自己的initialize方法，并且将控件的DOM元素返回
-              //在本方法中创建个div元素作为控件的容器，并将其添加到地图容器中
-              ZoomControl.prototype.initialize = function(map) {
-                    //创建一个dom元素
-                  var div = document.createElement('div');
-                    //添加文字说明
-                  div.appendChild(document.createTextNode('放大2级'));
-                  // div.appendChild(le)
-                    // 设置样式
-                  div.style.cursor = "pointer";
-                  div.style.padding = "7px 10px";
-                  div.style.boxShadow = "0 2px 6px 0 rgba(27, 142, 236, 0.5)";
-                  div.style.borderRadius = "5px";
-                  div.style.backgroundColor = "white";
-                  // 添加DOM元素到地图中
-                  map.getContainer().appendChild(div);
-                  // 将DOM元素返回
-                  return div;
-              }
-              //创建控件元素
-              var myZoomCtrl = new ZoomControl();
-              //添加到地图中
-              map.addControl(myZoomCtrl);
-      
-          },
-          addPic2(map){
-            //自定义图标
-            var icon = new BMap.Icon('./example.png', new BMap.Size(32, 32));
-            var points = new BMap.Point(120.092508,30.236078);//创建坐标点
-            var markers = new BMap.Marker(points);
-            markers.setIcon(icon);
-            map.addOverlay(markers);
-      
-          },
-          addPic3(map,html){
-            var LegendControl = function () {
-                  this.defaultAnchor = BMAP_ANCHOR_TOP_LEFT;
-                  this.defaultOffset = new BMap.Size(10, 10);
-              }
-      
-              LegendControl.prototype = new BMap.Control();
-              LegendControl.prototype.initialize = function (map) {
-                  var le = $(html)[0];
-                  map.getContainer().appendChild(le);
-                  return le;
-              };
-      
-              var legendCtrl = new LegendControl();
-              map.addControl(legendCtrl);
-          },
+         
           getClickInfo(e) {
             // 创建地理编码实例
             const myGeo = new BMap.Geocoder();
@@ -389,7 +503,10 @@
           async refresh(date) {
             console.log("refresh called")
             console.log(date)
-            this.getScore(date);
+            this.curDate=date;
+            // 这个后面看看能不能注释掉
+            this.getPlace();
+            //this.getScore(date);
             // 拿预测数据时进行限制，开始日期：2022-01-08，只有在距开始日期task.TimeInterVal后才有预测数据
             // 例如：需要7天数据才能预测
             // 那么只有在已知20220108-20220114的数据时才知道20220115那一天的预测数据
@@ -405,7 +522,8 @@
             //   console.log("没有预测数据")
             //   this.sealedPredictionPoints=[]
             // }  
-              this.sum = Math.round(Math.random()*80+20);
+             // this.sum = Math.round(Math.random()*80+20);
+             this.getPatientNum(date);
               // this.sum = 1;
             },
             getNextDayStr(date){
@@ -430,44 +548,6 @@
         height: 781px;
       }
       
-      .star {
-          width:10px;
-          height:10px;
-          margin: 200px auto 0;
-          position: relative;
-          width: 0px;
-          height: 0px;
-          border-color: red transparent transparent transparent;
-          border-width: 41.41px 57.06px;
-          border-style: solid;
-        }
-      
-        .star::before {
-          content: '';
-          display: block;
-          position: absolute;
-          left: -57.06px;
-          top: -41.41px;
-          border-color: red transparent transparent transparent;
-          border-width: 41.41px 57.06px;
-          border-style: solid;
-          transform: rotate(72deg);
-          transform-origin: 50% 22.5%;
-        }
-      
-      
-        .star::after {
-          content: '';
-          display: block;
-          position: absolute;
-          left: -25px;
-          top: -25px;
-          border-color: red transparent transparent transparent;
-          border-width: 35px 25px;
-          border-style: solid;
-          transform: rotate(-72deg);
-          transform-origin: 50% 22.5%;
-        }
       
         .circle1 {
           width:35px;
@@ -524,12 +604,12 @@
       width: 100%;
       display: flex;
       position: fixed;
-      justify-content: center;
+      justify-content: start;
       z-index: 999;
-      left: 0px;
+      left: 670px;
     }
     .nav{
-    width:480px;
+    width:520px;
     height: 100px;
     /* background-color: white; */
     /* position: fixed; */
@@ -657,5 +737,25 @@
     background-image: url("../../assets/img/remove-outline_gray.png");
     background-size: 100% 100%;
   }
+
+  .navbox6{
+    width:55px;
+    height: 55px;
+    margin: 16px;
+    /* background-color: red; */
+    transition-duration: 0.3s;
+    background-image: url("../../assets/img/orange_gray.png");
+    background-size: 100% 100%;
+  }
+  .navbox6change{
+    width:80px;
+    height: 80px;
+    margin: 5px;
+    /* background-color: green; */
+    transition-duration: 0.3s;
+    background-image: url("../../assets/img/orange_gray.png");
+    background-size: 100% 100%;
+  }
+    
     
       </style>
