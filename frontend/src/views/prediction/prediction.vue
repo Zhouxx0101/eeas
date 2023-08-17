@@ -26,6 +26,7 @@
         <el-tooltip class="item" effect="dark" content="预测地点影响力展示" placement="top-start">
           <div ref="nav2" class="navbox5" @click="goToPredictionHeatmap()" v-on:mouseover="changeActive5($event)" v-on:mouseout="removeActive5($event)"></div>
         </el-tooltip>
+
       </div>
     </div>
     <!--<el-row>
@@ -79,11 +80,11 @@
                 <div>
                   <!-- <el-checkbox v-model="checked1" label="" ></el-checkbox> -->
                   <p class="mapLegend" style="background-color:red"/>
-                  <span style="color:black">未被预测到的真实数据({{ realData.length }}例)</span>
+                  <span style="color:black">未被预测到的真实数据({{ realUnhitData.length }}例)</span>
                 </div>
                 <div>
                   <!-- <el-checkbox v-model="checked1" label="" ></el-checkbox> -->
-                  <p class="mapLegend" style="background-color:orange"/>
+                  <p class="mapLegend" style="background-color:rgb(255, 123, 0)"/>
                   <span style="color:black">预测命中数据({{ preHitData.length }}例)</span>
                 </div>
                 <div>
@@ -127,7 +128,7 @@
 
             <!-- <bm-marker :position="{lng: 116.404, lat: 39.915}" :dragging="false"></bm-marker> -->
 
-            <bm-info-window
+            <!-- <bm-info-window
               class="info"
               :show="showFlag"
               :position="clickPoint"
@@ -135,9 +136,9 @@
               <div class="window">
                 <div v-for="(item, i) in influencePlaces" :key="curDate + i">{{ item.influence_place }}（{{ item.influence_score }}）</div>
               </div>
-            </bm-info-window>
+            </bm-info-window> -->
             
-            <bm-marker v-for="(item, i) in realData" :key="curDate + 'realData' + i" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_red.png'), size: {width: 32, height: 32}}"></bm-marker>
+            <bm-marker v-for="(item, i) in realUnhitData" :key="curDate + 'realUnhitData' + i" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_red.png'), size: {width: 32, height: 32}}"></bm-marker>
             <bm-marker v-for="(item, i) in preHitData" :key="curDate + 'preHitData' + i" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_org.png'), size: {width: 32, height: 32}}" @click="clickHandler(i, 1)"></bm-marker>
             <bm-marker v-for="(item, i) in preUnhitData" :key="curDate + 'preUnhitData' + i" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_blue.png'), size: {width: 32, height: 32}}" @click="clickHandler(i, 2)"></bm-marker>
             <!-- <bm-marker v-for="(item, i) in sealedPredictionPoints" :key="i+onlyTrajectoryPoints.length+onlySealedPoints.length+sealedAndTrajectoryPoints.length" :position="{lng: item.lng, lat: item.lat}" :icon="{url:require('./img/markers_yellow.png'), size: {width: 32, height: 32}}"></bm-marker> -->
@@ -183,15 +184,6 @@
             show: false,
             point: null,
             points:[],
-      
-            // 封控 & 有患者经过
-            sealedAndTrajectoryPoints:[],
-            // 仅封控
-            onlySealedPoints:[],
-            // 仅有患者经过
-            onlyTrajectoryPoints:[],
-            // 封控小区预测数据
-            sealedPredictionPoints:[],
 
             influencePlaces:[],
             
@@ -210,7 +202,7 @@
               dataSource: null
       },
       startPredictionFirstDay:null,
-      showFlag: false,
+      showFlag: false, //控制 点击某个气球是否显示窗口的，窗口上有关于气球点的具体信息
 
       // 展示什么数据
       showRealData:true,
@@ -220,43 +212,53 @@
       checked1:true,
       checked2:false,
 
-      // 真实数据
-      realData:[],
+      // 未被预测到的真实数据
+      realUnhitData:[],
       // 预测命中数据
       preHitData:[],
       // 预测未命中数据
       preUnhitData:[],
+
+      curButton: 0,
+      timer:null,//定时器
     
         };
       },
       methods: {
         goToRealData(){
+          this.clearTimer();
           this.$router.push("/diagram");
-          //localStorage.setItem("taskid",item.id);
-         
+          //localStorage.setItem("taskid",item.id);     
         },
         goToPredictionData(){
-          this.$router.push("/prediction");
-         
+          this.clearTimer();
+          this.$router.push("/prediction"); 
 
         },
         goToHeatMap(){
+          this.clearTimer();
           this.$router.push("/heatmap");
-       
-
         },
         goToCluster(){
+          this.clearTimer();
           this.$router.push("/cluster")
           localStorage.setItem("taskid",item.id);
-         
         },
         goToClusterInfluence(){
+          this.clearTimer();
           this.$router.push("/influence")
           localStorage.setItem("taskid",item.id);
          
         },
         goToPredictionHeatmap(){
+          this.clearTimer();
           this.$router.push("/predictionHeatmap")
+          localStorage.setItem("taskid",item.id);
+         
+        },
+        goToVector(){
+          this.clearTimer();
+          this.$router.push("/vector")
           localStorage.setItem("taskid",item.id);
          
         },
@@ -308,6 +310,14 @@
         $event.target.className = 'navbox5'
      
     },
+    changeActive6 ($event) {
+      $event.target.className = 'navbox6change'
+    },
+    removeActive6 ($event) {
+     
+        $event.target.className = 'navbox6'
+     
+    },
         checkRealData(isChecked){
           console.log("isChecked:"+isChecked)
 
@@ -345,7 +355,41 @@
           // 根据任务配置来取第一天的真实数据
           this.getPoints(this.startPredictionFirstDay);
           this.curDate = this.startPredictionFirstDay;
+
+          this.setTimer();
           
+        },
+        beforeDestroy() {
+      if(this.timer!==null){
+        clearInterval(this.timer);        
+      }
+        this.timer = null;
+    },
+         //------------------------------------------设置定时器-------------------------------------------------------------------
+         setTimer(){
+          // 先销毁之前的定时器
+          if (this.timer!=null){
+              this.clearTimer();
+            }
+          this.timer = setInterval(() => {
+            //需要定时执行的代码
+            // console.log("定时器")
+            console.log(this.curButton);
+            $($("button")[this.curButton]).addClass("is-plain");
+            this.curButton = this.curButton++ > ($("button").length-1) ? 1 : this.curButton;
+            $($("button")[this.curButton]).removeClass("is-plain");
+            // 更新button内容，触发refresh函数
+            this.refresh($("button")[this.curButton].innerText)
+          },2000)
+
+        },
+        // 清除定时器
+        clearTimer() {//清除定时器
+            console.log("-----------------clearTimer called!--------------------------------------")
+            if(this.timer!==null){
+                clearInterval(this.timer);        
+           }
+            this.timer = null;
         },
         setStartPredictionFirstDay(){
           var dayStr=this.task.startTime;
@@ -439,12 +483,12 @@
               if (response.code===200){
                   console.log("1")
                   // console.log(response.data.sealedAndTrajectoryList)
-                  this.realData = []
-                  for (let i = 0; i < response.data.realData.length; i++) {
-                      const position = {lng: response.data.realData[i].longitude, lat: response.data.realData[i].latitude, place: response.data.realData[i].place}
-                      this.realData.push(position)
+                  this.realUnhitData = []
+                  for (let i = 0; i < response.data.realUnhitData.length; i++) {
+                      const position = {lng: response.data.realUnhitData[i].longitude, lat: response.data.realUnhitData[i].latitude, place: response.data.realUnhitData[i].place}
+                      this.realUnhitData.push(position)
                   }
-                  console.log(response.data.realData)
+                  console.log(response.data.realUnhitData)
                   this.preHitData = []
                   for (let i = 0; i < response.data.preHitData.length; i++) {
                       const position = {lng: response.data.preHitData[i].longitude, lat: response.data.preHitData[i].latitude, place: response.data.preHitData[i].place}
@@ -504,69 +548,6 @@
         infoWindowOpen () {
           this.show = true
         },
-        addPic(map){
-          console.log("addPic called")
-          var point = new BMap.Point(this.center.lng, this.center.lat);
-          map.centerAndZoom(point, this.zoom);
-    
-            //定义一个控件类
-            function ZoomControl() {
-                this.defaultAnchor = BMAP_ANCHOR_BOTTOM_RIGHT;
-                this.defaultOffset = new BMap.Size(20, 20)
-            }
-            //通过JavaScript的prototype属性继承于BMap.Control
-            ZoomControl.prototype = new BMap.Control();
-    
-            //自定义控件必须实现自己的initialize方法，并且将控件的DOM元素返回
-            //在本方法中创建个div元素作为控件的容器，并将其添加到地图容器中
-            ZoomControl.prototype.initialize = function(map) {
-                  //创建一个dom元素
-                var div = document.createElement('div');
-                  //添加文字说明
-                div.appendChild(document.createTextNode('放大2级'));
-                // div.appendChild(le)
-                  // 设置样式
-                div.style.cursor = "pointer";
-                div.style.padding = "7px 10px";
-                div.style.boxShadow = "0 2px 6px 0 rgba(27, 142, 236, 0.5)";
-                div.style.borderRadius = "5px";
-                div.style.backgroundColor = "white";
-                // 添加DOM元素到地图中
-                map.getContainer().appendChild(div);
-                // 将DOM元素返回
-                return div;
-            }
-            //创建控件元素
-            var myZoomCtrl = new ZoomControl();
-            //添加到地图中
-            map.addControl(myZoomCtrl);
-    
-        },
-        addPic2(map){
-          //自定义图标
-          var icon = new BMap.Icon('./example.png', new BMap.Size(32, 32));
-          var points = new BMap.Point(120.092508,30.236078);//创建坐标点
-          var markers = new BMap.Marker(points);
-          markers.setIcon(icon);
-          map.addOverlay(markers);
-    
-        },
-        addPic3(map,html){
-          var LegendControl = function () {
-                this.defaultAnchor = BMAP_ANCHOR_TOP_LEFT;
-                this.defaultOffset = new BMap.Size(10, 10);
-            }
-    
-            LegendControl.prototype = new BMap.Control();
-            LegendControl.prototype.initialize = function (map) {
-                var le = $(html)[0];
-                map.getContainer().appendChild(le);
-                return le;
-            };
-    
-            var legendCtrl = new LegendControl();
-            map.addControl(legendCtrl);
-        },
         // 海量点绘制出来后，单击某点所触发的事件
         async clickHandler (i, type) {
           // alert(`单击点的坐标为：${e.point.lng}, ${e.point.lat}`);
@@ -602,18 +583,6 @@
           // 拿预测数据时进行限制，开始日期：2022-01-08，只有在距开始日期task.TimeInterVal后才有预测数据
           // 例如：需要7天数据才能预测
           // 那么只有在已知20220108-20220114的数据时才知道20220115那一天的预测数据
-          // 在20220114画这个预测数据
-          // var dateStr=date.substr(0,4)+date.substr(5,2)+date.substr(8,2)
-          // var predictionDayStr=this.startPredictionFirstDay.substr(0,4)+this.startPredictionFirstDay.substr(5,2)+this.startPredictionFirstDay.substr(8,2)
-          // if (dateStr>=predictionDayStr){
-          //   console.log("可以拿到预测数据")
-          //   var nextday=this.getNextDayStr(date)
-          //   console.log(nextday)
-          //   //this.getPredictionPoints(nextday);
-          // }else{
-          //   console.log("没有预测数据")
-          //   this.sealedPredictionPoints=[]
-          // }  
        
           },
           getNextDayStr(date){
@@ -737,7 +706,7 @@
     left: 0px;
   }
   .nav{
-    width:480px;
+    width:520px;
     height: 100px;
     /* background-color: white; */
     /* position: fixed; */
@@ -865,5 +834,25 @@
     background-image: url("../../assets/img/remove-outline_gray.png");
     background-size: 100% 100%;
   }
+
+  .navbox6{
+    width:55px;
+    height: 55px;
+    margin: 16px;
+    /* background-color: red; */
+    transition-duration: 0.3s;
+    background-image: url("../../assets/img/orange_gray.png");
+    background-size: 100% 100%;
+  }
+  .navbox6change{
+    width:80px;
+    height: 80px;
+    margin: 5px;
+    /* background-color: green; */
+    transition-duration: 0.3s;
+    background-image: url("../../assets/img/orange_gray.png");
+    background-size: 100% 100%;
+  }
+    
     
     </style>

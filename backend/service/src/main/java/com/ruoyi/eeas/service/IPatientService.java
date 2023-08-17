@@ -60,4 +60,6 @@ public interface IPatientService extends IService<Patient>
      * @return 结果
      */
     int deletePatientById(Long id);
+
+    int getPredictionPatientNum(String date, Integer taskId);
 }

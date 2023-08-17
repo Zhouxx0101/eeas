@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ruoyi.eeas.domain.Patient;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 患者数据Mapper接口
@@ -60,4 +61,6 @@ public interface PatientMapper extends BaseMapper<Patient>
      * @return 结果
      */
     int deletePatientByIds(Long[] ids);
+
+    int getPredictionPatientNum(@Param("date") String date, @Param("taskId") Integer taskId);
 }

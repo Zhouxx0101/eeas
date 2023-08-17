@@ -9,4 +9,21 @@
         select longitude, latitude, score
         from (select place_id, score from eeas_score where time = #{date} and task_id = #{taskId}) as a join eeas_place as b on a.place_id = b.id;
     </select>
+
+    <select id="getHeatmapDataOfCertainPlace1" resultType="String">
+        select score from eeas_score_for_patient_num_prediction where time = #{date} and task_id=#{taskId} and place_id=(select id from eeas_place where place=#{place});
+    </select>
+
+    <select id="getHeatmapDataOfCertainPlace2" resultType="String">
+        select score from eeas_score_for_node_prediction where time = #{date} and task_id=#{taskId} and place_id=(select id from eeas_place where place=#{place});
+    </select>
+
+    <select id="getHeatmapDataOfCertainPlace3" resultType="String">
+        select score from eeas_score_for_patient_num_prediction_cluster where time = #{date} and task_id=#{taskId} and place_id=(select id from eeas_place where place=#{place});
+    </select>
+
+    <select id="getHeatmapDataOfCertainPlace4" resultType="String">
+        select score from eeas_score_for_node_prediction_cluster where time = #{date} and task_id=#{taskId} and place_id=(select id from eeas_place where place=#{place});
+    </select>
+
 </mapper>

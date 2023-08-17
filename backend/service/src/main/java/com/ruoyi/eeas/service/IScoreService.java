@@ -19,4 +19,7 @@ public interface IScoreService
      * @return 注意力分数
      */
     List<Map<String, Object>> listScore(String date, Integer taskId);
+
+    String getHeatmapDataOfCertainPlace(String date, Integer taskId,String place,String table);
+
 }

@@ -92,4 +92,10 @@ public class PatientServiceImpl extends ServiceImpl<PatientMapper, Patient> impl
     {
         return patientMapper.deletePatientById(id);
     }
+
+    @Override
+    public int getPredictionPatientNum(String date, Integer taskId)
+    {
+        return patientMapper.getPredictionPatientNum(date,taskId);
+    }
 }

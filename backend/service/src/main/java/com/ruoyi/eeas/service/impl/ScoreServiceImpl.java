@@ -32,4 +32,23 @@ public class ScoreServiceImpl implements IScoreService {
     public List<Map<String, Object>> listScore(String date, Integer taskId) {
         return scoreMapper.listScore(date, taskId);
     }
+
+    @Override
+    public String getHeatmapDataOfCertainPlace(String date, Integer taskId,String place,String table) {
+        System.out.println("date = " + date + ", taskId = " + taskId + ", place = " + place + ", table = " + table);
+        switch (table){
+            case "1":
+                return scoreMapper.getHeatmapDataOfCertainPlace1(date, taskId,place);
+            case "2":
+                System.out.println("date = " + date + ", taskId = " + taskId + ", place = " + place + ", table = " + table);
+                return scoreMapper.getHeatmapDataOfCertainPlace2(date,taskId,place);
+            case "3":
+                return scoreMapper.getHeatmapDataOfCertainPlace3(date, taskId,place);
+            case "4":
+                return scoreMapper.getHeatmapDataOfCertainPlace4(date,taskId,place);
+            default: return scoreMapper.getHeatmapDataOfCertainPlace1(date, taskId,place);
+
+        }
+
+    }
 }
