@@ -1,7 +1,7 @@
 <template>
 
   <div>
-    <div class="navHome">
+    <!-- <div class="navHome">
       <div class="nav">
         <el-tooltip class="item" effect="dark" content="真实数据展示" placement="top-start">
           <div ref="nav0" class="navbox0" @click="goToRealData()" v-on:mouseover="changeActive0($event)" v-on:mouseout="removeActive0($event)"></div>
@@ -31,7 +31,7 @@
         <div ref="nav2" class="navbox6" @click="goToVector()" v-on:mouseover="changeActive6($event)" v-on:mouseout="removeActive6($event)"></div>
       </el-tooltip>
       </div>
-    </div>
+    </div> -->
     <el-row >
       <el-col >
         <div class="BaiDuMap">
@@ -66,7 +66,7 @@
     style="width: 100%">
     <el-table-column
       prop="place"
-      label="地点名称"
+      label="影响力最高集群包含场所的名称"
       width="180">
     </el-table-column>
   </el-table>
@@ -83,7 +83,7 @@
             <!-- 添加节点选择控件 -->
             <bm-control>
           <template>
-<el-select v-model="value" placeholder="请选择注意力分数回溯地点" @change="handleChange">
+<el-select v-model="value" placeholder="请选择地点" @change="handleChange">
   <el-option
     v-for="(item,index) in places"
     :key="index"
@@ -171,6 +171,12 @@
       curDate:"",
         };
       },
+      beforeDestroy() {
+    if(this.timer!==null){
+      clearInterval(this.timer);        
+    }
+      this.timer = null;
+  },
       methods: {
         goToRealData(){
          // this.clearTimer();
@@ -364,12 +370,7 @@
          
         },
     
-        beforeDestroy() {
-    if(this.timer!==null){
-      clearInterval(this.timer);        
-    }
-      this.timer = null;
-  },
+       
        //------------------------------------------设置定时器-------------------------------------------------------------------
        setTimer(){
         // 先销毁之前的定时器

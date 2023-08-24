@@ -1,7 +1,7 @@
 <template>
   <div class="navbar">
-    <hamburger v-if="this.user.roles.indexOf('admin') != -1" id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
-
+    <!-- <hamburger v-if="this.user.roles.indexOf('admin') != -1" id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" /> -->
+    <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
     <!-- <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!topNav"/> -->
     <img v-if="logo" :src="logo" class="sidebar-logo"/>
     <span style="{

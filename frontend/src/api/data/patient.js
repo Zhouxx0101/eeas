@@ -8,6 +8,14 @@ export function getPredictionPatientNum(date, taskId) {
   })
 }
 
+// 根据日期以及task_id查询预测患者数量
+export function getHighInfluenceNum(date, taskId) {
+  return request({
+    url: '/data/score/getHighInfluenceNum/' + date + '/' + taskId ,
+    method: 'get'
+  })
+}
+
 
 // 查询患者数据列表
 export function listPatient(query) {

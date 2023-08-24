@@ -2,7 +2,7 @@
   <div>
     
       
-      <div class="navHome">
+      <!-- <div class="navHome">
         <div class="nav">
           <el-tooltip class="item" effect="dark" content="真实数据展示" placement="top-start">
             <div ref="nav0" class="navbox0" @click="goToRealData()" v-on:mouseover="changeActive0($event)" v-on:mouseout="removeActive0($event)"></div>
@@ -32,7 +32,7 @@
           <div ref="nav2" class="navbox6" @click="goToVector()" v-on:mouseover="changeActive6($event)" v-on:mouseout="removeActive6($event)"></div>
         </el-tooltip>
         </div>
-      </div>
+      </div> -->
    
   
       <el-row >
@@ -147,6 +147,12 @@
   
           };
         },
+        beforeDestroy() {
+      if(this.timer!==null){
+        clearInterval(this.timer);        
+      }
+        this.timer = null;
+    },
         methods: {
           async handler({ BMap, map }) {
           this.taskID=localStorage.getItem("taskid");
@@ -164,12 +170,7 @@
           this.setTimer();
           
           },
-          beforeDestroy() {
-      if(this.timer!==null){
-        clearInterval(this.timer);        
-      }
-        this.timer = null;
-    },
+         
          //------------------------------------------设置定时器-------------------------------------------------------------------
          setTimer(){
           // 先销毁之前的定时器
@@ -548,7 +549,7 @@
     width: 100%;
     display: flex;
     position: fixed;
-    top:200px;
+    top:170px;
     justify-content: start;
     /* z-index: 888; */
     left: 670px;

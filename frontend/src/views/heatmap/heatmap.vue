@@ -1,7 +1,7 @@
 <template>
 
     <div>
-      <div class="navHome">
+      <!-- <div class="navHome">
         <div class="nav">
           <el-tooltip class="item" effect="dark" content="真实数据展示" placement="top-start">
             <div ref="nav0" class="navbox0" @click="goToRealData()" v-on:mouseover="changeActive0($event)" v-on:mouseout="removeActive0($event)"></div>
@@ -31,7 +31,7 @@
           <div ref="nav2" class="navbox6" @click="goToVector()" v-on:mouseover="changeActive6($event)" v-on:mouseout="removeActive6($event)"></div>
         </el-tooltip>
         </div>
-      </div>
+      </div> -->
       <el-row >
         <el-col >
           <div class="BaiDuMap">
@@ -53,7 +53,10 @@
                 <div>
                   <!-- <el-checkbox v-model="checked1" label="" ></el-checkbox> -->
                   <p class="mapLegend" style="background-color:red"/>
-                  <span style="color:black">当天预测确诊人数：{{ sum }}人</span>
+                  <span style="color:black">当天预测确诊人数：{{ sum }}人<br></span>
+
+                  <!-- <p class="mapLegend" style="background-color:blue"/>
+                  <span style="color:black">高影响力场所个数：{{ highInfluenceNum }}人</span> -->
                 </div>
             </el-card>
             </bm-control>
@@ -112,7 +115,7 @@
       import { getPlace } from "@/api/data/place";
       import {getTask} from "@/api/data/task";
       import {getHeatmapDataOfCertainPlace,getTopXXPlaces} from "@/api/data/score";
-      import {getPredictionPatientNum} from "@/api/data/patient";
+      import {getPredictionPatientNum,getHighInfluenceNum} from "@/api/data/patient";
       import { Timeline } from "@/components/TimeLine/index";
       import {BmlHeatmap} from 'vue-baidu-map'
     
@@ -136,6 +139,7 @@
           
               timeLineArr:[],
               sum:0,
+              highInfluenceNum:0,
   
               task: {
                 taskID:1,
@@ -171,6 +175,12 @@
         curDate:"",
           };
         },
+        beforeDestroy() {
+      if(this.timer!==null){
+        clearInterval(this.timer);        
+      }
+        this.timer = null;
+    },
         methods: {
           goToRealData(){
            // this.clearTimer();
@@ -287,6 +297,7 @@
             this.curDate=this.task.startTime;
             this.getPlace();
             this.getPatientNum(this.curDate);
+            this.getHighInfluenceNum(this.curDate);
            // this.getScore();
 
             // this.setTimer();
@@ -302,6 +313,25 @@
               if (response.code === 200) {
                 this.sum=response.data;
                 console.log(this.sum)
+              }
+            })
+           
+          },
+          //------------------------------获取超过某个阈值的注意力分数的场所数量-----------------------
+          async getHighInfluenceNum(date) {
+            if(date==="2022-01-08"){
+              this.highInfluenceNum=16707;
+            }
+            if(date==="2022-01-09"){
+              this.highInfluenceNum=36563;
+            }
+            await getHighInfluenceNum(date,this.task.taskID).then(response => {
+              console.log("getHighInfluenceNum called")
+              console.log(date)
+              console.log(response)
+              if (response.code === 200) {
+                this.highInfluenceNum=response.data;
+                console.log(this.highInfluenceNum)
               }
             })
            
@@ -364,12 +394,7 @@
            
           },
       
-          beforeDestroy() {
-      if(this.timer!==null){
-        clearInterval(this.timer);        
-      }
-        this.timer = null;
-    },
+          
          //------------------------------------------设置定时器-------------------------------------------------------------------
          setTimer(){
           // 先销毁之前的定时器
@@ -525,6 +550,7 @@
              // this.sum = Math.round(Math.random()*80+20);
              this.getPatientNum(date);
               // this.sum = 1;
+              this.getHighInfluenceNum(date);
             },
             getNextDayStr(date){
                 console.log("getNextDayStr called")

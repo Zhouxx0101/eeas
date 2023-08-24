@@ -6,6 +6,8 @@
 
 </template>
 
+
+
 <script >
   import NeoVis, {NEOVIS_ADVANCED_CONFIG} from 'neovis.js/dist/neovis.js';
  // import NeoVis from 'neovis.js';
@@ -32,12 +34,13 @@
           // neo4j服务器地址，用户名 和 密码
           server_url: 'bolt://localhost:7687', //连接的地址是端口号为7687的不是7474
           server_user: 'neo4j',
-          server_password: '123456789',
+          server_password: '12345678',
   
           // labels是节点样式的配置
           // 没有在这个地方配置的节点将会是默认样式
           labels: {
-              "Node": { caption: "name", community: "#5496FF", size: 200, font: { size: 35, color: "#606266", }, },
+              "Place": { caption: "name", community: "#5496FF", size: 50, font: { size: 35, color: "#606266", }, },
+             // "出版社": { caption: "name", community: "#5496FF", size: 200, font: { size: 35, color: "#606266", }, },
             // 候選人: {
             //   caption: '候選人',  // 节点显示的文字对应内容key
             //   community: 'community', //节点颜色 String：要用作社区（color）的属性名。默认为“按标签着色”。
@@ -131,7 +134,7 @@
           // },
   
           // 关系线段是否显示箭头
-          arrows: true,
+          arrows: false,
   
           hierarchical: false, // 节点显示方式 是否启用分层布局后
           // 分层结构或者默认 "hubsize"（默认）和"directed".

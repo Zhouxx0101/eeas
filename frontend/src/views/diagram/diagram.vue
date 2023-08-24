@@ -1,7 +1,7 @@
 <template>
 
   <div>
-    <div class="navHome">
+    <!-- <div class="navHome">
       <div class="nav">
         <el-tooltip class="item" effect="dark" content="真实数据展示" placement="top-start">
           <div ref="nav0" class="navbox0" @click="goToRealData()" v-on:mouseover="changeActive0($event)" v-on:mouseout="removeActive0($event)"></div>
@@ -30,7 +30,7 @@
           <div ref="nav2" class="navbox6" @click="goToVector()" v-on:mouseover="changeActive6($event)" v-on:mouseout="removeActive6($event)"></div>
         </el-tooltip>
       </div>
-    </div>
+    </div> -->
     <!--<el-row>
       <div>
     <el-checkbox v-model="checked1" label="备选项1" border></el-checkbox>
@@ -244,6 +244,12 @@
     
         };
       },
+      beforeDestroy() {
+      if(this.timer!==null){
+        clearInterval(this.timer);        
+      }
+        this.timer = null;
+    },
       methods: {
        
         // TODO:在时序交互图界面已经有了任务信息，后续页面都不需要再去后端拿，只需要前端页面传递就行
@@ -393,12 +399,7 @@
           
         },
          // 最后在beforeDestroy()生命周期内清除定时器：
-    beforeDestroy() {
-      if(this.timer!==null){
-        clearInterval(this.timer);        
-      }
-        this.timer = null;
-    },
+  
          //------------------------------------------设置定时器-------------------------------------------------------------------
         setTimer(){
           // // 先销毁之前的定时器
@@ -553,69 +554,6 @@
               } 
           });
           
-        },
-        addPic(map){
-          console.log("addPic called")
-          var point = new BMap.Point(this.center.lng, this.center.lat);
-          map.centerAndZoom(point, this.zoom);
-    
-            //定义一个控件类
-            function ZoomControl() {
-                this.defaultAnchor = BMAP_ANCHOR_BOTTOM_RIGHT;
-                this.defaultOffset = new BMap.Size(20, 20)
-            }
-            //通过JavaScript的prototype属性继承于BMap.Control
-            ZoomControl.prototype = new BMap.Control();
-    
-            //自定义控件必须实现自己的initialize方法，并且将控件的DOM元素返回
-            //在本方法中创建个div元素作为控件的容器，并将其添加到地图容器中
-            ZoomControl.prototype.initialize = function(map) {
-                  //创建一个dom元素
-                var div = document.createElement('div');
-                  //添加文字说明
-                div.appendChild(document.createTextNode('放大2级'));
-                // div.appendChild(le)
-                  // 设置样式
-                div.style.cursor = "pointer";
-                div.style.padding = "7px 10px";
-                div.style.boxShadow = "0 2px 6px 0 rgba(27, 142, 236, 0.5)";
-                div.style.borderRadius = "5px";
-                div.style.backgroundColor = "white";
-                // 添加DOM元素到地图中
-                map.getContainer().appendChild(div);
-                // 将DOM元素返回
-                return div;
-            }
-            //创建控件元素
-            var myZoomCtrl = new ZoomControl();
-            //添加到地图中
-            map.addControl(myZoomCtrl);
-    
-        },
-        addPic2(map){
-          //自定义图标
-          var icon = new BMap.Icon('./example.png', new BMap.Size(32, 32));
-          var points = new BMap.Point(120.092508,30.236078);//创建坐标点
-          var markers = new BMap.Marker(points);
-          markers.setIcon(icon);
-          map.addOverlay(markers);
-    
-        },
-        addPic3(map,html){
-          var LegendControl = function () {
-                this.defaultAnchor = BMAP_ANCHOR_TOP_LEFT;
-                this.defaultOffset = new BMap.Size(10, 10);
-            }
-    
-            LegendControl.prototype = new BMap.Control();
-            LegendControl.prototype.initialize = function (map) {
-                var le = $(html)[0];
-                map.getContainer().appendChild(le);
-                return le;
-            };
-    
-            var legendCtrl = new LegendControl();
-            map.addControl(legendCtrl);
         },
         getClickInfo(e) {
           // 创建地理编码实例

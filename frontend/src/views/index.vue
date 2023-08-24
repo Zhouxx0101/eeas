@@ -37,11 +37,11 @@
                           <span>时间窗口：</span>
                           <span>{{item.timeInterval}}</span>
                       </div>
-                      <div class="text item">
+                      <!-- <div class="text item">
                           <span>数据源：</span>
                           <span v-if="item.dataSource=='0'">自动导入</span>
                           <span v-if="item.dataSource=='1'">手动录入</span>
-                      </div>
+                      </div> -->
                       <el-button
                           size="mini"
                           type="text"
@@ -100,7 +100,7 @@
           <el-form-item label="地点" prop="place">
           <el-input v-model="form.place" placeholder="请输入地点" />
           </el-form-item>
-          <el-form-item label="数据源" prop="dataSource">
+          <!-- <el-form-item label="数据源" prop="dataSource">
           <el-select v-model="form.dataSource" placeholder="请选择数据源">
               <el-option
               v-for="dict in dict.type.eeas_task"
@@ -109,6 +109,11 @@
   :value="parseInt(dict.value)"
               ></el-option>
           </el-select>
+          </el-form-item> -->
+          <el-form-item label="源数据">
+            <input type="file" ref="clearFile" @change="getFile($event)" multiple="multiplt" class="add-file-left-input" style="margin-left:0px;" accept=".docx,.doc,.pdf,.xlsx,.xls">
+            <el-button type="primary" @click="submitAddFile" size="small">开始上传</el-button>
+
           </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -146,7 +151,7 @@
           <el-form-item label="地点" prop="place">
           <el-input v-model="form.place" :disabled="true" placeholder="请输入地点" />
           </el-form-item>
-          <el-form-item label="数据源" prop="dataSource">
+          <!-- <el-form-item label="数据源" prop="dataSource">
           <el-select v-model="form.dataSource" :disabled="true" placeholder="请选择数据源">
               <el-option
               v-for="dict in dict.type.eeas_task"
@@ -155,7 +160,9 @@
   :value="parseInt(dict.value)"
               ></el-option>
           </el-select>
-          </el-form-item>
+          </el-form-item> -->
+          
+
       </el-form>
       <div slot="footer" class="dialog-footer">
           <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -168,6 +175,7 @@
 
 <script>
 import { listTask, getTask, delTask, addTask, updateTask } from "@/api/data/task";
+import { selectComponents } from "@/utils/generator/config";
 
 export default {
 name: "Task",
@@ -223,6 +231,15 @@ created() {
   this.getList();
 },
 methods: {
+  sleep(ms) { //sleep延迟方法2
+            var unixtime_ms = new Date().getTime();
+            while(new Date().getTime() < unixtime_ms + ms) {}
+        },
+  // 点击上传文件，弹出上传成功对话框
+  submitAddFile(){
+          this.sleep(500);
+          alert("文件上传成功！")
+        },
   /** 查询任务列表 */
   getList() {
     this.loading = true;
